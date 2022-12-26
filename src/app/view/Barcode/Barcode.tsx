@@ -68,41 +68,61 @@ const Barcode = () => {
         {products?.map((product, i) => {
           return (
             <div className='flex'>
-              <div className='w-[150px] h-[116px] items-center bg-white flex flex-col justify-center text-sm ml-[30px] mt-[10px]'>
-                <p className='flex justify-around w-full'>
-                  <span>{`0000` + product.itemCode}</span>
-                  <span>{product.sellPrice}tk</span>
+              <div className='w-[320px] h-[110px] items-center bg-white flex flex-col justify-center text-sm mr-[10px] mt-[130px]'>
+                <p className='text-[14px] font-bold'>
+                  {'000000000' + product.itemCode}
                 </p>
+
                 <BarcodeGeneratorComponent
                   key={i}
-                  height={30}
-                  value={product.itemCode.toString()}
+                  width={0.8}
+                  height={25}
+                  value={'000000000' + product.itemCode.toString()}
                   displayValue={false}
-                  format='CODE128'
                   margin={0}
+                  format='CODE128'
                   textAlign='center'
                 />
-                <span className='text-xs text-center'>
+                <p
+                  style={{ lineHeight: '11px' }}
+                  className='text-[11px] font-bold text-center'
+                >
                   {product.productGroup}
-                </span>
+                </p>
+                <p
+                  style={{ lineHeight: '11px' }}
+                  className='text-[11px] font-bold'
+                >
+                  Taka: {product.sellPrice}tk
+                </p>
               </div>
-              <div className='w-[150px] h-[116px] items-center bg-white flex flex-col justify-center text-sm ml-[10px] mt-[10px]'>
-                <p className='flex justify-around w-full'>
-                  <span>{`0000` + product.itemCode}</span>
-                  <span>{product.sellPrice}tk</span>
+              <div className='w-[320px] h-[110px] items-center bg-white flex flex-col justify-center ml-[40px] text-sm mt-[130px]'>
+                <p className='text-[14px] font-bold'>
+                  {'000000000' + product.itemCode}
                 </p>
+
                 <BarcodeGeneratorComponent
                   key={i}
-                  height={30}
-                  value={product.itemCode.toString()}
+                  width={0.8}
+                  height={25}
+                  margin={0}
+                  value={'000000000' + product.itemCode.toString()}
                   displayValue={false}
                   format='CODE128'
-                  margin={0}
                   textAlign='center'
                 />
-                <span className='text-xs text-center'>
+                <p
+                  style={{ lineHeight: '11px' }}
+                  className='text-[11px] font-bold text-center'
+                >
                   {product.productGroup}
-                </span>
+                </p>
+                <p
+                  style={{ lineHeight: '11px' }}
+                  className='text-[11px] font-bold'
+                >
+                  Taka: {product.sellPrice}
+                </p>
               </div>
             </div>
           );

@@ -15,6 +15,8 @@ const SelectInput = React.lazy(() => import('./Input/SelectInput'));
 
 const Stats = React.lazy(() => import('./Stats'));
 
+const ConfirmModal = React.lazy(() => import('./ConfirmDialog'));
+
 export {
   Input,
   NavBar,
@@ -27,5 +29,6 @@ export {
   Loader,
   SelectInput,
   HookInput,
-  Stats
+  Stats,
+  ConfirmModal
 };

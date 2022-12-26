@@ -34,11 +34,7 @@ const AddProduct: React.FC<{ itemCode: number }> = ({ itemCode }) => {
   return (
     <Form className='w-full flex flex-col gap-y-6 items-center bg-white rounded p-4'>
       <FormGroup>
-        <CommonInput
-          name='invoiceNumber'
-          type={'number'}
-          label='Invoice Number'
-        />
+        <CommonInput name='invoiceNumber' label='Invoice Number' />
         <CommonInput label='Invoice Date' type='date' name='invoiceDate' />
       </FormGroup>
       <FormGroup>
