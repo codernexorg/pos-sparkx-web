@@ -1,5 +1,6 @@
 import { Reducer } from '@reduxjs/toolkit';
 import {
+  BARCODE_ERR,
   BARCODE_LOADING,
   FETCH_BARCODE,
   PRINT_BARCODE,
@@ -29,6 +30,14 @@ const barcode: Reducer<IPrintBarcodeState, BarcodeActionType> = function (
         ...state,
         barcode: action.payload,
         isLoading: false
+      };
+    }
+
+    case BARCODE_ERR: {
+      return {
+        ...state,
+        isLoading: false,
+        products: []
       };
     }
 

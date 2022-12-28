@@ -18,6 +18,7 @@ import {
   ADD_WAREHOUSE_ERR,
   ADD_WAREHOUSE_LOADING,
   ADD_WAREHOUSE_SUCCESS,
+  BARCODE_ERR,
   BARCODE_LOADING,
   CREATE_CATEGORY_ERR,
   CREATE_CATEGORY_LOADING,
@@ -372,9 +373,13 @@ interface FetchBarcode {
   type: typeof FETCH_BARCODE;
   payload: BarcodeSetting;
 }
+interface BarcodeErr {
+  type: typeof BARCODE_ERR;
+}
 
 export type BarcodeActionType =
   | PrintBarcodeAction
   | SettingBarcode
   | FetchBarcode
-  | BarcodeLoading;
+  | BarcodeLoading
+  | BarcodeErr;

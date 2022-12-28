@@ -17,41 +17,70 @@ const Barcode = () => {
   const { products, isLoading } = useTypedSelector(state => state.barcode);
 
   const [isClicked, setIsClicked] = useState<boolean>(false);
+
+  // useEffect(() => {
+  //   fetchProduct();
+  // }, [dispatch]);
   const LotForm = () => {
     return (
-      <Formik
-        initialValues={{ lotNumber: 0 }}
-        onSubmit={value => {
-          dispatch(printBarcode(value));
-          setIsClicked(true);
-        }}
-      >
-        {() => (
-          <Form className='bg-white p-10 rounder flex flex-col items-center gap-y-4'>
-            <CommonInput label='Lot Nuber' name='lotNumber' />
-            <Button type='submit'>Go</Button>
-          </Form>
-        )}
-      </Formik>
+      <div>
+        {/* <Dropdown
+          className='bg-white py-3'
+          menu={{
+            items: lot.map(item => {
+              return {
+                label: item.lotNumber.toString(),
+                key: item.id
+              } as ItemType;
+            }),
+            onClick: () => {
+              alert('Click Functionality Under Maintenance');
+            }
+          }}
+        >
+          <Space>
+            <h1>Available Lot Numbers</h1>
+            <FaAngleDown />
+          </Space>
+        </Dropdown> */}
+        <Formik
+          initialValues={{ lotNumber: 0 }}
+          onSubmit={value => {
+            dispatch(printBarcode(value));
+            setIsClicked(true);
+          }}
+        >
+          {() => (
+            <Form className='bg-white p-10 rounder flex flex-col items-center gap-y-4'>
+              <CommonInput label='Lot Nuber' name='lotNumber' />
+              <Button type='submit'>Go</Button>
+            </Form>
+          )}
+        </Formik>
+      </div>
     );
   };
 
   if (!isClicked) {
     return <LotForm />;
   }
-
-  if (!products?.length) {
-    return (
-      <div className='w-full h-screen flex items-center justify-center'>
-        <Typography.Title level={3}>
-          No Product To Print Barcode !
-        </Typography.Title>
-      </div>
-    );
-  }
   if (isLoading) {
     return <Loader />;
   }
+
+  if (!products?.length) {
+    return (
+      <div className='w-full h-screen flex flex-col items-center justify-center bg-white'>
+        <Typography.Title level={3}>
+          No Product To Print Barcode ! Please Try A Different Lot Number
+        </Typography.Title>
+        <Button type='button' onClick={() => setIsClicked(false)}>
+          Go Back
+        </Button>
+      </div>
+    );
+  }
+
   return (
     <div className='flex flex-col gap-y-2'>
       <div className='flex justify-between'>
@@ -91,7 +120,7 @@ const Barcode = () => {
                   style={{ lineHeight: '11px' }}
                   className='text-[11px] font-bold'
                 >
-                  Taka: {product.sellPrice}tk
+                  Taka: {product.sellPrice}৳
                 </p>
               </div>
               <div className='w-[320px] h-[110px] items-center bg-white flex flex-col justify-center ml-[40px] text-sm mt-[130px]'>
@@ -117,7 +146,7 @@ const Barcode = () => {
                   style={{ lineHeight: '11px' }}
                   className='text-[11px] font-bold'
                 >
-                  Taka: {product.sellPrice}
+                  Taka: {product.sellPrice}৳
                 </p>
               </div>
             </div>

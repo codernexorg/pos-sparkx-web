@@ -2,7 +2,8 @@ import { Table } from 'antd';
 import { useEffect } from 'react';
 import { getProductGroup } from '../../../redux/actions/productGroup';
 import { useAppDispatch, useTypedSelector } from '../../../redux/store';
-import { PrintAble } from '../../components';
+import { Loader, Pagination, PrintAble } from '../../components';
+import { useSettingContext } from '../../context/SettingProver';
 
 const ProductGroup = () => {
   const dispatch = useAppDispatch();
@@ -13,6 +14,11 @@ const ProductGroup = () => {
   const { isLoading, productGroup } = useTypedSelector(
     state => state.productGroup
   );
+  const { page, setPage, pageSize, setPageSize } = useSettingContext();
+
+  if (isLoading) {
+    return <Loader />;
+  }
 
   return (
     <PrintAble handlePrint={() => {}} tableId='productGroup'>
@@ -38,6 +44,15 @@ const ProductGroup = () => {
           key='productCategory'
         />
       </Table>
+      <Pagination
+        currentPage={page}
+        total={productGroup.length}
+        onChange={(page, size) => {
+          setPage(page);
+          setPageSize(size);
+        }}
+        pageSize={pageSize}
+      />
     </PrintAble>
   );
 };

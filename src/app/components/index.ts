@@ -16,6 +16,7 @@ const SelectInput = React.lazy(() => import('./Input/SelectInput'));
 const Stats = React.lazy(() => import('./Stats'));
 
 const ConfirmModal = React.lazy(() => import('./ConfirmDialog'));
+const Pagination = React.lazy(() => import('./Pagination'));
 
 export {
   Input,
@@ -30,5 +31,6 @@ export {
   SelectInput,
   HookInput,
   Stats,
-  ConfirmModal
+  ConfirmModal,
+  Pagination
 };

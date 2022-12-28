@@ -1,7 +1,8 @@
 {
-  "name": "app",
+  "name": "pox-sparkx",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://choloit.com/",
   "dependencies": {
     "@craco/craco": "^7.0.0",
     "@react-pdf/renderer": "^3.0.1",

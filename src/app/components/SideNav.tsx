@@ -83,11 +83,11 @@ const SideNav = () => {
             <div className='mt-10'>
               {navigation.map((item, i) => (
                 <div key={i}>
-                  <p className='m-3 mt-4 text-gray-400 uppercase flex items-center'>
+                  <p className='m-3 mt-4 text-gray-400 uppercase flex items-center font-bold'>
                     {item.title} <FaAngleRight />
                   </p>
                   {item.links.map((link, i) => (
-                    <CustomLink to={link.to} key={i}>
+                    <CustomLink to={link.to} key={i} className='font-semibold'>
                       <link.Icon />
                       <span className='capitalize'>{link.text}</span>
                     </CustomLink>

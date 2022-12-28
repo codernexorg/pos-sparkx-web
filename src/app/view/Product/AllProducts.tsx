@@ -1,25 +1,20 @@
 import { Table } from 'antd';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 import { useReactToPrint } from 'react-to-print';
 import { fetchProduct } from '../../../redux/actions/product';
 import { useAppDispatch, useTypedSelector } from '../../../redux/store';
-import { Loader, PrintAble } from '../../components';
+import { Loader, Pagination, PrintAble } from '../../components';
+import { useSettingContext } from '../../context/SettingProver';
 
 const AllProducts = () => {
   const tableComponent = useRef<HTMLDivElement>(null);
-  const [pagination, setPagination] = useState(true);
   const handlePrint = useReactToPrint({
     content: () => tableComponent.current,
-    documentTitle: 'Spark X Product Data',
-    onBeforeGetContent: () => {
-      setPagination(false);
-    }
+    documentTitle: 'Spark X Product Data'
   });
-
-  const [page, setpage] = useState(1);
-  const [pageSize, setPageSize] = useState(30);
-
+  const { page, pageSize, setPage, setPageSize } = useSettingContext();
   const dispatch = useAppDispatch();
+
   useEffect(() => {
     dispatch(fetchProduct());
   }, [dispatch]);
@@ -40,8 +35,11 @@ const AllProducts = () => {
           pageSize: pageSize,
           current: page,
           onChange: (page, size) => {
-            setpage(page);
+            setPage(page);
             setPageSize(size);
+          },
+          style: {
+            display: 'none'
           }
         }}
         bordered
@@ -74,6 +72,15 @@ const AllProducts = () => {
           onFilter={(value, record) => record.sellingStatus === value}
         />
       </Table>
+      <Pagination
+        currentPage={page}
+        pageSize={pageSize}
+        total={products.length}
+        onChange={(page, size) => {
+          setPage(page);
+          setPageSize(size);
+        }}
+      />
     </PrintAble>
   );
 };

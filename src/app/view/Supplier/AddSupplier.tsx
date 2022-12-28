@@ -1,14 +1,15 @@
 import { Typography } from 'antd';
 import { Form, Formik } from 'formik';
+import { useNavigate } from 'react-router-dom';
 import { addSupplier } from '../../../redux/actions/supplier';
-import { useAppDispatch } from '../../../redux/store';
+import { useAppDispatch, useTypedSelector } from '../../../redux/store';
 import { Supplier } from '../../../redux/types';
 import { Button, CommonInput } from '../../components';
-import { useNavigate } from 'react-router-dom';
 
 const AddWH = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+  const { isLoading } = useTypedSelector(state => state.supplier);
 
   return (
     <div className='w-full pt-10 flex items-start justify-center flex-col'>
@@ -72,7 +73,9 @@ const AddWH = () => {
             label='Extra Info'
             placeholder='Extra Info'
           />
-          <Button type='submit'>Save</Button>
+          <Button type='submit' loading={isLoading}>
+            Save
+          </Button>
         </Form>
       </Formik>
     </div>

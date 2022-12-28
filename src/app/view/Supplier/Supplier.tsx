@@ -4,7 +4,8 @@ import { Link } from 'react-router-dom';
 import { useReactToPrint } from 'react-to-print';
 import { getSupplier } from '../../../redux/actions/supplier';
 import { useAppDispatch, useTypedSelector } from '../../../redux/store';
-import { Loader, PrintAble } from '../../components';
+import { Loader, Pagination, PrintAble } from '../../components';
+import { useSettingContext } from '../../context/SettingProver';
 
 interface DataType {
   key: React.Key;
@@ -15,9 +16,8 @@ interface DataType {
 }
 
 const Supplier = () => {
-  const { isLoading, suppliers, error } = useTypedSelector(
-    state => state.supplier
-  );
+  const { isLoading, suppliers } = useTypedSelector(state => state.supplier);
+  const { page, pageSize, setPage, setPageSize } = useSettingContext();
 
   const dispatch = useAppDispatch();
 
@@ -40,7 +40,18 @@ const Supplier = () => {
         id='supplierData'
         ref={cRef}
         rowKey={object => object.supplierName}
-        pagination={false}
+        pagination={{
+          current: page,
+          total: suppliers.length,
+          pageSize: pageSize,
+          onChange: (page, size) => {
+            setPage(page);
+            setPageSize(size);
+          },
+          style: {
+            display: 'none'
+          }
+        }}
       >
         <Table.Column
           title='Supplier Name'
@@ -81,6 +92,16 @@ const Supplier = () => {
           }}
         />
       </Table>
+
+      <Pagination
+        currentPage={page}
+        total={suppliers.length}
+        onChange={(page, size) => {
+          setPage(page);
+          setPageSize(size);
+        }}
+        pageSize={pageSize}
+      />
     </PrintAble>
   );
 };

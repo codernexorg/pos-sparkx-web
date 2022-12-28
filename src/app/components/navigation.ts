@@ -17,32 +17,17 @@ const navigation = [
       {
         to: '/dashboard/products',
         Icon: FaAccusoft,
-        text: 'All Product'
+        text: 'All Products'
       },
       {
         to: '/dashboard/products/add-single',
         Icon: FaAccusoft,
-        text: 'Add Single'
+        text: 'Add Single Products'
       },
       {
         to: '/dashboard/products/add-multiple',
         Icon: FaAccusoft,
-        text: 'Add Multiple'
-      }
-    ]
-  },
-  {
-    title: 'Purchase',
-    links: [
-      {
-        to: '/dashboard/purchase',
-        Icon: FaAccusoft,
-        text: 'Manage'
-      },
-      {
-        to: '/dashboard/purchase/add',
-        Icon: FaAccusoft,
-        text: 'Add'
+        text: 'Add Multiple Product'
       }
     ]
   },
@@ -52,27 +37,12 @@ const navigation = [
       {
         to: '/dashboard/categories',
         Icon: FaAccusoft,
-        text: 'Manage'
+        text: 'Manage Categories'
       },
       {
         to: '/dashboard/categories/add',
         Icon: FaAccusoft,
-        text: 'Add Brand'
-      }
-    ]
-  },
-  {
-    title: 'Brand',
-    links: [
-      {
-        to: '/dashboard/brands',
-        Icon: FaAccusoft,
-        text: 'Manage'
-      },
-      {
-        to: '/dashboard/brands/add',
-        Icon: FaAccusoft,
-        text: 'Add Brand'
+        text: 'Add Categories'
       }
     ]
   },
@@ -82,7 +52,7 @@ const navigation = [
       {
         to: '/dashboard/product-group',
         Icon: FaAccusoft,
-        text: 'Product Group'
+        text: 'Product Groups'
       },
       {
         to: '/dashboard/product-group/add',
@@ -97,12 +67,89 @@ const navigation = [
       {
         to: '/dashboard/barcode',
         Icon: FaAccusoft,
-        text: 'Print'
+        text: 'Print Barcodes'
       },
       {
         to: '/dashboard/barcode/setting',
         Icon: FaAccusoft,
-        text: 'Setting'
+        text: 'Setting Barcodes'
+      }
+    ]
+  },
+  {
+    title: 'Supplier',
+    links: [
+      {
+        to: '/dashboard/supplier',
+        Icon: FaAccusoft,
+        text: 'Manage Suppliers'
+      },
+      {
+        to: '/dashboard/supplier/add',
+        Icon: FaAccusoft,
+        text: 'Add Supplier'
+      }
+    ]
+  },
+  {
+    title: 'Showroom',
+    links: [
+      {
+        to: '/dashboard/showroom',
+        Icon: FaAccusoft,
+        text: 'Manage Shwrooms'
+      },
+      {
+        to: '/dashboard/showroom/add',
+        Icon: FaAccusoft,
+        text: 'Add Showroom'
+      }
+    ]
+  },
+  {
+    title: 'Ware House',
+    links: [
+      {
+        to: '/dashboard/warehouse',
+        Icon: FaAccusoft,
+        text: 'Manage Warehouses'
+      },
+      {
+        to: '/dashboard/warehouse/add',
+        Icon: FaAccusoft,
+        text: 'Add Warehouse'
+      }
+    ]
+  },
+
+  {
+    title: 'Purchase',
+    links: [
+      {
+        to: '/dashboard/purchase',
+        Icon: FaAccusoft,
+        text: 'Manage Purchasea'
+      },
+      {
+        to: '/dashboard/purchase/add',
+        Icon: FaAccusoft,
+        text: 'Add Purchase'
+      }
+    ]
+  },
+
+  {
+    title: 'Brands',
+    links: [
+      {
+        to: '/dashboard/brands',
+        Icon: FaAccusoft,
+        text: 'Manage Brands'
+      },
+      {
+        to: '/dashboard/brands/add',
+        Icon: FaAccusoft,
+        text: 'Add Brand'
       }
     ]
   },
@@ -113,12 +160,12 @@ const navigation = [
       {
         to: '/dashboard/customer',
         Icon: FaAccusoft,
-        text: 'Manage'
+        text: 'Manage Customers'
       },
       {
         to: '/dashboard/customer/add',
         Icon: FaAccusoft,
-        text: 'Add'
+        text: 'Add Customer'
       },
       {
         to: '/dashboard/customer/membership',
@@ -127,83 +174,40 @@ const navigation = [
       }
     ]
   },
-  {
-    title: 'Supplier',
-    links: [
-      {
-        to: '/dashboard/supplier',
-        Icon: FaAccusoft,
-        text: 'Manage'
-      },
-      {
-        to: '/dashboard/supplier/add',
-        Icon: FaAccusoft,
-        text: 'Add'
-      }
-    ]
-  },
+
   {
     title: 'Employee',
     links: [
       {
         to: '/dashboard/employee',
         Icon: FaAccusoft,
-        text: 'Manage'
+        text: 'Manage Employees'
       },
       {
         to: '/dashboard/employee/add',
         Icon: FaAccusoft,
-        text: 'Add'
+        text: 'Add Employee'
       }
     ]
   },
-  {
-    title: 'Showroom',
-    links: [
-      {
-        to: '/dashboard/showroom',
-        Icon: FaAccusoft,
-        text: 'Manage'
-      },
-      {
-        to: '/dashboard/showroom/add',
-        Icon: FaAccusoft,
-        text: 'Add'
-      }
-    ]
-  },
-  {
-    title: 'Ware House',
-    links: [
-      {
-        to: '/dashboard/warehouse',
-        Icon: FaAccusoft,
-        text: 'Manage'
-      },
-      {
-        to: '/dashboard/warehouse/add',
-        Icon: FaAccusoft,
-        text: 'Add'
-      }
-    ]
-  },
+
   {
     title: 'Expenses',
     links: [
       {
         to: '/dashboard/expenses',
         Icon: FaAccusoft,
-        text: 'Expenses'
+        text: 'Manage Expenses'
       },
       {
         to: '/dashboard/expenses/add',
         Icon: FaAccusoft,
-        text: 'Add'
+        text: 'Add Expense'
       },
       {
         to: '/dashboard/expenses/categories',
         Icon: FaAccusoft,
-        text: 'Category'
+        text: 'Expense Category'
       }
     ]
   },

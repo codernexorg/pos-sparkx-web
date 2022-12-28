@@ -2,6 +2,7 @@ import { motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
 import { useAuthUser, useSignOut } from 'react-auth-kit';
 import { AuthStateUserObject } from 'react-auth-kit/dist/types';
+import api from '../../api';
 
 const CurrentUser = () => {
   const userData = useAuthUser();
@@ -9,8 +10,10 @@ const CurrentUser = () => {
   const logout = useSignOut();
 
   const signOut = async () => {
-    logout();
-    localStorage.clear();
+    api.post('/auth/logout').then(() => {
+      logout();
+      localStorage.clear();
+    });
   };
 
   useEffect(() => {

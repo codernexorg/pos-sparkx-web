@@ -23,17 +23,20 @@ const AddWH = () => {
       >
         <Form className='w-full flex flex-col gap-y-6 items-center pt-10 bg-white p-4'>
           <CommonInput
+            required
             name='whCode'
             label='WareHouse Code'
             placeholder='WareHouse Code'
           />
           <CommonInput
+            required
             name='whName'
             label='WareHouse Name'
             placeholder='WareHouse Name'
           />
           <CommonInput
-            name='whAddress'
+            required
+            name='whLocation'
             label='WareHouse Address'
             placeholder='WareHouse Address'
           />

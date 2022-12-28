@@ -4,7 +4,8 @@ import { Link } from 'react-router-dom';
 import { useReactToPrint } from 'react-to-print';
 import { getShowroom } from '../../../redux/actions/showroom';
 import { useAppDispatch, useTypedSelector } from '../../../redux/store';
-import { Loader, PrintAble } from '../../components';
+import { Loader, Pagination, PrintAble } from '../../components';
+import { useSettingContext } from '../../context/SettingProver';
 
 interface DataType {
   key: React.Key;
@@ -28,6 +29,7 @@ const Showroom = () => {
   }, [dispatch]);
 
   const { shorooms, isLoading } = useTypedSelector(state => state.showroom);
+  const { page, pageSize, setPage, setPageSize } = useSettingContext();
 
   if (isLoading) {
     return <Loader />;
@@ -39,6 +41,18 @@ const Showroom = () => {
         id='showroomData'
         ref={cRef}
         rowKey={obj => obj.showroomCode}
+        pagination={{
+          current: page,
+          total: shorooms.length,
+          pageSize: pageSize,
+          onChange: (page, size) => {
+            setPage(page);
+            setPageSize(size);
+          },
+          style: {
+            display: 'none'
+          }
+        }}
       >
         <Table.Column
           title='Showroom Code'
@@ -63,6 +77,15 @@ const Showroom = () => {
           }}
         />
       </Table>
+      <Pagination
+        currentPage={page}
+        total={shorooms.length}
+        onChange={(page, size) => {
+          setPage(page);
+          setPageSize(size);
+        }}
+        pageSize={pageSize}
+      />
     </PrintAble>
   );
 };

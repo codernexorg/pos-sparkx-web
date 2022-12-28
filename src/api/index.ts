@@ -1,6 +1,6 @@
 import axios, { AxiosRequestConfig } from 'axios';
 
-const baseURL = 'http://localhost:9000/api/v1';
+const baseURL = 'https://choloit.com/api/v1';
 
 const api = axios.create({ baseURL, withCredentials: true });
 

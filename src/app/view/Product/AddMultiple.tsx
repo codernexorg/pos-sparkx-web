@@ -52,7 +52,7 @@ const AddMultiple = () => {
     if (itemCount) {
       for (let i = 1; i <= itemCount; i++) {
         const itemCodeNumber =
-          parseInt(products[products.length - 1]?.itemCode) + i;
+          parseInt(products[products.length - 1]?.itemCode) + i || 0 + i;
 
         item.push({
           code: itemCodeNumber.toString().padStart(10, '00'),
@@ -98,6 +98,7 @@ const AddMultiple = () => {
               id='pCount'
               placeholder='How Many Items?'
               type='number'
+              required
             />
             <button className='' type='submit'>
               Go Next
@@ -135,7 +136,7 @@ const AddMultiple = () => {
               onSubmit={value => {
                 setProduct(value);
 
-                if (product)
+                if (product && productInfo)
                   dispatch(createMultipleProduct(productInfo, product));
               }}
             >
@@ -180,6 +181,7 @@ const AddMultiple = () => {
                         {sp.supplierName}
                       </option>
                     ))}
+                    required
                   />
                   <SelectInput
                     label='Product Group'
@@ -189,10 +191,16 @@ const AddMultiple = () => {
                         {sp.productName}
                       </option>
                     ))}
+                    required
                   />
                 </FormGroup>
                 <FormGroup>
-                  <HookInput label='Unit Cost' type='number' name='unitCost' />
+                  <HookInput
+                    label='Unit Cost'
+                    type='number'
+                    name='unitCost'
+                    required
+                  />
                   <HookInput
                     required
                     label='Transportation Cost'
@@ -204,6 +212,7 @@ const AddMultiple = () => {
                   <SelectInput
                     label='Showroom Name'
                     name='showroomName'
+                    required
                     children={shorooms.map(sp => (
                       <option key={sp.id} value={sp.showroomName}>
                         {sp.showroomName}
@@ -213,6 +222,7 @@ const AddMultiple = () => {
                   <SelectInput
                     label='Warehouse Name'
                     name='whName'
+                    required
                     children={warehouses.map(sp => (
                       <option key={sp.whId} value={sp.whName}>
                         {sp.whName}
@@ -251,7 +261,6 @@ const AddMultiple = () => {
                       </label>
                       <Field
                         value={item.itemCode}
-                        defaultValue={item.itemCode}
                         className='h-[37px] w-full cursor-not-allowed text-slate-500 rounded border border-b-2 border-b-slate-300 outline-none bg-transparent pl-3'
                         // name={`items[${index}].itemCode`}
                         id={`items[${index}].itemCode`}

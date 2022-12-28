@@ -8,7 +8,11 @@ const defaultContext = {
   notification: false,
   setNotification: () => {},
   setProfile: () => {},
-  profile: false
+  profile: false,
+  pageSize: 50,
+  setPageSize: () => {},
+  page: 1,
+  setPage: () => {}
 } as ISettingContext;
 
 const SettingContext = createContext<ISettingContext>(defaultContext);
@@ -23,6 +27,8 @@ export default function SettingProvider({
   const [notification, setNotification] = useState(false);
   const [isActive, setActive] = useState(true);
   const [profile, setProfile] = useState(false);
+  const [pageSize, setPageSize] = useState(50);
+  const [page, setPage] = useState(1);
   return (
     <SettingContext.Provider
       value={{
@@ -33,7 +39,11 @@ export default function SettingProvider({
         setActive,
         setNotification,
         profile,
-        setProfile
+        setProfile,
+        page,
+        pageSize,
+        setPageSize,
+        setPage
       }}
     >
       {children}

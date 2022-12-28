@@ -15,6 +15,10 @@ interface ISettingContext {
   setNotification: React.Dispatch<React.SetStateAction<boolean>>;
   profile: boolean;
   setProfile: React.Dispatch<React.SetStateAction<boolean>>;
+  page: number;
+  setPage: React.Dispatch<React.SetStateAction<number>>;
+  pageSize: number;
+  setPageSize: React.Dispatch<React.SetStateAction<number>>;
 }
 
 interface IUser {
