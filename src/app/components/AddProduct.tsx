@@ -14,7 +14,7 @@ const FormGroup = styled.div`
   column-gap: 40px;
   width: 100%;
 `;
-const AddProduct: React.FC<{ itemCode: number }> = ({ itemCode }) => {
+const AddProduct: React.FC<{ itemCode: string }> = ({ itemCode }) => {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
@@ -25,7 +25,6 @@ const AddProduct: React.FC<{ itemCode: number }> = ({ itemCode }) => {
     dispatch(getWareHouse());
   }, [dispatch]);
 
-  const { products } = useTypedSelector(store => store.products);
   const { productGroup } = useTypedSelector(store => store.productGroup);
   const { shorooms } = useTypedSelector(store => store.showroom);
   const { suppliers } = useTypedSelector(store => store.supplier);

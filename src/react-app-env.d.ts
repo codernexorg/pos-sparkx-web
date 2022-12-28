@@ -38,7 +38,7 @@ interface Product {
   sellPrice: number;
   showroomName: string;
   whName: string;
-  itemCode: number;
+  itemCode: string;
   productCode?: string;
   sellingStatus?: string;
 }
@@ -75,5 +75,5 @@ interface MultipleProductInput {
 
 interface ProductInfoMultiple {
   sellPrice: number;
-  itemCode: number;
+  itemCode: string;
 }

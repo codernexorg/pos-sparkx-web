@@ -16,7 +16,7 @@ import { ApiError, CreateFN } from '../types';
 
 export const fetchProduct = () => async (dispatch: AppDispatch) => {
   dispatch({ type: FETCH_PRODUCT_LOADING });
-  const res = (await api.get('/product')) as {
+  const res = (await api.get(`/product`)) as {
     data: { product: Product[]; hasMore: boolean };
   };
 
@@ -50,7 +50,7 @@ type ProductData = {
   unitCost: number;
   productGroup: string;
   sellPrice: number;
-  itemCode: number;
+  itemCode: string;
 };
 export const createMultipleProduct =
   (data1?: ProductInfoMultiple[], data2?: MultipleProductInput) =>

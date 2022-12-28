@@ -69,15 +69,13 @@ const Barcode = () => {
           return (
             <div className='flex'>
               <div className='w-[320px] h-[110px] items-center bg-white flex flex-col justify-center text-sm mr-[10px] mt-[130px]'>
-                <p className='text-[14px] font-bold'>
-                  {'000000000' + product.itemCode}
-                </p>
+                <p className='text-[14px] font-bold'>{product.itemCode}</p>
 
                 <BarcodeGeneratorComponent
                   key={i}
                   width={0.8}
                   height={25}
-                  value={'000000000' + product.itemCode.toString()}
+                  value={product.itemCode.toString()}
                   displayValue={false}
                   margin={0}
                   format='CODE128'
@@ -97,16 +95,14 @@ const Barcode = () => {
                 </p>
               </div>
               <div className='w-[320px] h-[110px] items-center bg-white flex flex-col justify-center ml-[40px] text-sm mt-[130px]'>
-                <p className='text-[14px] font-bold'>
-                  {'000000000' + product.itemCode}
-                </p>
+                <p className='text-[14px] font-bold'>{product.itemCode}</p>
 
                 <BarcodeGeneratorComponent
                   key={i}
                   width={0.8}
                   height={25}
                   margin={0}
-                  value={'000000000' + product.itemCode.toString()}
+                  value={product.itemCode.toString()}
                   displayValue={false}
                   format='CODE128'
                   textAlign='center'

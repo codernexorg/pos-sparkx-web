@@ -34,14 +34,15 @@ const AddMultiple = () => {
   const [product, setProduct] = useState<MultipleProductInput | null>(null);
   const [productInfo, setProductInfo] = useState<
     {
-      itemCode: number;
+      itemCode: string;
       sellPrice: number;
     }[]
   >([]);
 
   const [itemCount, setItemCount] = useState<number>(0);
+
   interface Item {
-    code: number;
+    code: string;
     price: number;
   }
 
@@ -49,11 +50,14 @@ const AddMultiple = () => {
     const item: Item[] = [];
 
     if (itemCount) {
-      for (let i = 0; i < itemCount; i++) {
-        item[i] = {
-          code: products[products.length - 1]?.itemCode + i,
+      for (let i = 1; i <= itemCount; i++) {
+        const itemCodeNumber =
+          parseInt(products[products.length - 1]?.itemCode) + i;
+
+        item.push({
+          code: itemCodeNumber.toString().padStart(10, '00'),
           price: 0
-        };
+        });
       }
     }
     return item;
@@ -61,7 +65,7 @@ const AddMultiple = () => {
 
   const initialValues = {
     items: item().map(p => ({
-      itemCode: p.code + 1,
+      itemCode: p.code,
       sellPrice: p.price
     }))
   };

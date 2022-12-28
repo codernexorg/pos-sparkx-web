@@ -17,7 +17,14 @@ const AddSingle = () => {
 
   const { products } = useTypedSelector(store => store.products);
 
-  const itemCode = products[products.length - 1]?.itemCode + 1 || 1;
+  let itemCode = '';
+  if (products.length) {
+    itemCode = (parseInt(products[products.length - 1]?.itemCode) + 1)
+      .toString()
+      .padStart(10, '0');
+  } else {
+    itemCode = '0000000001';
+  }
 
   return (
     <div>
@@ -47,7 +54,6 @@ const AddSingle = () => {
         }
         enableReinitialize={true}
         onSubmit={async (value, { resetForm }) => {
-          console.log(value);
           disptach(createSingleProduct(value, resetForm));
         }}
       >

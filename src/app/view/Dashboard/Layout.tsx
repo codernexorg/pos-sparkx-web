@@ -30,7 +30,7 @@ const Layout = () => {
         </motion.div>
         <div className='w-full  h-screen scrollbar-hide'>
           <NavBar />
-          <main className='overflow-y-scroll h-[90vh] md:p-[15px] p-[30px] scrollbar-hide bg-slate-100'>
+          <main className='overflow-y-scroll h-[90vh] md:p-[15px] p-[30px]  bg-slate-100'>
             <Breadcrumb>
               <Breadcrumb.Item className='capitalize mb-4'>
                 {location.pathname}
