@@ -85,13 +85,22 @@ const Barcode = () => {
     <div className='flex flex-col gap-y-2'>
       <div className='flex justify-between'>
         <Typography.Title level={3}>Barcodes</Typography.Title>
-        <button
-          onClick={handlePrint}
-          className='flex gap-x-2 bg-yellow-300 items-center px-4 rounded py-1'
-        >
-          <FaPrint />
-          Print
-        </button>
+        <div className='flex gap-x-10'>
+          <Button
+            onClick={() => {
+              setIsClicked(false);
+            }}
+          >
+            Back
+          </Button>
+          <button
+            onClick={handlePrint}
+            className='flex gap-x-2 bg-yellow-300 items-center px-4 rounded py-1'
+          >
+            <FaPrint />
+            Print
+          </button>
+        </div>
       </div>
       <div className='flex flex-col' ref={printRef}>
         {products?.map((product, i) => {
