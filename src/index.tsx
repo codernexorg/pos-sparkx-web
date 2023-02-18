@@ -1,15 +1,16 @@
-import { ConfigProvider } from 'antd';
+import {ConfigProvider} from 'antd';
 import 'antd/dist/reset.css';
-import { AuthProvider } from 'react-auth-kit';
-import { createRoot } from 'react-dom/client';
-import { Provider } from 'react-redux';
-import { BrowserRouter } from 'react-router-dom';
-import { ToastContainer } from 'react-toastify';
+import {AuthProvider} from 'react-auth-kit';
+import {createRoot} from 'react-dom/client';
+import {Provider} from 'react-redux';
+import {BrowserRouter} from 'react-router-dom';
+import {ToastContainer} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import App from './App';
 import SettingProvider from './app/context/SettingProver';
 import './index.css';
 import store from './redux/store';
+
 const rootEl = document.getElementById('root') as HTMLElement;
 
 const root = createRoot(rootEl);
@@ -19,27 +20,35 @@ const body = document.body as HTMLElement;
 body.classList.add('scrollbar-hide');
 
 root.render(
-  <Provider store={store}>
-    <SettingProvider>
-      <AuthProvider
-        authName='_auth'
-        authType='cookie'
-        cookieDomain={window.location.hostname}
-        cookieSecure={false}
-      >
-        <BrowserRouter>
-          <ConfigProvider
-            theme={{
-              token: {
-                colorPrimary: '#00b96b'
-              }
-            }}
-          >
-            <App />
-            <ToastContainer />
-          </ConfigProvider>
-        </BrowserRouter>
-      </AuthProvider>
-    </SettingProvider>
-  </Provider>
+    <Provider store={store}>
+        <AuthProvider
+            authName='_auth'
+            authType='cookie'
+            cookieDomain={window.location.hostname}
+            cookieSecure={false}
+        >
+            <SettingProvider>
+                <BrowserRouter>
+                    <ConfigProvider
+                        theme={{
+                            token: {
+                                colorPrimary: '#081a51',
+                                colorError: '#dc3545',
+                                colorWhite: '#fff'
+                            },
+                            components: {
+                                Spin: {
+                                    colorPrimary: '#e21b5a'
+                                }
+                            }
+
+                        }}
+                    >
+                        <App/>
+                        <ToastContainer/>
+                    </ConfigProvider>
+                </BrowserRouter>
+            </SettingProvider>
+        </AuthProvider>
+    </Provider>
 );

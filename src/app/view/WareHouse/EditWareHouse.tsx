@@ -1,9 +1,9 @@
-import { useParams } from 'react-router-dom';
+import {useParams} from 'react-router-dom';
 
 const EditWareHouse = () => {
-  const params = useParams();
-  console.log(params);
-  return <div>EditWareHouse</div>;
+    const params = useParams();
+    console.log(params);
+    return <div>Edit Location</div>;
 };
 
 export default EditWareHouse;

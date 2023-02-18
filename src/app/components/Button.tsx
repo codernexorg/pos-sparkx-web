@@ -1,22 +1,21 @@
-import { Spin } from 'antd';
+import {Spin} from 'antd';
 import React from 'react';
 
 type ButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {
-  children: React.ReactNode;
-  loading?: boolean;
+    children: React.ReactNode;
+    loading?: boolean;
 };
 
-const Button: React.FC<ButtonProps> = ({ children, loading, ...props }) => {
-  return (
-    <button
-      disabled={loading}
-      className='px-4 py-1 w-[140px] border border-slate-800'
-      {...props}
-    >
-      {loading ? <Spin /> : null}
-      {children}
-    </button>
-  );
+const Button: React.FC<ButtonProps> = ({children, loading, className, ...props}) => {
+    return (
+        <button
+            disabled={loading}
+            {...props}
+            className={'px-4 py-1 min-w-[140px] bg-dark-purple text-white border border-slate-800 rounded'}
+        >
+            {loading ? <Spin/> : children}
+        </button>
+    );
 };
 
 export default Button;

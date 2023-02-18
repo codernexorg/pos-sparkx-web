@@ -15,22 +15,20 @@ const SelectInput = React.lazy(() => import('./Input/SelectInput'));
 
 const Stats = React.lazy(() => import('./Stats'));
 
-const ConfirmModal = React.lazy(() => import('./ConfirmDialog'));
 const Pagination = React.lazy(() => import('./Pagination'));
 
 export {
-  Input,
-  NavBar,
-  SideNav,
-  AddProductFrom,
-  CommonInput,
-  AddProductSingle,
-  Button,
-  PrintAble,
-  Loader,
-  SelectInput,
-  HookInput,
-  Stats,
-  ConfirmModal,
-  Pagination
+    Input,
+    NavBar,
+    SideNav,
+    AddProductFrom,
+    CommonInput,
+    AddProductSingle,
+    Button,
+    PrintAble,
+    Loader,
+    SelectInput,
+    HookInput,
+    Stats,
+    Pagination
 };

@@ -5,22 +5,99 @@
 @tailwind components;
 @tailwind utilities;
 
+@font-face {
+    font-family: 'Century Gothic';
+    src: url('./fonts/CenturyGothic.ttf');
+}
+
 @layer components {
-  .app__input {
-    height: 36px;
-    width: 100%;
-    padding-left: 5px;
-  }
+    .app__input {
+        height: 36px;
+        width: 100%;
+        padding-left: 5px;
+    }
 }
 
 * {
-  font-family: 'Andika', sans-serif;
-}
-td,
-th {
-  font-family: 'Roboto', sans-serif !important;
+    font-family: 'Century Gothic', sans-serif;
 }
 
 body {
-  scroll-behavior: smooth;
+    scroll-behavior: smooth;
+}
+
+.required__excel {
+    margin: 10px 0 0 10px;
+}
+
+.required__excel li {
+    font-weight: 500;
+    letter-spacing: 1px;
+    font-size: 16px;
+}
+
+.invoice-table .ant-table-tbody {
+    padding: 5px !important;
+}
+
+.invoice-table .ant-table-content > table > thead > tr > th {
+    padding: 5px !important;
+}
+
+.invoice-table .ant-table-tbody > tr > td {
+    padding: 5px !important;
+}
+
+
+.confirm__modal--heading {
+    font-size: 24px;
+    font-weight: 600;
+    margin-bottom: 20px;
+
+}
+
+.confirm__modal--btn {
+    font-size: 16px;
+    width: 100px;
+    padding: 5px 0;
+    color: #fff;
+    border-radius: 5px;
+}
+
+.confirm__modal--btn.cancel {
+    background: red;
+}
+
+.confirm__modal--btn.continue {
+    background: #00bb11;
+}
+
+.barcode__container {
+    display: flex;
+    flex-direction: column;
+    width: 3in;
+}
+
+
+.barcode__wrapper {
+    width: 3in;
+    height: 1in;
+    align-items: center;
+    display: flex;
+}
+
+.barcode__item {
+    width: 1.5in;
+    background: #fff;
+    height: 1in;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    row-gap: 2px;
+}
+
+.barcode__item p {
+    font-size: 11px;
+    line-height: 11px;
 }

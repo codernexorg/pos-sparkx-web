@@ -1,12 +1,13 @@
-import Link from 'antd/es/typography/Link';
-import { AnimatePresence, motion } from 'framer-motion';
-import { FaAngleRight } from 'react-icons/fa';
-import { SiShopware } from 'react-icons/si';
-import { NavLink } from 'react-router-dom';
+import {motion} from 'framer-motion';
+import {SiShopware} from 'react-icons/si';
+import {Link, NavLink} from 'react-router-dom';
 import styled from 'styled-components';
-import { useSettingContext } from '../context/SettingProver';
+import {useSettingContext} from '../context/SettingProver';
 
 import navigation from './navigation';
+import {useState} from "react";
+import {HiChevronDown, HiChevronLeft, HiChevronRight, HiChevronUp} from "react-icons/hi";
+import classNames from "classnames";
 
 const CustomLink = styled(NavLink)`
   display: flex;
@@ -15,8 +16,9 @@ const CustomLink = styled(NavLink)`
   padding: 3px 0px 2.5px 4px;
   border-radius: 5px;
   font-size: 16px;
-  color: #313131;
   margin: 12px;
+  letter-spacing: 1px;
+
   &:hover {
     color: #0f172a;
     background: #ededed;
@@ -24,7 +26,7 @@ const CustomLink = styled(NavLink)`
 `;
 
 const SimpleLink = styled(Link)`
-  color: #0f172a;
+  color: #fff;
   font-weight: bold;
   display: flex;
   column-gap: 12px;
@@ -37,7 +39,8 @@ const SideBar = styled(motion.div)`
   padding-bottom: 35px;
   --webik-scrollbar: {
     display: none;
-  }
+  };
+  scroll-behavior: smooth;
   border-right: 1px solid rgb(156, 163, 175);
   @media (max-width: 1400px) {
     overflow: hidden;
@@ -48,58 +51,92 @@ const SideBar = styled(motion.div)`
 `;
 
 const SideNav = () => {
-  const { isActive } = useSettingContext();
+    const {isActive, setActive, currentUser} = useSettingContext();
+    const [isSubmenuOpen, setSubmenuOpen] = useState<number | null>(null);
+    const [toggleSidebar, setToggleSidebar] = useState<boolean>(false);
+    const sidebarClass = classNames('scrollbar-hide bg-dark-purple duration-300 relative z-20 overflow-x-hidden h-screen', {
+        'w-72': isActive,
+        'w-20': !isActive
+    })
 
-  return (
-    <SideBar className='scrollbar-hide'>
-      <AnimatePresence>
-        {isActive ? (
-          <motion.div
-            // initial={{
-            //   x: '-350px',
-            //   opacity: 0
-            // }}
-            // animate={{
-            //   x: 0,
-            //   opacity: 1,
-            //   animationDirection: 'alternate-reverse'
-            // }}
-            exit={{
-              x: '-300px',
-              opacity: 0,
-              transition: { duration: 0.3, ease: 'easeOut' }
-            }}
-            transition={{ duration: 0.5, easings: ['easeIn', 'easeOut'] }}
-          >
-            <motion.div
-              transition={{ duration: 0.5 }}
-              className='w-250 flex justify-between items-center m-3 mt-4'
-            >
-              <SimpleLink>
-                <SiShopware /> POS SparkX
-              </SimpleLink>
-            </motion.div>
 
-            <div className='mt-10'>
-              {navigation.map((item, i) => (
-                <div key={i}>
-                  <p className='m-3 mt-4 text-gray-400 uppercase flex items-center font-bold'>
-                    {item.title} <FaAngleRight />
-                  </p>
-                  {item.links.map((link, i) => (
-                    <CustomLink to={link.to} key={i} className='font-semibold'>
-                      <link.Icon />
-                      <span className='capitalize'>{link.text}</span>
-                    </CustomLink>
-                  ))}
+    return (
+        <SideBar
+            className={sidebarClass}
+            onMouseEnter={() => setToggleSidebar(true)} onMouseLeave={() => setToggleSidebar(false)}>
+
+            {
+                toggleSidebar ? <div
+                    onClick={() => setActive(!isActive)}
+                    className={' absolute cursor-pointer duration-200 text-xl top-9 right-0 bg-light-white z-40 w-[40px] h-[40px] flex items-center justify-center text-white'}>
+                    {
+                        isActive ? <HiChevronLeft/> : <HiChevronRight/>
+                    }
+                </div> : null
+            }
+
+            <div className={`${isActive ? 'ml-6 ' : 'flex flex-col items-center'}`}>
+                <div
+
+                    className='flex justify-between items-center m-3 mt-4'
+                >
+                    <SimpleLink to={'/dashboard'}>
+                        <SiShopware color={'#fff'} fontSize={'40px'}/> {
+                        isActive && <span className={'text-white'}>POS SparkX</span>
+                    }
+                    </SimpleLink>
                 </div>
-              ))}
+
+                <ul className='mt-10'>
+                    {navigation.map((item, i) => {
+                        if (currentUser && item.access.includes(currentUser.role)) {
+                            return (
+                                <li key={i} className='m-3 mt-4 text-gray-400 uppercase flex flex-col font-bold'>
+                                    <div className={'flex gap-x-5 items-center'}>
+                                        <span onClick={() => setActive(true)} className={'text-2xl cursor-pointer'}><item.Icon/></span>
+                                        {
+                                            isActive ?
+                                                <p className={`flex gap-x-5 items-center cursor-pointer`}
+                                                   onClick={() => {
+                                                       if (isSubmenuOpen === i) {
+                                                           setSubmenuOpen(null)
+                                                       } else {
+                                                           setSubmenuOpen(i)
+                                                       }
+                                                   }}>
+                                                    <span>{item.title} </span>
+                                                    <span>{isSubmenuOpen === i ?
+                                                        <HiChevronUp cursor={'pointer'}
+                                                                     onClick={() => setSubmenuOpen(null)}/> :
+                                                        <HiChevronDown cursor={'pointer'}
+                                                                       onClick={() => setSubmenuOpen(i)}/>}</span>
+                                                </p> : null
+                                        }
+                                    </div>
+                                    {
+                                        isActive ? <ul>
+                                            {isSubmenuOpen === i && item.links.map((link, i) => {
+                                                if (currentUser && link.access.includes(currentUser.role)) {
+                                                    return <li key={i}><CustomLink to={link.to}
+                                                                                   className='font-semibold text-white duration-200'>
+                                                        <link.Icon/>
+                                                        <span className='capitalize'>{link.text}</span>
+                                                    </CustomLink></li>
+                                                }
+                                                return null;
+                                            })}
+                                        </ul> : null
+                                    }
+
+                                </li>
+                            )
+                        }
+                    })}
+                </ul>
             </div>
-          </motion.div>
-        ) : null}
-      </AnimatePresence>
-    </SideBar>
-  );
+
+        </SideBar>
+    );
 };
 
 export default SideNav;

@@ -26,25 +26,47 @@ const AddSupplier = React.lazy(() => import('./Supplier/AddSupplier'));
 
 const AddProductGroup = React.lazy(() => import('./Product/AddProductGroup'));
 
+const ImportProducts = React.lazy(() => import('./Product/ImportProducts'));
+
+const Sell = React.lazy(() => import('./POS/Sell'));
+const Invoice = React.lazy(() => import('./POS/Invoice'));
+
+const User = React.lazy(() => import('./User/User'));
+
+const Customer = React.lazy(() => import('./Customer/Customer'));
+
+const AddCustomer = React.lazy(() => import('./Customer/AddCustomer'));
+
+const Employee = React.lazy(() => import('./Employee/Employee'));
+
+const TransferProduct = React.lazy(() => import('./Product/TransferProduct'));
+
+const Tax = React.lazy(() => import('./Setting/Tax'));
+
+const Expense = React.lazy(() => import('./Expense/Expense'));
+const ExpenseType = React.lazy(() => import('./Expense/ExpenseType'));
 export {
-  Login,
-  Dashboard,
-  DBLayout,
-  NotFound,
-  MultipleProduct,
-  SingleProduct,
-  Products,
-  ProductGroup,
-  Barcode,
-  BarcodeSetting,
-  WareHouse,
-  AddWareHouse,
-  ShowRoom,
-  AddShowRoom,
-  EditWHouse,
-  Categories,
-  AddCat,
-  Supplier,
-  AddSupplier,
-  AddProductGroup
+    Login,
+    Dashboard,
+    DBLayout,
+    NotFound,
+    MultipleProduct,
+    SingleProduct,
+    Products,
+    ProductGroup,
+    Barcode,
+    BarcodeSetting,
+    WareHouse,
+    AddWareHouse,
+    ShowRoom,
+    AddShowRoom,
+    EditWHouse,
+    Categories,
+    AddCat,
+    Supplier,
+    AddSupplier,
+    AddProductGroup,
+    ImportProducts,
+    Sell,
+    Invoice, User, TransferProduct, Customer, AddCustomer, Employee, Tax, Expense, ExpenseType
 };

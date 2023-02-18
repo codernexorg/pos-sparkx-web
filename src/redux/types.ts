@@ -1,245 +1,310 @@
-import { NavigateFunction } from 'react-router-dom';
+import {NavigateFunction} from 'react-router-dom';
 import {
-  ADD_MULTIPLE_PRODUCT_ERR,
-  ADD_MULTIPLE_PRODUCT_LOADING,
-  ADD_MULTIPLE_PRODUCT_SUCCESS,
-  ADD_PRODUCT_GROUP_ERR,
-  ADD_PRODUCT_GROUP_LOADING,
-  ADD_PRODUCT_GROUP_SUCCESS,
-  ADD_SHOWROOM_ERR,
-  ADD_SHOWROOM_LOADING,
-  ADD_SHOWROOM_SUCCESS,
-  ADD_SINGLE_PRODUCT_ERR,
-  ADD_SINGLE_PRODUCT_LOADING,
-  ADD_SINGLE_PRODUCT_SUCCESS,
-  ADD_SUPPLIER_ERR,
-  ADD_SUPPLIER_LOADING,
-  ADD_SUPPLIER_SUCCESS,
-  ADD_WAREHOUSE_ERR,
-  ADD_WAREHOUSE_LOADING,
-  ADD_WAREHOUSE_SUCCESS,
-  BARCODE_ERR,
-  BARCODE_LOADING,
-  CREATE_CATEGORY_ERR,
-  CREATE_CATEGORY_LOADING,
-  CREATE_CATEGORY_SUCCESS,
-  FETCH_BARCODE,
-  FETCH_CATEGORY_ERR,
-  FETCH_CATEGORY_LOADING,
-  FETCH_CATEGORY_SUCCESS,
-  FETCH_PRODUCT_ERR,
-  FETCH_PRODUCT_GROUP_ERR,
-  FETCH_PRODUCT_GROUP_LOADING,
-  FETCH_PRODUCT_GROUP_SUCCESS,
-  FETCH_PRODUCT_LOADING,
-  FETCH_PRODUCT_SUCCESS,
-  FETCH_SHOWROOM_ERR,
-  FETCH_SHOWROOM_LOADING,
-  FETCH_SHOWROOM_SUCCESS,
-  FETCH_SUPPLIER_ERR,
-  FETCH_SUPPLIER_LOADING,
-  FETCH_SUPPLIER_SUCCESS,
-  FETCH_WAREHOUSE_ERR,
-  FETCH_WAREHOUSE_LOADING,
-  FETCH_WAREHOUSE_SUCCESS,
-  PRINT_BARCODE,
-  SET_BARCODE
+    ADD_CUSTOMER_ERR,
+    ADD_CUSTOMER_LOADING,
+    ADD_CUSTOMER_SUCCESS,
+    ADD_INVOICE_ERR,
+    ADD_INVOICE_LOADING,
+    ADD_INVOICE_SUCCESS,
+    ADD_MULTIPLE_PRODUCT_ERR,
+    ADD_MULTIPLE_PRODUCT_LOADING,
+    ADD_MULTIPLE_PRODUCT_SUCCESS,
+    ADD_PRODUCT_GROUP_ERR,
+    ADD_PRODUCT_GROUP_LOADING,
+    ADD_PRODUCT_GROUP_SUCCESS,
+    ADD_SHOWROOM_ERR,
+    ADD_SHOWROOM_LOADING,
+    ADD_SHOWROOM_SUCCESS,
+    ADD_SINGLE_PRODUCT_ERR,
+    ADD_SINGLE_PRODUCT_LOADING,
+    ADD_SINGLE_PRODUCT_SUCCESS,
+    ADD_SUPPLIER_ERR,
+    ADD_SUPPLIER_LOADING,
+    ADD_SUPPLIER_SUCCESS,
+    ADD_WAREHOUSE_ERR,
+    ADD_WAREHOUSE_LOADING,
+    ADD_WAREHOUSE_SUCCESS,
+    BARCODE_ERR,
+    BARCODE_LOADING,
+    CREATE_CATEGORY_ERR,
+    CREATE_CATEGORY_LOADING,
+    CREATE_CATEGORY_SUCCESS,
+    CREATE_USER_ERR,
+    CREATE_USER_LOADING,
+    CREATE_USER_SUCCESS,
+    DELETE_SHOWROOM_ERR,
+    DELETE_SHOWROOM_LOADING,
+    DELETE_SHOWROOM_SUCCESS,
+    FETCH_BARCODE,
+    FETCH_CATEGORY_ERR,
+    FETCH_CATEGORY_LOADING,
+    FETCH_CATEGORY_SUCCESS,
+    FETCH_CUSTOMER_ERR,
+    FETCH_CUSTOMER_LOADING,
+    FETCH_CUSTOMER_SUCCESS,
+    FETCH_INVOICE_ERR,
+    FETCH_INVOICE_LOADING,
+    FETCH_INVOICE_SUCCESS,
+    FETCH_PRODUCT_ERR,
+    FETCH_PRODUCT_GROUP_ERR,
+    FETCH_PRODUCT_GROUP_LOADING,
+    FETCH_PRODUCT_GROUP_SUCCESS,
+    FETCH_PRODUCT_LOADING,
+    FETCH_PRODUCT_SUCCESS,
+    FETCH_SHOWROOM_ERR,
+    FETCH_SHOWROOM_LOADING,
+    FETCH_SHOWROOM_SUCCESS,
+    FETCH_SUPPLIER_ERR,
+    FETCH_SUPPLIER_LOADING,
+    FETCH_SUPPLIER_SUCCESS,
+    FETCH_USER_ERR,
+    FETCH_USER_LOADING,
+    FETCH_USER_SUCCESS,
+    FETCH_WAREHOUSE_ERR,
+    FETCH_WAREHOUSE_LOADING,
+    FETCH_WAREHOUSE_SUCCESS,
+    PRINT_BARCODE,
+    REMOVE_CUSTOMER_ERR,
+    REMOVE_CUSTOMER_LOADING,
+    REMOVE_CUSTOMER_SUCCESS,
+    REMOVE_INVOICE_ERR,
+    REMOVE_INVOICE_LOADING,
+    REMOVE_INVOICE_SUCCESS,
+    REMOVE_WAREHOUSE_ERR,
+    REMOVE_WAREHOUSE_LOADING,
+    REMOVE_WAREHOUSE_SUCCESS,
+    SET_BARCODE,
+    TRANSFER_PRODUCT_ERR,
+    TRANSFER_PRODUCT_LOADING,
+    TRANSFER_PRODUCT_SUCCESS,
+    UPDATE_CUSTOMER_ERR,
+    UPDATE_CUSTOMER_LOADING,
+    UPDATE_CUSTOMER_SUCCESS,
+    UPDATE_SHOWROOM_ERR,
+    UPDATE_SHOWROOM_LOADING,
+    UPDATE_SHOWROOM_SUCCESS,
+    UPDATE_WAREHOUSE_ERR,
+    UPDATE_WAREHOUSE_LOADING,
+    UPDATE_WAREHOUSE_SUCCESS
 } from './constant';
-import { AppDispatch } from './store';
+import {AppDispatch} from './store';
+import Invoice from "../app/view/POS/Invoice";
+
 //Product Group
 export interface ProductGroup {
-  id?: number;
-  productName: string;
-  productCode: string;
-  productCategory: string;
+    id?: number;
+    productName: string;
+    productCode: string;
+    productCategory: string;
 }
 
 export interface IProductGState {
-  productGroup: ProductGroup[];
-  isLoading: boolean;
+    productGroup: ProductGroup[];
+    isLoading: boolean;
 }
 
 interface CreatePorductGroupLoading {
-  type: typeof ADD_PRODUCT_GROUP_LOADING;
+    type: typeof ADD_PRODUCT_GROUP_LOADING;
 }
+
 interface CreatePorductGroupSuccess {
-  type: typeof ADD_PRODUCT_GROUP_SUCCESS;
-  payload: ProductGroup;
+    type: typeof ADD_PRODUCT_GROUP_SUCCESS;
+    payload: ProductGroup;
 }
+
 interface CreatePorductGroupErr {
-  type: typeof ADD_PRODUCT_GROUP_ERR;
+    type: typeof ADD_PRODUCT_GROUP_ERR;
 }
 
 interface FetchProductGroupLoading {
-  type: typeof FETCH_PRODUCT_GROUP_LOADING;
+    type: typeof FETCH_PRODUCT_GROUP_LOADING;
 }
+
 interface FetchProductGroupSuccess {
-  type: typeof FETCH_PRODUCT_GROUP_SUCCESS;
-  payload: ProductGroup[];
+    type: typeof FETCH_PRODUCT_GROUP_SUCCESS;
+    payload: ProductGroup[];
 }
+
 interface FetchProductGroupErr {
-  type: typeof FETCH_PRODUCT_GROUP_ERR;
+    type: typeof FETCH_PRODUCT_GROUP_ERR;
 }
 
 export type ProductGroupAction =
-  | CreatePorductGroupLoading
-  | CreatePorductGroupSuccess
-  | CreatePorductGroupErr
-  | FetchProductGroupLoading
-  | FetchProductGroupSuccess
-  | FetchProductGroupErr
-  | FetchProductGroupSuccess;
+    | CreatePorductGroupLoading
+    | CreatePorductGroupSuccess
+    | CreatePorductGroupErr
+    | FetchProductGroupLoading
+    | FetchProductGroupSuccess
+    | FetchProductGroupErr
 
 //Product Types
 export interface IProductSate {
-  products: Product[];
-  isLoading: boolean;
-  hasMore: boolean;
+    products: Product[];
+    isLoading: boolean;
+    hasMore: boolean;
 }
 
 interface CreateSingleProductLoading {
-  type: typeof ADD_SINGLE_PRODUCT_LOADING;
+    type: typeof ADD_SINGLE_PRODUCT_LOADING;
 }
 
 interface CreateSingleProductSuccess {
-  type: typeof ADD_SINGLE_PRODUCT_SUCCESS;
-  payload: Product;
+    type: typeof ADD_SINGLE_PRODUCT_SUCCESS;
+    payload: Product[];
 }
 
 interface CreateSingleProductErr {
-  type: typeof ADD_SINGLE_PRODUCT_ERR;
+    type: typeof ADD_SINGLE_PRODUCT_ERR;
 }
 
 interface CreateMultiProductLoading {
-  type: typeof ADD_MULTIPLE_PRODUCT_LOADING;
+    type: typeof ADD_MULTIPLE_PRODUCT_LOADING;
 }
 
 interface CreateMultiProductSuccess {
-  type: typeof ADD_MULTIPLE_PRODUCT_SUCCESS;
-  payload: Product;
+    type: typeof ADD_MULTIPLE_PRODUCT_SUCCESS;
+    payload: Product[];
 }
 
 interface CreateMultiProductErr {
-  type: typeof ADD_MULTIPLE_PRODUCT_ERR;
+    type: typeof ADD_MULTIPLE_PRODUCT_ERR;
 }
 
 interface FetchProductLoading {
-  type: typeof FETCH_PRODUCT_LOADING;
+    type: typeof FETCH_PRODUCT_LOADING;
 }
 
 interface FetchProductSuccess {
-  type: typeof FETCH_PRODUCT_SUCCESS;
-  payload: { hasMore: boolean; product: Product[] };
+    type: typeof FETCH_PRODUCT_SUCCESS;
+    payload: { hasMore: boolean; product: Product[] };
 }
 
 interface FetchProductErr {
-  type: typeof FETCH_PRODUCT_ERR;
+    type: typeof FETCH_PRODUCT_ERR;
+}
+
+interface TransferProductLoading {
+    type: typeof TRANSFER_PRODUCT_LOADING
+}
+
+interface TransferPrdouctSuccess {
+    type: typeof TRANSFER_PRODUCT_SUCCESS
+    payload: Product[]
+}
+
+interface TransferProductErr {
+    type: typeof TRANSFER_PRODUCT_ERR
 }
 
 export type ProductActionType =
-  | CreateSingleProductLoading
-  | CreateSingleProductSuccess
-  | CreateMultiProductLoading
-  | CreateMultiProductSuccess
-  | CreateMultiProductErr
-  | CreateSingleProductErr
-  | FetchProductLoading
-  | FetchProductSuccess
-  | FetchProductErr;
+    | CreateSingleProductLoading
+    | CreateSingleProductSuccess
+    | CreateMultiProductLoading
+    | CreateMultiProductSuccess
+    | CreateMultiProductErr
+    | CreateSingleProductErr
+    | FetchProductLoading
+    | FetchProductSuccess
+    | FetchProductErr
+    | TransferProductLoading
+    | TransferPrdouctSuccess | TransferProductErr
+
 
 //Supplier Types
 
 export interface Supplier {
-  id?: number;
-  supplierName: string;
-  supplierAddress: string;
-  contactPersonName: string;
-  contactPersonNumber: string;
-  supplierEmail: string;
-  altContactNumber: string;
-  extraInfo: string;
+    id?: number;
+    supplierName: string;
+    supplierAddress: string;
+    contactPersonName: string;
+    contactPersonNumber: string;
+    supplierEmail: string;
+    altContactNumber: string;
+    extraInfo: string;
 }
 
 export interface ISupplierState {
-  suppliers: Supplier[];
-  isLoading: boolean;
-  error: string | null;
+    suppliers: Supplier[];
+    isLoading: boolean;
+    error: string | null;
 }
 
 interface CreateSupplierLoading {
-  type: typeof ADD_SUPPLIER_LOADING;
+    type: typeof ADD_SUPPLIER_LOADING;
 }
 
 interface CreateSupplierSuccess {
-  type: typeof ADD_SUPPLIER_SUCCESS;
-  payload: Supplier;
+    type: typeof ADD_SUPPLIER_SUCCESS;
+    payload: Supplier;
 }
 
 interface CreateSupplierErr {
-  type: typeof ADD_SUPPLIER_ERR;
-  payload: string;
+    type: typeof ADD_SUPPLIER_ERR;
+    payload: string;
 }
 
 export type CreateSupplierAction =
-  | CreateSupplierLoading
-  | CreateSupplierErr
-  | CreateSupplierSuccess;
+    | CreateSupplierLoading
+    | CreateSupplierErr
+    | CreateSupplierSuccess;
 
 export interface FetchSupplierLoading {
-  type: typeof FETCH_SUPPLIER_LOADING;
+    type: typeof FETCH_SUPPLIER_LOADING;
 }
+
 export interface FetchSupplierSuccess {
-  type: typeof FETCH_SUPPLIER_SUCCESS;
-  payload: Supplier[];
+    type: typeof FETCH_SUPPLIER_SUCCESS;
+    payload: Supplier[];
 }
+
 export interface FetchSupplierErr {
-  type: typeof FETCH_SUPPLIER_ERR;
-  payload: string;
+    type: typeof FETCH_SUPPLIER_ERR;
+    payload: string;
 }
 
 export type FetchSupplierAction =
-  | FetchSupplierErr
-  | FetchSupplierLoading
-  | FetchSupplierSuccess;
+    | FetchSupplierErr
+    | FetchSupplierLoading
+    | FetchSupplierSuccess;
 
 export type SupplierActionType = CreateSupplierAction | FetchSupplierAction;
 
 //Category Types
 
 export interface Category {
-  id?: number;
-  categoryName: string;
+    id?: number;
+    categoryName: string;
 }
 
 interface CreateCatLoading {
-  type: typeof CREATE_CATEGORY_LOADING;
+    type: typeof CREATE_CATEGORY_LOADING;
 }
 
 interface CreateCatSuccess {
-  type: typeof CREATE_CATEGORY_SUCCESS;
-  payload: Category;
+    type: typeof CREATE_CATEGORY_SUCCESS;
+    payload: Category;
 }
 
 interface CreateCatErr {
-  type: typeof CREATE_CATEGORY_ERR;
+    type: typeof CREATE_CATEGORY_ERR;
 }
 
 interface FetchCatLoading {
-  type: typeof FETCH_CATEGORY_LOADING;
+    type: typeof FETCH_CATEGORY_LOADING;
 }
 
 interface FetchCatSuccess {
-  type: typeof FETCH_CATEGORY_SUCCESS;
-  payload: Category[];
+    type: typeof FETCH_CATEGORY_SUCCESS;
+    payload: Category[];
 }
 
 interface FetchCatErr {
-  type: typeof FETCH_CATEGORY_ERR;
+    type: typeof FETCH_CATEGORY_ERR;
 }
 
 export interface ICatState {
-  categories: Category[];
-  isLoading: boolean;
+    categories: Category[];
+    isLoading: boolean;
 }
 
 type CreateCatActionType = CreateCatErr | CreateCatLoading | CreateCatSuccess;
@@ -249,137 +314,393 @@ export type CatActionType = CreateCatActionType | FetchCatActionType;
 
 //Shoroom
 export interface Showroom {
-  id?: number;
-  showroomName: string;
-  showroomAddress: string;
-  showroomCode: string;
+    id?: number;
+    showroomName: string;
+    showroomAddress: string;
+    showroomCode: string;
+    showroomMobile?: string
 }
 
 export interface IShoroomState {
-  shorooms: Showroom[];
-  isLoading: boolean;
+    showroom: Showroom[];
+    isLoading: boolean;
 }
 
 interface CreateShoroomLoading {
-  type: typeof ADD_SHOWROOM_LOADING;
+    type: typeof ADD_SHOWROOM_LOADING;
 }
 
 interface CreateShoroomSuccess {
-  type: typeof ADD_SHOWROOM_SUCCESS;
-  payload: Showroom;
+    type: typeof ADD_SHOWROOM_SUCCESS;
+    payload: Showroom;
 }
 
 interface CreateShoroomErr {
-  type: typeof ADD_SHOWROOM_ERR;
+    type: typeof ADD_SHOWROOM_ERR;
 }
 
 interface FetchShoroomLoading {
-  type: typeof FETCH_SHOWROOM_LOADING;
+    type: typeof FETCH_SHOWROOM_LOADING;
 }
 
 interface FetchShoroomSuccess {
-  type: typeof FETCH_SHOWROOM_SUCCESS;
-  payload: Showroom[];
+    type: typeof FETCH_SHOWROOM_SUCCESS;
+    payload: Showroom[];
 }
 
+
 interface FetchShoroomErr {
-  type: typeof FETCH_SHOWROOM_ERR;
+    type: typeof FETCH_SHOWROOM_ERR;
+}
+
+interface DeleteShoroomLoading {
+    type: typeof DELETE_SHOWROOM_LOADING;
+}
+
+interface DeleteShoroomSuccess {
+    type: typeof DELETE_SHOWROOM_SUCCESS;
+    payload: Showroom[]
+}
+
+interface DeleteShoroomErr {
+    type: typeof DELETE_SHOWROOM_ERR;
+}
+
+interface UpdateShoroomLoading {
+    type: typeof UPDATE_SHOWROOM_LOADING;
+
+}
+
+interface UpdateShoroomSuccess {
+    type: typeof UPDATE_SHOWROOM_SUCCESS;
+    payload: Showroom
+}
+
+interface UpdateShoroomErr {
+    type: typeof UPDATE_SHOWROOM_ERR
 }
 
 export type ShoroomActionType =
-  | CreateShoroomLoading
-  | CreateShoroomSuccess
-  | CreateShoroomErr
-  | FetchShoroomErr
-  | FetchShoroomLoading
-  | FetchShoroomSuccess;
+    | CreateShoroomLoading
+    | CreateShoroomSuccess
+    | CreateShoroomErr
+    | FetchShoroomErr
+    | FetchShoroomLoading
+    | FetchShoroomSuccess
+    | UpdateShoroomLoading
+    | UpdateShoroomSuccess | UpdateShoroomErr | DeleteShoroomErr | DeleteShoroomLoading | DeleteShoroomSuccess
 
 //WareHouse
 
 export interface Warehouse {
-  whId?: number;
-  whName: string;
-  whLocation: string;
-  whCode: string;
-}
-export interface IWareHouseState {
-  warehouses: Warehouse[];
-  isLoading: boolean;
+    whId: number;
+    whName: string;
+    whLocation: string;
+    whMobile?: string
+    whCode: string;
 }
 
+export interface IWareHouseState {
+    warehouses: Warehouse[];
+    isLoading: boolean;
+}
+
+
 interface CreateWarehouseLoading {
-  type: typeof ADD_WAREHOUSE_LOADING;
+    type: typeof ADD_WAREHOUSE_LOADING;
 }
 
 interface CreateWarehouseSuccess {
-  type: typeof ADD_WAREHOUSE_SUCCESS;
-  payload: Warehouse;
+    type: typeof ADD_WAREHOUSE_SUCCESS;
+    payload: Warehouse;
 }
 
 interface CreateWarehouseErr {
-  type: typeof ADD_WAREHOUSE_ERR;
+    type: typeof ADD_WAREHOUSE_ERR;
 }
 
 interface FetchWarehouseLoading {
-  type: typeof FETCH_WAREHOUSE_LOADING;
+    type: typeof FETCH_WAREHOUSE_LOADING;
 }
 
 interface FetchWarehouseSuccess {
-  type: typeof FETCH_WAREHOUSE_SUCCESS;
-  payload: Warehouse[];
+    type: typeof FETCH_WAREHOUSE_SUCCESS;
+    payload: Warehouse[];
 }
 
 interface FetchWarehouseErr {
-  type: typeof FETCH_WAREHOUSE_ERR;
+    type: typeof FETCH_WAREHOUSE_ERR;
+}
+
+interface UpdateWarehouseLoading {
+    type: typeof UPDATE_WAREHOUSE_LOADING;
+}
+
+interface UpdateWarehouseSuccess {
+    type: typeof UPDATE_WAREHOUSE_SUCCESS;
+    payload: Warehouse
+}
+
+interface UpdateWarehouseErr {
+    type: typeof UPDATE_WAREHOUSE_ERR;
+}
+
+interface DeletedWarehouseLoading {
+    type: typeof REMOVE_WAREHOUSE_LOADING;
+}
+
+interface DeletedWarehouseSuccess {
+    type: typeof REMOVE_WAREHOUSE_SUCCESS;
+    payload: Warehouse[]
+}
+
+interface DeletedWarehouseErr {
+    type: typeof REMOVE_WAREHOUSE_ERR
 }
 
 export type WarehouseActionType =
-  | CreateWarehouseLoading
-  | CreateWarehouseErr
-  | CreateWarehouseSuccess
-  | FetchWarehouseErr
-  | FetchWarehouseLoading
-  | FetchWarehouseSuccess;
+    | CreateWarehouseLoading
+    | CreateWarehouseErr
+    | CreateWarehouseSuccess
+    | FetchWarehouseErr
+    | FetchWarehouseLoading
+    | FetchWarehouseSuccess
+    | DeletedWarehouseLoading
+    | DeletedWarehouseSuccess
+    | DeletedWarehouseErr
+    | UpdateWarehouseLoading
+    | UpdateWarehouseSuccess
+    | UpdateWarehouseErr
 
 //Create Function
 export type CreateFN<T> = (
-  data: T,
-  reset: Function,
-  navigate?: NavigateFunction
+    data: T,
+    reset: Function,
+    navigate?: NavigateFunction
 ) => (dispatch: AppDispatch) => Promise<any>;
 
 export interface ApiError {
-  success: boolean;
-  message: string;
+    success: boolean;
+    message: string;
 }
 
 //BARCODE
 
 interface PrintBarcodeAction {
-  type: typeof PRINT_BARCODE;
-  payload: Product[];
+    type: typeof PRINT_BARCODE;
+    payload: Product[];
 }
 
 interface BarcodeLoading {
-  type: typeof BARCODE_LOADING;
+    type: typeof BARCODE_LOADING;
 }
 
 interface SettingBarcode {
-  type: typeof SET_BARCODE;
-  payload: BarcodeSetting;
+    type: typeof SET_BARCODE;
+    payload: BarcodeSetting;
 }
 
 interface FetchBarcode {
-  type: typeof FETCH_BARCODE;
-  payload: BarcodeSetting;
+    type: typeof FETCH_BARCODE;
+    payload: BarcodeSetting;
 }
+
 interface BarcodeErr {
-  type: typeof BARCODE_ERR;
+    type: typeof BARCODE_ERR;
 }
 
 export type BarcodeActionType =
-  | PrintBarcodeAction
-  | SettingBarcode
-  | FetchBarcode
-  | BarcodeLoading
-  | BarcodeErr;
+    | PrintBarcodeAction
+    | SettingBarcode
+    | FetchBarcode
+    | BarcodeLoading
+    | BarcodeErr;
+
+
+//USer
+
+export interface IUserState {
+    user: IUser[];
+    isLoading: boolean
+
+    isError: string;
+}
+
+interface CreateUserLoading {
+    type: typeof CREATE_USER_LOADING;
+
+}
+
+interface CreateUserSuccess {
+    type: typeof CREATE_USER_SUCCESS
+    payload: IUser
+}
+
+interface CreateUserErr {
+    type: typeof CREATE_USER_ERR;
+    payload: ApiError
+}
+
+interface FetchUserLoading {
+    type: typeof FETCH_USER_LOADING;
+
+
+}
+
+interface FetchUserSuccess {
+    type: typeof FETCH_USER_SUCCESS;
+    payload: IUser[]
+}
+
+interface FetchUserErr {
+    type: typeof FETCH_USER_ERR;
+    payload: ApiError
+}
+
+
+export type UserActionType =
+    CreateUserLoading
+    | CreateUserErr
+    | CreateUserSuccess
+    | FetchUserLoading
+    | FetchUserErr
+    | FetchUserSuccess
+
+// Invoice
+
+export interface InvoiceState {
+    isLoading: boolean,
+    invoices: Invoice[]
+
+    error: string
+}
+
+interface FetchInvoiceLoading {
+    type: typeof FETCH_INVOICE_LOADING;
+}
+
+interface FetchInvoiceSuccess {
+    type: typeof FETCH_INVOICE_SUCCESS;
+    payload: Invoice[]
+}
+
+interface FetchInvoiceErr {
+    type: typeof FETCH_INVOICE_ERR;
+    payload: ApiError
+}
+
+interface AddInvoiceLoading {
+    type: typeof ADD_INVOICE_LOADING;
+}
+
+interface AddInvoiceSuccess {
+    type: typeof ADD_INVOICE_SUCCESS;
+    payload: Invoice
+}
+
+interface AddInvoiceErr {
+    type: typeof ADD_INVOICE_ERR;
+    payload: ApiError
+}
+
+interface RemoveInvoiceLoading {
+    type: typeof REMOVE_INVOICE_LOADING
+}
+
+interface RemoveInvoiceSuccess {
+    type: typeof REMOVE_INVOICE_SUCCESS
+    payload: Invoice[]
+}
+
+interface RemoveInvoiceErr {
+    type: typeof REMOVE_INVOICE_ERR
+    payload: ApiError
+}
+
+export type InvoiceActionType =
+    FetchInvoiceLoading
+    | FetchInvoiceSuccess
+    | FetchInvoiceErr
+    | AddInvoiceLoading
+    | AddInvoiceSuccess
+    | AddInvoiceErr
+    | RemoveInvoiceLoading | RemoveInvoiceSuccess | RemoveInvoiceErr
+
+//Customer
+
+export interface ICustomerState {
+    customers: ICustomer[]
+    isLoading: boolean,
+    error: string
+}
+
+interface FetchCustomerLoading {
+    type: typeof FETCH_CUSTOMER_LOADING;
+}
+
+interface FetchCustomerSuccess {
+    type: typeof FETCH_CUSTOMER_SUCCESS;
+    payload: ICustomer[]
+}
+
+interface FetchCustomerErr {
+    type: typeof FETCH_CUSTOMER_ERR;
+    payload: ApiError
+}
+
+interface AddCustomerLoading {
+    type: typeof ADD_CUSTOMER_LOADING;
+}
+
+interface AddCustomerSuccess {
+    type: typeof ADD_CUSTOMER_SUCCESS;
+    payload: ICustomer
+}
+
+interface AddCustomerErr {
+    type: typeof ADD_CUSTOMER_ERR;
+    payload: ApiError
+}
+
+interface DeleteCustomerLoading {
+    type: typeof REMOVE_CUSTOMER_LOADING
+}
+
+interface DeleteCustomerSuccess {
+    type: typeof REMOVE_CUSTOMER_SUCCESS;
+    payload: ICustomer[]
+}
+
+interface DeleteCustomerErr {
+    type: typeof REMOVE_CUSTOMER_ERR
+    payload: ApiError
+}
+
+interface UpdateCustomerLoading {
+    type: typeof UPDATE_CUSTOMER_LOADING
+}
+
+interface UpdateCustomerSuccess {
+    type: typeof UPDATE_CUSTOMER_SUCCESS;
+    payload: ICustomer
+}
+
+interface UpdateCustomerErr {
+    type: typeof UPDATE_CUSTOMER_ERR
+    payload: ApiError
+}
+
+
+export type CustomerAction =
+    FetchCustomerLoading
+    | FetchCustomerSuccess
+    | FetchCustomerErr
+    | AddCustomerLoading
+    | AddCustomerSuccess
+    | AddCustomerErr
+    | DeleteCustomerLoading
+    | DeleteCustomerErr
+    | DeleteCustomerSuccess
+    | UpdateCustomerLoading
+    | UpdateCustomerSuccess
+    | UpdateCustomerErr
