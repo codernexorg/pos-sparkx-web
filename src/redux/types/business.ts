@@ -21,7 +21,7 @@ interface FetchBusinessLoading {
 
 interface FetchBusinessSuccess {
     type: typeof FETCH_BUSINESS_SUCCESS
-    payload: IBusiness[]
+    payload: IBusiness
 }
 
 interface FetchBusinessErr {

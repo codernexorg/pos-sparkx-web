@@ -1,10 +1,10 @@
-import {Form} from 'formik';
-import styled from 'styled-components';
-import {Button, CommonInput, SelectInput} from '.';
-import {useAppDispatch, useTypedSelector} from '../../redux/store';
-import React, {useEffect} from "react";
-import {getProductGroup} from "../../redux/actions/productGroup";
-import {Modal} from "antd";
+import { Form } from "formik";
+import styled from "styled-components";
+import { Button, CommonInput, SelectInput } from ".";
+import { useAppDispatch, useTypedSelector } from "../../redux/store";
+import React, { useEffect } from "react";
+import { getProductGroup } from "../../redux/actions/productGroup";
+import { Modal } from "antd";
 
 const FormGroup = styled.div`
   display: flex;
@@ -33,7 +33,7 @@ const AddProduct: React.FC<{ itemCode: string, handleSubmit: (e?: (React.FormEve
             e.preventDefault()
             setConfirmationModal(true)
         }
-        } className='w-full flex flex-col gap-y-6 items-center bg-white rounded p-4'>
+        } className='w-full flex flex-col gap-y-6 items-center bg-white rounded p-4 dark:bg-primaryColor-900'>
             <Modal open={confimationModal} footer={false}
                    onCancel={() => setConfirmationModal(false)}>
                 <h1 className="confirm__modal--heading">Are you sure! you want to Continue?</h1>
@@ -98,12 +98,6 @@ const AddProduct: React.FC<{ itemCode: string, handleSubmit: (e?: (React.FormEve
                 <CommonInput required label='Unit Cost' type='number' name='unitCost'/>
             </FormGroup>
             <FormGroup>
-                <CommonInput
-                    required
-                    label='Transportation Cost'
-                    type='number'
-                    name='transportationCost'
-                />
                 <CommonInput
                     required
                     label='Sell Price'

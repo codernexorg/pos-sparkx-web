@@ -28,7 +28,7 @@ const customer: Reducer<ICustomerState, CustomerAction> = (state = {
             return {...state, isLoading: false, customers: [...state.customers, action.payload]};
 
         case ADD_CUSTOMER_ERR:
-            return {...state, isLoading: false, error: action.payload.message};
+            return {...state, isLoading: false, error: action.payload?.message};
 
         case FETCH_CUSTOMER_LOADING: {
             return {...state, isLoading: true};
@@ -37,7 +37,7 @@ const customer: Reducer<ICustomerState, CustomerAction> = (state = {
             return {...state, isLoading: false, customers: action.payload};
         }
         case FETCH_CUSTOMER_ERR: {
-            return {...state, isLoading: false, error: action.payload.message};
+            return {...state, isLoading: false, error: action.payload?.message};
         }
         case UPDATE_CUSTOMER_LOADING: {
             return {...state, isLoading: true};
@@ -50,7 +50,7 @@ const customer: Reducer<ICustomerState, CustomerAction> = (state = {
             };
         }
         case UPDATE_CUSTOMER_ERR: {
-            return {...state, isLoading: false, error: action.payload.message};
+            return {...state, isLoading: false, error: action.payload?.message};
         }
 
         case REMOVE_CUSTOMER_LOADING: {
@@ -62,7 +62,7 @@ const customer: Reducer<ICustomerState, CustomerAction> = (state = {
         }
 
         case REMOVE_CUSTOMER_ERR: {
-            return {...state, isLoading: false, error: action.payload.message};
+            return {...state, isLoading: false, error: action.payload?.message};
         }
 
         default:

@@ -22,7 +22,7 @@ const invoice: Reducer<InvoiceState, InvoiceActionType> = (state = {
             return {...state, invoices: action.payload, isLoading: false}
         }
         case FETCH_INVOICE_ERR: {
-            return {...state, error: action.payload.message, isLoading: false}
+            return {...state, error: action.payload?.message, isLoading: false}
         }
 
         case REMOVE_INVOICE_LOADING: {
@@ -32,7 +32,7 @@ const invoice: Reducer<InvoiceState, InvoiceActionType> = (state = {
             return {...state, isLoading: false, invoices: action.payload}
         }
         case REMOVE_INVOICE_ERR: {
-            return {...state, error: action.payload.message, isLoading: false}
+            return {...state, error: action.payload?.message, isLoading: false}
         }
 
         default:

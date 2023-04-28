@@ -1,12 +1,17 @@
-import {motion} from 'framer-motion';
-import {SiShopware} from 'react-icons/si';
-import {Link, NavLink} from 'react-router-dom';
-import styled from 'styled-components';
-import {useSettingContext} from '../context/SettingProver';
+import { motion } from "framer-motion";
+import { SiShopware } from "react-icons/si";
+import { Link, NavLink } from "react-router-dom";
+import styled from "styled-components";
+import { useSettingContext } from "../context/SettingProver";
 
-import navigation from './navigation';
-import {useState} from "react";
-import {HiChevronDown, HiChevronLeft, HiChevronRight, HiChevronUp} from "react-icons/hi";
+import navigation from "./navigation";
+import { useState } from "react";
+import {
+  HiChevronDown,
+  HiChevronLeft,
+  HiChevronRight,
+  HiChevronUp,
+} from "react-icons/hi";
 import classNames from "classnames";
 
 const CustomLink = styled(NavLink)`
@@ -40,6 +45,7 @@ const SideBar = styled(motion.div)`
   --webik-scrollbar: {
     display: none;
   };
+  border-radius: 20px;
   scroll-behavior: smooth;
   border-right: 1px solid rgb(156, 163, 175);
   @media (max-width: 1400px) {
@@ -54,7 +60,7 @@ const SideNav = () => {
     const {isActive, setActive, currentUser} = useSettingContext();
     const [isSubmenuOpen, setSubmenuOpen] = useState<number | null>(null);
     const [toggleSidebar, setToggleSidebar] = useState<boolean>(false);
-    const sidebarClass = classNames('scrollbar-hide bg-dark-purple duration-300 relative z-20 overflow-x-hidden h-screen', {
+    const sidebarClass = classNames('scrollbar-hide bg-primary-color duration-300 relative z-20 overflow-x-hidden h-screen dark:bg-primaryColor-900', {
         'w-72': isActive,
         'w-20': !isActive
     })
@@ -88,10 +94,11 @@ const SideNav = () => {
                 </div>
 
                 <ul className='mt-10'>
+                    {/* eslint-disable-next-line array-callback-return */}
                     {navigation.map((item, i) => {
                         if (currentUser && item.access.includes(currentUser.role)) {
                             return (
-                                <li key={i} className='m-3 mt-4 text-gray-400 uppercase flex flex-col font-bold'>
+                                <li key={i} className='m-3 mt-4 text-light-white uppercase flex flex-col font-bold'>
                                     <div className={'flex gap-x-5 items-center'}>
                                         <span onClick={() => setActive(true)} className={'text-2xl cursor-pointer'}><item.Icon/></span>
                                         {
@@ -118,9 +125,9 @@ const SideNav = () => {
                                             {isSubmenuOpen === i && item.links.map((link, i) => {
                                                 if (currentUser && link.access.includes(currentUser.role)) {
                                                     return <li key={i}><CustomLink to={link.to}
-                                                                                   className='font-semibold text-white duration-200'>
-                                                        <link.Icon/>
-                                                        <span className='capitalize'>{link.text}</span>
+                                                                                   className='font-semibold text-white duration-200 '>
+                                                        {/*<link.Icon/>*/}
+                                                        <span className='capitalize ml-8'>{link.text}</span>
                                                     </CustomLink></li>
                                                 }
                                                 return null;

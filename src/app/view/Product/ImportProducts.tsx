@@ -1,8 +1,8 @@
-import {Tooltip, Upload} from 'antd';
-import {DraggerProps} from 'antd/es/upload';
-import {AiFillInfoCircle} from 'react-icons/ai';
-import {toast} from 'react-toastify';
-import {baseURL} from '../../../api';
+import { Tooltip, Upload } from "antd";
+import { DraggerProps } from "antd/es/upload";
+import { AiFillInfoCircle } from "react-icons/ai";
+import { toast } from "react-toastify";
+import { baseURL } from "../../../api";
 
 const ImportProducts = () => {
     const {Dragger} = Upload;
@@ -55,12 +55,12 @@ const ImportProducts = () => {
                     Caution: Not Every Host Will Be Able To Handle This Feature & If you
                     Have Big Amount OF Data Then Change Your Server First
                 </h1>
-                <h2 className='text-2xl'>
+                <h2 className='text-2xl dark:text-white'>
                     Excel Sheet Should Be Like <AiFillInfoCircle cursor={'pointer'}/>
                 </h2>
             </Tooltip>
             <Dragger {...uploaderProps}>
-                <p className='text-lg font-semibold'>
+                <p className='text-lg font-semibold dark:text-white'>
                     Click or drag file to this area to upload
                 </p>
             </Dragger>

@@ -1,22 +1,22 @@
-import {AxiosError} from 'axios';
-import api from '../../api';
-import {rejectedToast, successToast} from '../../app/utils/toaster';
+import { AxiosError } from "axios";
+import api from "../../api";
+import { rejectedToast, successToast } from "../../app/utils/toaster";
 import {
-    ADD_SHOWROOM_ERR,
-    ADD_SHOWROOM_LOADING,
-    ADD_SHOWROOM_SUCCESS,
-    DELETE_SHOWROOM_ERR,
-    DELETE_SHOWROOM_LOADING,
-    DELETE_SHOWROOM_SUCCESS,
-    FETCH_SHOWROOM_ERR,
-    FETCH_SHOWROOM_LOADING,
-    FETCH_SHOWROOM_SUCCESS,
-    UPDATE_SHOWROOM_ERR,
-    UPDATE_SHOWROOM_LOADING,
-    UPDATE_SHOWROOM_SUCCESS
-} from '../constant';
-import {AppDispatch} from '../store';
-import {ApiError, CreateFN, Showroom} from '../types';
+  ADD_SHOWROOM_ERR,
+  ADD_SHOWROOM_LOADING,
+  ADD_SHOWROOM_SUCCESS,
+  DELETE_SHOWROOM_ERR,
+  DELETE_SHOWROOM_LOADING,
+  DELETE_SHOWROOM_SUCCESS,
+  FETCH_SHOWROOM_ERR,
+  FETCH_SHOWROOM_LOADING,
+  FETCH_SHOWROOM_SUCCESS,
+  UPDATE_SHOWROOM_ERR,
+  UPDATE_SHOWROOM_LOADING,
+  UPDATE_SHOWROOM_SUCCESS,
+} from "../constant";
+import { AppDispatch } from "../store";
+import { ApiError, CreateFN, Showroom } from "../types";
 
 export const getShowroom = () => async (dispatch: AppDispatch) => {
     dispatch({type: FETCH_SHOWROOM_LOADING});
@@ -27,7 +27,6 @@ export const getShowroom = () => async (dispatch: AppDispatch) => {
         })
         .catch((error: AxiosError<ApiError>) => {
             dispatch({type: FETCH_SHOWROOM_ERR});
-            rejectedToast(error);
         });
 };
 

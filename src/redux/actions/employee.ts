@@ -1,22 +1,22 @@
-import {AppDispatch} from "../store";
+import { AppDispatch } from "../store";
 import api from "../../api";
 import {
-    CREATE_EMPLOYEE_ERR,
-    CREATE_EMPLOYEE_LOADING,
-    CREATE_EMPLOYEE_SUCCESS,
-    FETCH_EMPLOYEE_ERR,
-    FETCH_EMPLOYEE_LOADING,
-    FETCH_EMPLOYEE_SUCCESS,
-    REMOVE_EMPLOYEE_ERR,
-    REMOVE_EMPLOYEE_LOADING,
-    REMOVE_EMPLOYEE_SUCCESS,
-    UPDATE_EMPLOYEE_ERR,
-    UPDATE_EMPLOYEE_LOADING,
-    UPDATE_EMPLOYEE_SUCCESS
+  CREATE_EMPLOYEE_ERR,
+  CREATE_EMPLOYEE_LOADING,
+  CREATE_EMPLOYEE_SUCCESS,
+  FETCH_EMPLOYEE_ERR,
+  FETCH_EMPLOYEE_LOADING,
+  FETCH_EMPLOYEE_SUCCESS,
+  REMOVE_EMPLOYEE_ERR,
+  REMOVE_EMPLOYEE_LOADING,
+  REMOVE_EMPLOYEE_SUCCESS,
+  UPDATE_EMPLOYEE_ERR,
+  UPDATE_EMPLOYEE_LOADING,
+  UPDATE_EMPLOYEE_SUCCESS,
 } from "../constant";
-import {AxiosError} from "axios";
-import {ApiError} from "../types";
-import {rejectedToast, successToast} from "../../app/utils/toaster";
+import { AxiosError } from "axios";
+import { ApiError } from "../types";
+import { rejectedToast, successToast } from "../../app/utils/toaster";
 
 export const createEmployee = (data: any) => async (dispatch: AppDispatch) => {
     dispatch({type: CREATE_EMPLOYEE_LOADING})
@@ -35,7 +35,6 @@ export const fetchEmployee = () => async (dispatch: AppDispatch) => {
         type: FETCH_EMPLOYEE_SUCCESS,
         payload: res.data
     })).catch((err: AxiosError<ApiError>) => {
-        rejectedToast(err)
         dispatch({type: FETCH_EMPLOYEE_ERR, payload: err.response?.data});
     })
 }

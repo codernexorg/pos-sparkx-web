@@ -1,12 +1,12 @@
-import {Modal, Table, Upload} from 'antd';
-import React, {useEffect, useState} from 'react';
-import {getProductGroup} from '../../../redux/actions/productGroup';
-import {useAppDispatch, useTypedSelector} from '../../../redux/store';
-import {Pagination, PrintAble} from '../../components';
-import {useSettingContext} from '../../context/SettingProver';
-import {DraggerProps} from "antd/es/upload";
-import {baseURL} from "../../../api";
-import {toast} from "react-toastify";
+import { Modal, Table, Upload } from "antd";
+import React, { useEffect, useState } from "react";
+import { getProductGroup } from "../../../redux/actions/productGroup";
+import { useAppDispatch, useTypedSelector } from "../../../redux/store";
+import { Pagination, PrintAble } from "../../components";
+import { useSettingContext } from "../../context/SettingProver";
+import { DraggerProps } from "antd/es/upload";
+import { baseURL } from "../../../api";
+import { toast } from "react-toastify";
 
 const ProductGroup = () => {
     const dispatch = useAppDispatch();
@@ -45,7 +45,8 @@ const ProductGroup = () => {
 
     return (
         <PrintAble title={'Product Groups'} handlePrint={() => {
-        }} tableId='productGroup' btnText={'Import Group'} handleClick={() => setShowImportModal(true)}>
+        }} showPrint={false} showPDF={false} showExcel={false} btnText={'Import Group'}
+                   handleClick={() => setShowImportModal(true)}>
 
             <Modal footer={false} open={showImportModal} onCancel={() => setShowImportModal(false)}>
                 <Dragger {...uploaderProps}>
@@ -60,6 +61,7 @@ const ProductGroup = () => {
                 rowKey={obj => obj.productName}
                 pagination={false}
                 loading={isLoading}
+                rowClassName={'dark:bg-slate-700 dark:text-white dark:hover:text-primaryColor-900'}
             >
                 <Table.Column
                     title='Product Name'

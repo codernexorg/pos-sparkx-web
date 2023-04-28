@@ -1,6 +1,6 @@
-import {AxiosError} from 'axios';
-import api from '../../api';
-import {rejectedToast, successToast} from '../../app/utils/toaster';
+import {AxiosError} from "axios";
+import api from "../../api";
+import {rejectedToast, successToast} from "../../app/utils/toaster";
 import {
     ADD_MULTIPLE_PRODUCT_ERR,
     ADD_MULTIPLE_PRODUCT_LOADING,
@@ -12,27 +12,28 @@ import {
     FETCH_PRODUCT_SUCCESS,
     TRANSFER_PRODUCT_ERR,
     TRANSFER_PRODUCT_LOADING,
-    TRANSFER_PRODUCT_SUCCESS
-} from '../constant';
-import {AppDispatch} from '../store';
-import {ApiError, CreateFN} from '../types';
+    TRANSFER_PRODUCT_SUCCESS,
+} from "../constant";
+import {AppDispatch} from "../store";
+import {ApiError, ProductActionType} from "../types";
+import {Dispatch} from "@reduxjs/toolkit";
 
 export const fetchProduct = () => async (dispatch: AppDispatch) => {
-    dispatch({type: FETCH_PRODUCT_LOADING});
-    const res = (await api.get(`/product`)) as {
-        data: { product: Product[]; hasMore: boolean };
-    };
+  dispatch({ type: FETCH_PRODUCT_LOADING });
+  const res = (await api.get(`/product`)) as {
+    data: { product: Product[]; hasMore: boolean };
+  };
 
-    dispatch({type: FETCH_PRODUCT_SUCCESS, payload: res.data});
+  dispatch({ type: FETCH_PRODUCT_SUCCESS, payload: res.data });
 };
 
-export const createSingleProduct: CreateFN<Product> =
-    (data, reset) => async (dispatch: AppDispatch) => {
+export const createSingleProduct =
+    (data: any, reset: Function) => async (dispatch: AppDispatch) => {
         dispatch({type: ADD_SINGLE_PRODUCT_LOADING});
         api
             .post('/product/single', data)
             .then((res) => {
-                successToast('Single Proudct Added Successfully');
+                successToast('Single Products Added Successfully');
                 dispatch({type: ADD_SINGLE_PRODUCT_SUCCESS, payload: res.data as Product[]});
                 reset();
             })
@@ -50,7 +51,6 @@ type ProductData = {
     supplierName: string;
     whName: string;
     showroomName: string;
-    transportationCost: number;
     unitCost: number;
     productGroup: string;
     sellPrice: number;
@@ -95,5 +95,17 @@ export const transferProduct = (data: any) => async (dispatch: AppDispatch) => {
     }).catch((err: AxiosError<ApiError>) => {
         dispatch({type: TRANSFER_PRODUCT_ERR})
         rejectedToast(err)
+    })
+}
+
+export const updateProduct=(id:number,data:any)=>async (dispatch:Dispatch<ProductActionType>)=>{
+    dispatch({type:"UPDATE_PRODUCT_LOADING"})
+    api.patch(`/product/${id}`,data)
+        .then(res=>{
+            successToast('Product Updated Successfully')
+            dispatch({type:"UPDATE_PRODUCT_SUCCESS",payload:res.data})
+        }).catch((err:AxiosError<ApiError>)=>{
+            rejectedToast(err)
+            dispatch({type:"UPDATE_PRODUCT_ERR"})
     })
 }

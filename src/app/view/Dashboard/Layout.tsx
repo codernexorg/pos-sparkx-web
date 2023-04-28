@@ -1,8 +1,7 @@
-import {Breadcrumb} from 'antd';
-import {useIsAuthenticated} from 'react-auth-kit';
-import {Navigate, Outlet, useLocation} from 'react-router-dom';
-import styled from 'styled-components';
-import {NavBar, SideNav} from '../../components';
+import { useIsAuthenticated } from "react-auth-kit";
+import { Navigate, Outlet, useLocation } from "react-router-dom";
+import styled from "styled-components";
+import { NavBar, SideNav } from "../../components";
 
 const Footer = styled.div`
   width: 100%;
@@ -23,21 +22,23 @@ const DashboardLayout = () => {
         );
     }
     return (
-        <div className='dark:bg-slate-900 w-[100%] h-screen scrollbar-hide flex'>
-            <SideNav/>
-            <div className='w-full scrollbar-hide max-h-screen'>
+        <div className='dark:bg-slate-900 w-[100%] h-screen scrollbar-hide flex bg-slate-100'>
+            <div>
+                <SideNav/>
+            </div>
+            <div className='flex-1 scrollbar-hide max-h-screen'>
                 <NavBar/>
-                <main className='overflow-y-scroll h-[90vh] md:p-[15px] p-[30px]  bg-slate-100'>
+                <main className='overflow-y-scroll h-[90vh] md:p-[15px] lg:px-[50px]  bg-slate-100 dark:bg-primaryColor-900'>
                     <h1>{location.state}</h1>
-                    <Breadcrumb>
-                        <Breadcrumb.Item className='capitalize mb-4 text-sm font-semibold'>
-                            {location.pathname}
-                        </Breadcrumb.Item>
-                    </Breadcrumb>
+                    {/*<Breadcrumb>*/}
+                    {/*    <Breadcrumb.Item className='capitalize mb-4 text-sm font-semibold'>*/}
+                    {/*        {location.pathname}*/}
+                    {/*    </Breadcrumb.Item>*/}
+                    {/*</Breadcrumb>*/}
                     <Outlet/>
                 </main>
                 <Footer>
-                    <p>&copy;2023 SparkX Fashion Wear </p>
+                    <p className={'dark:text-white'}>&copy;2023 SparkX Fashion Wear </p>
                 </Footer>
             </div>
         </div>

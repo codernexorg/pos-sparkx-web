@@ -4,15 +4,28 @@ module.exports = {
     theme: {
 
         fontFamily: {
-            century: ['Century Gothic', 'sans-serif']
+            century: ['Century Gothic', 'sans-serif'],
+            inter:['Inter','sans-serif']
         },
         extend: {
             fontSize: {
                 14: '14px'
             },
             colors: {
-                "dark-purple": "#081a51",
-                "light-white": "rgba(255,255,255,0.17)"
+                "primary-color": "#1878f3",
+                primaryColor: {
+                    100: "#d1e4fd",
+                    200: "#a3c9fa",
+                    300: "#74aef8",
+                    400: "#4693f5",
+                    500: "#1878f3",
+                    600: "#1360c2",
+                    700: "#0e4892",
+                    800: "#0a3061",
+                    900: "#051831"
+                },
+
+                "light-white": "rgba(255,255,255,0.8)"
             },
             backgroundColor: {
                 'main-bg': '#FAFBFB',
@@ -47,6 +60,7 @@ module.exports = {
                 'hero-pattern': "url('https://i.ibb.co/MkvLDfb/Rectangle-4389.png')"
             }
         }
+
     },
     plugins: [require('tailwind-scrollbar-hide'), require('tailwind-scrollbar')({nocompatible: true}),]
 };

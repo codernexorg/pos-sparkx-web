@@ -11,7 +11,7 @@ const Button: React.FC<ButtonProps> = ({children, loading, className, ...props})
         <button
             disabled={loading}
             {...props}
-            className={'px-4 py-1 min-w-[140px] bg-dark-purple text-white border border-slate-800 rounded'}
+            className={'px-4 py-1 min-w-[140px] bg-primary-color text-white border border-slate-800 rounded'}
         >
             {loading ? <Spin/> : children}
         </button>

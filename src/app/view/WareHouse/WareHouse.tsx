@@ -1,12 +1,22 @@
-import {Modal, Table} from 'antd';
-import React, {useEffect, useRef, useState} from 'react';
-import {useReactToPrint} from 'react-to-print';
-import {deleteWarehouse, getWareHouse, updateWarehouse} from '../../../redux/actions/warehouse';
-import {useAppDispatch, useTypedSelector} from '../../../redux/store';
-import {Warehouse} from '../../../redux/types';
-import {Button, CommonInput, Loader, Pagination, PrintAble} from '../../components';
-import {Form, Formik} from "formik";
-import {AiOutlineDelete, AiOutlineEdit} from "react-icons/ai";
+import { Modal, Table } from "antd";
+import React, { useEffect, useRef, useState } from "react";
+import {
+  deleteWarehouse,
+  getWareHouse,
+  updateWarehouse,
+} from "../../../redux/actions/warehouse";
+import { useAppDispatch, useTypedSelector } from "../../../redux/store";
+import { Warehouse } from "../../../redux/types";
+import {
+  Button,
+  CommonInput,
+  Loader,
+  Pagination,
+  PrintAble,
+} from "../../components";
+import { Form, Formik } from "formik";
+import { AiOutlineDelete, AiOutlineEdit } from "react-icons/ai";
+import { handleExcel, handlePrint } from "../../utils/helper";
 
 const WareHouse = () => {
     const dispatch = useAppDispatch();
@@ -15,9 +25,6 @@ const WareHouse = () => {
     const [pageSize, setPageSize] = useState(50);
     const [editAble, setEditAble] = useState<Warehouse | null>(null);
     const [openModal, setOpenModal] = useState(false)
-    const handlePrint = useReactToPrint({
-        content: () => whRef.current
-    });
     useEffect(() => {
         dispatch(getWareHouse());
     }, [dispatch]);
@@ -28,11 +35,20 @@ const WareHouse = () => {
         return <Loader/>;
     }
     return (
-        <PrintAble title={'Locations'} tableId='warehouse' handlePrint={handlePrint}>
+        <PrintAble title={'Locations'} handlePrint={() => {
+            handlePrint(warehouses, [
+                {field: 'whName', displayName: 'Location'},
+                {field: 'whCode', displayName: 'Code'},
+                {field: 'whMobile', displayName: 'Mobile'},
+                {field: 'whLocation', displayName: 'Address'},
+            ], 'Locations')
+        }
+        } handleExcel={() => handleExcel(warehouses, '_', 'Locations')}>
             <Table
                 id='warehouse'
                 dataSource={warehouses}
                 rowKey={obj => obj.whId}
+                rowClassName={'dark:bg-slate-700 dark:text-white dark:hover:text-primaryColor-900'}
                 pagination={{
                     current: page,
                     total: warehouses.length,

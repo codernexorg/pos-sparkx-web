@@ -1,9 +1,9 @@
-import {Typography} from 'antd';
-import {Form, Formik} from 'formik';
-import {createShowroom} from '../../../redux/actions/showroom';
-import {useAppDispatch, useTypedSelector} from '../../../redux/store';
-import {Showroom} from '../../../redux/types';
-import {Button, CommonInput} from '../../components';
+import { Typography } from "antd";
+import { Form, Formik } from "formik";
+import { createShowroom } from "../../../redux/actions/showroom";
+import { useAppDispatch, useTypedSelector } from "../../../redux/store";
+import { Showroom } from "../../../redux/types";
+import { Button, CommonInput } from "../../components";
 
 const AddSR = () => {
     const dispatch = useAppDispatch();
@@ -11,7 +11,7 @@ const AddSR = () => {
 
     return (
         <div>
-            <Typography className='text-2xl my-10'>Add New Showroom</Typography>
+            <Typography className='text-2xl my-10 dark:text-white'>Add New Showroom</Typography>
             <Formik
                 initialValues={
                     {
@@ -25,7 +25,7 @@ const AddSR = () => {
                     await dispatch(createShowroom(value, resetForm))
                 }
             >
-                <Form className='bg-white p-10 rounded flex flex-col gap-y-6 items-center'>
+                <Form className='bg-white p-10 rounded flex flex-col gap-y-6 items-center dark:bg-primaryColor-900'>
                     <CommonInput
                         name='showroomCode'
                         label='Showroom Code'

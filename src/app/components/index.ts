@@ -1,6 +1,6 @@
-import React from 'react';
+import React from "react";
 
-const Input = React.lazy(() => import('./Input/Input'));
+const Input = React.lazy(() => import("./Input/Input"));
 const NavBar = React.lazy(() => import('./NavBar'));
 const SideNav = React.lazy(() => import('./SideNav'));
 const AddProductFrom = React.lazy(() => import('./AddProduct'));
@@ -17,6 +17,8 @@ const Stats = React.lazy(() => import('./Stats'));
 
 const Pagination = React.lazy(() => import('./Pagination'));
 
+const ReportLayout=React.lazy(() => import('./ReportLayout'));
+
 export {
     Input,
     NavBar,
@@ -30,5 +32,5 @@ export {
     SelectInput,
     HookInput,
     Stats,
-    Pagination
+    Pagination,ReportLayout
 };

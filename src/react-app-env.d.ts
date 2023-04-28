@@ -1,265 +1,339 @@
-/// <reference types="react-scripts" />
-namespace NodeJS {
-    interface ProcessEnv {
-        API_URL: string;
-    }
-}
-
 interface IShowroom {
-    id: number;
-    showroomName: string
-    showroomCode: string
-    showroomAddress: string
+  id: number;
+  showroomName: string;
+  showroomCode: string;
+  showroomAddress: string;
 }
+type ThemMode='dark'|'light'
 
 interface ISettingContext {
-    isActive: boolean;
-    setActive: React.Dispatch<React.SetStateAction<boolean>>;
-    profile: boolean;
-    setProfile: React.Dispatch<React.SetStateAction<boolean>>;
-    page: number;
-    setPage: React.Dispatch<React.SetStateAction<number>>;
-    pageSize: number;
-    setPageSize: React.Dispatch<React.SetStateAction<number>>;
-    submitForm: boolean;
-    setSubmitForm: React.Dispatch<React.SetStateAction<boolean>>;
+  isActive: boolean;
+  setActive: React.Dispatch<React.SetStateAction<boolean>>;
+  profile: boolean;
+  setProfile: React.Dispatch<React.SetStateAction<boolean>>;
+  page: number;
+  setPage: React.Dispatch<React.SetStateAction<number>>;
+  pageSize: number;
+  setPageSize: React.Dispatch<React.SetStateAction<number>>;
+  submitForm: boolean;
+  setSubmitForm: React.Dispatch<React.SetStateAction<boolean>>;
 
-    showConfirmModal: boolean;
-    setShowConfirmModal: React.Dispatch<React.SetStateAction<boolean>>;
-    currentUser: IUser | null
+  showConfirmModal: boolean;
+  setShowConfirmModal: React.Dispatch<React.SetStateAction<boolean>>;
+  currentUser: IUser | null;
+  defaultBarcodeSettings: BarcodeSetting | undefined;
+
+  mode:ThemMode,
+  setMode: React.Dispatch<React.SetStateAction<ThemMode>>
 }
 
-type IUserRole = 'MasterAdmin' |
-    'SuperAdmin' |
-    'ShowroomManager' |
-    'SalesOperator'
+interface Supplier {
+  id: number;
+  supplierName: string;
+  supplierAddress: string;
+  contactPersonName: string;
+  contactPersonNumber: string;
+  supplierEmail: string;
+  altContactNumber: string;
+  extraInfo: string;
+}
+
+type IUserRole =
+  | 'MasterAdmin'
+  | 'SuperAdmin'
+  | 'ShowroomManager'
+  | 'SalesOperator';
 
 interface IUser {
-    id?: number
-    name: string;
-    email: string;
-    username: string;
-    role: string;
-    password?: string
-    assignedShowroom: string
+  id: number;
+  name: string;
+  email: string;
+  username: string;
+  role: string;
+  password?: string;
+  assignedShowroom: string;
 }
 
 interface Product {
-    id?: number;
-    invoiceNumber: string;
-    invoiceDate: string;
-    invoiceTotalPrice: number;
-    lotNumber: string;
-    supplierName: string;
-    productGroup: string;
-    totalItem: number;
-    unitCost: number;
-    transportationCost: number;
-    sellPrice: number;
-    showroomName: string;
-    whName: string;
-    itemCode: string;
-    productCode?: string;
-    sellingStatus?: string;
-    sellPriceAfterDiscount?: number
+  id: number;
+  invoiceNumber: string;
+  invoiceDate: string;
+  invoiceTotalPrice: number;
+  lotNumber: string;
+  supplierName: string;
+  productGroup: string;
+  totalItem: number;
+  unitCost: number;
+  transportationCost: number;
+  sellPrice: number;
+  showroomName: string;
+  whName: string;
+  itemCode: string;
+  productCode: string;
+  sellingStatus: string;
+  sellPriceAfterDiscount: number;
+  grossProfit: string;
+  grossMargin: string;
+  quantity:number
+  size: string;
 
-    discount?: number
+  discount?: number;
+
+  returnStatus:number
+
+  updatedAt: string;
+  employee:IEmployee
+  tagless:boolean
 }
 
 interface DeleteProductRes {
-    id: number;
-    message: string;
-    success: boolean;
+  id: number;
+  message: string;
+  success: boolean;
 }
 
 interface BarcodeSetting {
-    width: number;
-    height: number;
+  id: number;
+  name: string;
+  description: string;
+  stickerWidth: number;
+  stickerHeight: number;
+  stickerInRow: number;
+  columnGap: number;
+  rowGap: number;
+  paperWidth: number;
+  paperHeight: number;
+}
+
+interface IDefaultBarcode {
+  id: number;
+  barcodeId: number;
 }
 
 interface IPrintBarcodeState {
-    products?: Product[];
-    barcode?: BarcodeSetting;
-    isLoading: boolean;
+  products: Product[];
+  barcode: BarcodeSetting[];
+  defaultBarcode: IDefaultBarcode | undefined;
+  isLoading: boolean;
 }
 
 interface MultipleProductInput {
-    invoiceNumber: string;
-    invoiceDate: string;
-    invoiceTotalPrice: number;
-    lotNumber: number;
-    supplierName: string;
-    whName: string;
-    showroomName: string;
-    transportationCost: number;
-    unitCost: number;
+  invoiceNumber: string;
+  invoiceDate: string;
+  invoiceTotalPrice: number;
+  lotNumber: number;
+  supplierName: string;
+  whName: string;
+  showroomName: string;
+  unitCost: number;
 
-    items: { itemCode: string, sellPrice: number }[]
-    productGroup: string;
+  items: { itemCode: string; sellPrice: number }[];
+  productGroup: string;
 }
 
 interface ProductInfoMultiple {
-    sellPrice: number;
-    itemCode: string;
+  sellPrice: number;
+  itemCode: string;
 }
-
 
 interface Invoice {
-    id: number
-    invoiceNo: string
-    invoiceNumber: string;
-    invoiceDate: string;
-    invoiceAmount: number;
+  id: number;
+  invoiceNo: string;
+  invoiceNumber: string;
+  invoiceDate: string;
+  invoiceAmount: number;
 
-    invoiceStatus: string
+  invoiceStatus: string;
 
-    vat: number
+  vat: number;
 
-    businessName: string
+  businessName: string;
 
-    businessAddress: string
+  businessAddress: string;
 
-    customerName: string
+  customerName: string;
 
-    customerMobile: string
+  customerMobile: string;
 
-    products: Product[]
+  employeeName: string;
+  products: Product[];
 
-    createdAt: string
+  createdAt: string;
 
-    updatedAt: string
+  updatedAt: string;
 
-    paidAmount: number
+  paidAmount: number;
 
-    dueAmount: number
 
-    discountAmount: number
+  discountAmount: number;
 
-    changeAmount: number
+  netAmount:number
+  withTax:number
+  withoutTax:number
 
-    showroomInvoiceCode: string
-    showroomAddress: string
-    showroomMobile: string
-    showroomName: string
+  changeAmount: number;
 
-    deletedAt: string
+  showroomInvoiceCode: string;
+  showroomAddress: string;
+  showroomMobile: string;
+  showroomName: string;
+
+  deletedAt: string;
 }
 
-
 interface IShowroom {
-    showroomName: string;
-    showroomCode: string;
+  showroomName: string;
+  showroomCode: string;
 
-    showroomMobile: string
-    showroomAddress: string;
-    id: number;
+  showroomMobile: string;
+  showroomAddress: string;
+  id: number;
 }
 
 interface ICustomer {
-    id?: number
+  id?: number;
 
-    customerName: string
+  customerName: string;
 
-    customerPhone: string
+  customerPhone: string;
 
-    customerEmail?: string
+  customerEmail?: string;
 
+  customerAddress?: string;
 
-    customerAddress?: string
+  crm: string;
 
-    credit?: number
+  credit?: number;
 
-    due?: number
+  paid?: number;
+  purchasedProducts: Product[];
 
-    paid?: number;
-    products?: Product[]
+  returnedProducts: Product[];
 
-    createdAt?: Date
+  createdAt?: Date;
 
-    updatedAt?: Date
+  updatedAt?: Date;
 }
 
 interface IEmployee {
-    id: number
+  id: number;
 
-    empName: string
+  empName: string;
 
-    empPhone: string
+  empPhone: string;
 
-    designation: string
+  designation: string;
 
-    empEmail: string
+  empEmail: string;
 
+  empAddress: string;
 
-    empAddress: string
+  sales: Product[];
+  returnSales: Product[];
 
-    sales?: Invoice[]
+  showroom: string;
 
-    showroom: string
+  empSalary: number;
 
-    empSalary: number
+  joiningDate: string;
 
-    joiningDate: string
+  salary: ISalary[];
 
-    salary: ISalary[]
+  createdAt: Date;
 
-    createdAt: Date
-
-    updatedAt: Date
+  updatedAt: Date;
 }
 
-
 interface IBusiness {
-    id: number
-    address: string
+  id: number;
+  address: string;
 
-    name: string
+  name: string;
 
-    phone: string
+  phone: string;
 
-    currencyCode: string
+  currencyCode: string;
 
-    defaultTax: number
-
+  defaultTax: number;
 }
 
 interface ITax {
-    id: number
+  id: number;
 
-    tax: number
+  tax: number;
 
-    taxName: string
+  taxName: string;
 }
 
 interface ITransfer {
-    id: number
-    prevLocation: string
-    currentLocation: string
-    productCount: number
-    transferredLot: string
-    transferredProducts: Product[]
-    createdAt: string
-    updatedAt: string
+  id: number;
+  prevLocation: string;
+  currentLocation: string;
+  productCount: number;
+  transferredLot: string;
+  transferredProducts: Product[];
+  createdAt: string;
+  updatedAt: string;
 }
 
 interface IExpense {
-    id: number,
-    expenseName: string,
-    employeeId: number,
-    expenseReason: string,
-    expenseCost: number,
-    showroom: IShowroom,
-    createdAt: string,
-    updatedAt: string
+  id: number;
+  expenseName: string;
+  employeeId: number;
+  expenseReason: string;
+  expenseCost: number;
+  showroom: IShowroom;
+  createdAt: string;
+  updatedAt: string;
 }
 
 interface IExpenseType {
-    id: number
-    expenseName: string
+  id: number;
+  expenseName: string;
 }
 
 interface ISalary {
-    id: number
-    salaryAmount: number
-    createdAt: string
+  id: number;
+  salaryAmount: number;
+  createdAt: string;
+}
+
+interface IBrand {
+  id: number;
+  brandName: string;
+  createdAt: string;
+}
+
+interface IReturned {
+  id: number;
+  note: string;
+  amount: number;
+  products: Product[];
+  customer: ICustomer;
+  createdAt: string;
+}
+
+interface Purchase {
+  id: number;
+  invoiceNo: string;
+  supplierName: string;
+  purchaseAmount: number;
+  purchaseStatus: string;
+  products: Product[];
+  quantity: number;
+  createdAt: string;
+  updatedAt: string;
+}
+
+
+interface IReturned{
+  id:number
+  amount:number
+  invoiceNo:string
+  customerPhone:string
+  check:string
+  salesDate:string
+  products:Product[]
+  createdAt:string
+  updatedAt:string
 }

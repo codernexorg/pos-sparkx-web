@@ -1,22 +1,22 @@
-import {AxiosError} from 'axios';
-import api from '../../api';
-import {rejectedToast, successToast} from '../../app/utils/toaster';
+import { AxiosError } from "axios";
+import api from "../../api";
+import { rejectedToast, successToast } from "../../app/utils/toaster";
 import {
-    ADD_WAREHOUSE_ERR,
-    ADD_WAREHOUSE_LOADING,
-    ADD_WAREHOUSE_SUCCESS,
-    FETCH_WAREHOUSE_ERR,
-    FETCH_WAREHOUSE_LOADING,
-    FETCH_WAREHOUSE_SUCCESS,
-    REMOVE_WAREHOUSE_ERR,
-    REMOVE_WAREHOUSE_LOADING,
-    REMOVE_WAREHOUSE_SUCCESS,
-    UPDATE_WAREHOUSE_ERR,
-    UPDATE_WAREHOUSE_LOADING,
-    UPDATE_WAREHOUSE_SUCCESS
-} from '../constant';
-import {AppDispatch} from '../store';
-import {ApiError, Warehouse} from '../types';
+  ADD_WAREHOUSE_ERR,
+  ADD_WAREHOUSE_LOADING,
+  ADD_WAREHOUSE_SUCCESS,
+  FETCH_WAREHOUSE_ERR,
+  FETCH_WAREHOUSE_LOADING,
+  FETCH_WAREHOUSE_SUCCESS,
+  REMOVE_WAREHOUSE_ERR,
+  REMOVE_WAREHOUSE_LOADING,
+  REMOVE_WAREHOUSE_SUCCESS,
+  UPDATE_WAREHOUSE_ERR,
+  UPDATE_WAREHOUSE_LOADING,
+  UPDATE_WAREHOUSE_SUCCESS,
+} from "../constant";
+import { AppDispatch } from "../store";
+import { ApiError, Warehouse } from "../types";
 
 export const getWareHouse = () => async (dispatch: AppDispatch) => {
     dispatch({type: FETCH_WAREHOUSE_LOADING});
@@ -26,7 +26,6 @@ export const getWareHouse = () => async (dispatch: AppDispatch) => {
             dispatch({type: FETCH_WAREHOUSE_SUCCESS, payload: res.data});
         })
         .catch((err: AxiosError<ApiError>) => {
-            rejectedToast(err);
             dispatch({
                 type: FETCH_WAREHOUSE_ERR
             });

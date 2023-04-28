@@ -1,14 +1,14 @@
-import { AxiosError } from 'axios';
-import api from '../../api';
-import { rejectedToast, successToast } from '../../app/utils/toaster';
+import { AxiosError } from "axios";
+import api from "../../api";
+import { rejectedToast, successToast } from "../../app/utils/toaster";
 import {
   ADD_PRODUCT_GROUP_LOADING,
   ADD_PRODUCT_GROUP_SUCCESS,
   FETCH_PRODUCT_GROUP_ERR,
-  FETCH_PRODUCT_GROUP_SUCCESS
-} from '../constant';
-import { AppDispatch } from '../store';
-import { ApiError, CreateFN, ProductGroup } from '../types';
+  FETCH_PRODUCT_GROUP_SUCCESS,
+} from "../constant";
+import { AppDispatch } from "../store";
+import { ApiError, CreateFN, ProductGroup } from "../types";
 
 export const getProductGroup = () => async (dispatch: AppDispatch) => {
   dispatch({ type: FETCH_PRODUCT_GROUP_ERR });
@@ -19,7 +19,6 @@ export const getProductGroup = () => async (dispatch: AppDispatch) => {
     })
     .catch((err: AxiosError<ApiError>) => {
       dispatch({ type: FETCH_PRODUCT_GROUP_ERR });
-      rejectedToast(err);
     });
 };
 

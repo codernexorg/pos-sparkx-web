@@ -1,12 +1,13 @@
-import {Table} from 'antd';
-import {useEffect} from 'react';
-import {Link} from 'react-router-dom';
-import {getCat} from '../../../redux/actions/category';
-import {useAppDispatch, useTypedSelector} from '../../../redux/store';
-import {Category} from '../../../redux/types';
-import {Pagination, PrintAble} from '../../components';
-import Loader from '../../components/Loader';
-import {useSettingContext} from '../../context/SettingProver';
+import { Table } from "antd";
+import { useEffect } from "react";
+import { Link } from "react-router-dom";
+import { getCat } from "../../../redux/actions/category";
+import { useAppDispatch, useTypedSelector } from "../../../redux/store";
+import { Category } from "../../../redux/types";
+import { Pagination, PrintAble } from "../../components";
+import Loader from "../../components/Loader";
+import { useSettingContext } from "../../context/SettingProver";
+import { handlePrint } from "../../utils/helper";
 
 const Categories = () => {
     const dispatch = useAppDispatch();
@@ -23,8 +24,8 @@ const Categories = () => {
 
     return (
         <div>
-            <PrintAble title={'Categories'} handlePrint={() => {
-            }} tableId='categories-table'>
+            <PrintAble title={'Categories'} handlePrint={() => handlePrint(categories, ['categoryName'])}
+                       showExcel={false} showPDF={false}>
                 <Table
                     dataSource={categories}
                     rowKey={object => object.categoryName}
@@ -41,6 +42,7 @@ const Categories = () => {
                         }
                     }}
                     id='categories-table'
+                    rowClassName={'dark:bg-slate-700 dark:text-white dark:hover:text-primaryColor-900'}
                 >
                     <Table.Column
                         title='Category Name'

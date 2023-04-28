@@ -1,13 +1,13 @@
-import { Reducer } from '@reduxjs/toolkit';
+import { Reducer } from "@reduxjs/toolkit";
 import {
   ADD_SUPPLIER_ERR,
   ADD_SUPPLIER_LOADING,
   ADD_SUPPLIER_SUCCESS,
   FETCH_SUPPLIER_ERR,
   FETCH_SUPPLIER_LOADING,
-  FETCH_SUPPLIER_SUCCESS
-} from '../constant';
-import { ISupplierState, SupplierActionType } from '../types';
+  FETCH_SUPPLIER_SUCCESS,
+} from "../constant";
+import { ISupplierState, SupplierActionType } from "../types";
 
 const supplier: Reducer<ISupplierState, SupplierActionType> = function (
   state = { isLoading: false, suppliers: [], error: null },
@@ -21,7 +21,7 @@ const supplier: Reducer<ISupplierState, SupplierActionType> = function (
       return {
         ...state,
         isLoading: false,
-        suppliers: [...state.suppliers, action.payload]
+        suppliers: [...state.suppliers, action.payload],
       };
     }
     case ADD_SUPPLIER_ERR: {
@@ -29,7 +29,7 @@ const supplier: Reducer<ISupplierState, SupplierActionType> = function (
         ...state,
         isLoading: false,
         suppliers: [],
-        error: action.payload
+        error: action.payload,
       };
     }
 
@@ -46,9 +46,28 @@ const supplier: Reducer<ISupplierState, SupplierActionType> = function (
         ...state,
         isLoading: false,
         suppliers: [],
-        error: action.payload
+        error: action.payload,
       };
     }
+
+    case "UPDATE_SUPPLIER_LOADING":
+      return { ...state, isLoading: true };
+    case "UPDATE_SUPPLIER_SUCCESS":
+      return {
+        ...state,
+        isLoading: false,
+        suppliers: state.suppliers.map((supplier) =>
+          supplier.id === action.payload.id ? action.payload : supplier
+        ),
+      };
+    case "UPDATE_SUPPLIER_ERR":
+      return { ...state, isLoading: false };
+    case "DELETE_SUPPLIER_LOADING":
+      return { ...state, isLoading: true };
+    case "DELETE_SUPPLIER_SUCCESS":
+      return { ...state, isLoading: false, suppliers: action.payload };
+    case "DELETE_SUPPLIER_ERR":
+      return { ...state, isLoading: false };
 
     default:
       return state;

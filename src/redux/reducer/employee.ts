@@ -41,7 +41,7 @@ export const employee: Reducer<IEmployeeState, EmployeeAction> = (state = {
             return {...state, isLoading: false, employees: action.payload}
         }
         case FETCH_EMPLOYEE_ERR: {
-            return {...state, isLoading: false, error: action.payload.message}
+            return {...state, isLoading: false, error: action.payload?.message}
         }
 
         case UPDATE_EMPLOYEE_LOADING: {
@@ -56,7 +56,7 @@ export const employee: Reducer<IEmployeeState, EmployeeAction> = (state = {
             }
         }
         case UPDATE_EMPLOYEE_ERR: {
-            return {...state, isLoading: false, error: action.payload.message}
+            return {...state, isLoading: false, error: action.payload?.message}
         }
 
         case REMOVE_EMPLOYEE_LOADING: {
@@ -68,7 +68,7 @@ export const employee: Reducer<IEmployeeState, EmployeeAction> = (state = {
         }
 
         case REMOVE_EMPLOYEE_ERR: {
-            return {...state, isLoading: false, error: action.payload.message}
+            return {...state, isLoading: false, error: action.payload?.message}
         }
 
         default:

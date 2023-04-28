@@ -20,7 +20,7 @@ const business: Reducer<IBusinessState, BusinessAction> = (state = {
             return {...state, isLoading: true}
         }
         case FETCH_BUSINESS_SUCCESS: {
-            return {...state, business: action.payload[0], isLoading: false}
+            return {...state, business: action.payload, isLoading: false}
         }
         case FETCH_BUSINESS_ERR: {
             return {...state, isLoading: false, error: action.payload?.message}

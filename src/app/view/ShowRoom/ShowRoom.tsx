@@ -1,24 +1,28 @@
-import {Modal, Table} from 'antd';
-import React, {useRef, useState} from 'react';
-import {useReactToPrint} from 'react-to-print';
-import {useAppDispatch, useTypedSelector} from '../../../redux/store';
-import {Button, CommonInput, Loader, Pagination, PrintAble} from '../../components';
-import {useSettingContext} from '../../context/SettingProver';
-import {AiOutlineDelete, AiOutlineEdit} from "react-icons/ai";
-import {deleteShowroom, updateShowroom} from "../../../redux/actions/showroom";
-import {Form, Formik} from "formik";
+import { Modal, Table } from "antd";
+import React, { useRef, useState } from "react";
+import { useAppDispatch, useTypedSelector } from "../../../redux/store";
+import {
+  Button,
+  CommonInput,
+  Loader,
+  Pagination,
+  PrintAble,
+} from "../../components";
+import { useSettingContext } from "../../context/SettingProver";
+import { AiOutlineDelete, AiOutlineEdit } from "react-icons/ai";
+import {
+  deleteShowroom,
+  updateShowroom,
+} from "../../../redux/actions/showroom";
+import { Form, Formik } from "formik";
 import ConfirmationModal from "../../components/ConfirmationModal";
+import { handleExcel, handlePrint } from "../../utils/helper";
 
 
 const Showroom = () => {
     const cRef = useRef(null);
 
     const dispatch = useAppDispatch();
-
-    const handlePrint = useReactToPrint({
-        content: () => cRef.current
-    });
-
     const {showroom, isLoading} = useTypedSelector(state => state.showroom);
     const {page, pageSize, setPage, setPageSize} = useSettingContext();
     const [editAble, setEditAble] = useState<IShowroom | null>(null);
@@ -30,7 +34,16 @@ const Showroom = () => {
         return <Loader/>;
     }
     return (
-        <PrintAble title={'Showrooms'} handlePrint={handlePrint} tableId='showroomData'>
+        <PrintAble title={'Showrooms'} handlePrint={
+            () => {
+                handlePrint(showroom, [
+                    {field: 'showroomName', displayName: 'Name'},
+                    {field: 'showroomCode', displayName: 'Code'},
+                    {field: 'showroomMobile', displayName: 'Mobile'},
+                    {field: 'showroomAddress', displayName: 'Address'}
+                ], 'Showroom')
+            }
+        } handleExcel={() => handleExcel(showroom)}>
             <ConfirmationModal open={confirmationModal} setOpen={setConfirmationModal} execute={
                 async () => {
                     await dispatch(deleteShowroom(itemToDelete))
@@ -41,6 +54,7 @@ const Showroom = () => {
                 id='showroomData'
                 ref={cRef}
                 rowKey={obj => obj.showroomCode}
+                rowClassName={'dark:bg-slate-700 dark:text-white dark:hover:text-primaryColor-900'}
                 pagination={{
                     current: page,
                     total: showroom.length,
@@ -65,15 +79,16 @@ const Showroom = () => {
                     key='showroomName'
                 />
                 <Table.Column
-                    title='Showroom Adress'
-                    dataIndex={'showroomAddress'}
-                    key='showroomAddress'
-                />
-                <Table.Column
                     title='Showroom Mobile'
                     dataIndex={'showroomMobile'}
                     key='showroomMobile'
                 />
+                <Table.Column
+                    title='Showroom Adress'
+                    dataIndex={'showroomAddress'}
+                    key='showroomAddress'
+                />
+
                 <Table.Column
                     title='Showroom Actions'
                     dataIndex={'id'}

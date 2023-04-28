@@ -1,8 +1,12 @@
-import api from '../../api';
-import { rejectedToast, successToast } from '../../app/utils/toaster';
-import { CREATE_CATEGORY_SUCCESS, FETCH_CATEGORY_SUCCESS } from '../constant';
-import { AppDispatch } from '../store';
-import { Category, CreateFN } from '../types';
+import api from "../../api";
+import { rejectedToast, successToast } from "../../app/utils/toaster";
+import {
+  CREATE_CATEGORY_SUCCESS,
+  FETCH_CATEGORY_ERR,
+  FETCH_CATEGORY_SUCCESS,
+} from "../constant";
+import { AppDispatch } from "../store";
+import { Category, CreateFN } from "../types";
 
 export const createCat: CreateFN<Category> =
   (data, reset, navigate) => async (dispatch: AppDispatch) => {
@@ -32,6 +36,6 @@ export const getCat = () => async (dispatch: AppDispatch) => {
       dispatch({ type: FETCH_CATEGORY_SUCCESS, payload: res.data });
     })
     .catch(err => {
-      rejectedToast(err.message);
+        dispatch({type:FETCH_CATEGORY_ERR})
     });
 };

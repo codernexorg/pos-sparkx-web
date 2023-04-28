@@ -22,9 +22,9 @@ export const fetchBusiness = () => async (dispatch: AppDispatch) => {
     })
 }
 
-export const updateBusiness = (id: number, data: any) => async (dispatch: Dispatch<BusinessAction>) => {
+export const updateBusiness = (data: any) => async (dispatch: Dispatch<BusinessAction>) => {
     dispatch({type: UPDATE_BUSINESS_LOADING})
-    api.patch(`business/${id}`, data).then(res => {
+    api.patch(`business`, data).then(res => {
         dispatch({type: UPDATE_BUSINESS_SUCCESS, payload: res.data})
     }).catch((err: AxiosError<ApiError>) => {
         dispatch({type: UPDATE_BUSINESS_ERR, payload: err.response?.data})

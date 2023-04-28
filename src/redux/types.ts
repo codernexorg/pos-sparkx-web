@@ -1,4 +1,4 @@
-import {NavigateFunction} from 'react-router-dom';
+import {NavigateFunction} from "react-router-dom";
 import {
     ADD_CUSTOMER_ERR,
     ADD_CUSTOMER_LOADING,
@@ -24,8 +24,6 @@ import {
     ADD_WAREHOUSE_ERR,
     ADD_WAREHOUSE_LOADING,
     ADD_WAREHOUSE_SUCCESS,
-    BARCODE_ERR,
-    BARCODE_LOADING,
     CREATE_CATEGORY_ERR,
     CREATE_CATEGORY_LOADING,
     CREATE_CATEGORY_SUCCESS,
@@ -35,7 +33,6 @@ import {
     DELETE_SHOWROOM_ERR,
     DELETE_SHOWROOM_LOADING,
     DELETE_SHOWROOM_SUCCESS,
-    FETCH_BARCODE,
     FETCH_CATEGORY_ERR,
     FETCH_CATEGORY_LOADING,
     FETCH_CATEGORY_SUCCESS,
@@ -63,7 +60,6 @@ import {
     FETCH_WAREHOUSE_ERR,
     FETCH_WAREHOUSE_LOADING,
     FETCH_WAREHOUSE_SUCCESS,
-    PRINT_BARCODE,
     REMOVE_CUSTOMER_ERR,
     REMOVE_CUSTOMER_LOADING,
     REMOVE_CUSTOMER_SUCCESS,
@@ -73,21 +69,23 @@ import {
     REMOVE_WAREHOUSE_ERR,
     REMOVE_WAREHOUSE_LOADING,
     REMOVE_WAREHOUSE_SUCCESS,
-    SET_BARCODE,
     TRANSFER_PRODUCT_ERR,
     TRANSFER_PRODUCT_LOADING,
     TRANSFER_PRODUCT_SUCCESS,
     UPDATE_CUSTOMER_ERR,
     UPDATE_CUSTOMER_LOADING,
     UPDATE_CUSTOMER_SUCCESS,
+    UPDATE_PRODUCT_ERR,
+    UPDATE_PRODUCT_LOADING,
+    UPDATE_PRODUCT_SUCCESS,
     UPDATE_SHOWROOM_ERR,
     UPDATE_SHOWROOM_LOADING,
     UPDATE_SHOWROOM_SUCCESS,
     UPDATE_WAREHOUSE_ERR,
     UPDATE_WAREHOUSE_LOADING,
-    UPDATE_WAREHOUSE_SUCCESS
-} from './constant';
-import {AppDispatch} from './store';
+    UPDATE_WAREHOUSE_SUCCESS,
+} from "./constant";
+import {AppDispatch} from "./store";
 import Invoice from "../app/view/POS/Invoice";
 
 //Product Group
@@ -196,6 +194,19 @@ interface TransferProductErr {
     type: typeof TRANSFER_PRODUCT_ERR
 }
 
+interface UpdateProductLoading{
+    type:typeof UPDATE_PRODUCT_LOADING
+}
+
+interface UpdateProductSuccess{
+    type:typeof UPDATE_PRODUCT_SUCCESS
+    payload:Product
+}
+interface UpdateProductFailuer{
+    type:typeof UPDATE_PRODUCT_ERR
+}
+
+
 export type ProductActionType =
     | CreateSingleProductLoading
     | CreateSingleProductSuccess
@@ -207,21 +218,12 @@ export type ProductActionType =
     | FetchProductSuccess
     | FetchProductErr
     | TransferProductLoading
-    | TransferPrdouctSuccess | TransferProductErr
+    | TransferPrdouctSuccess | TransferProductErr|UpdateProductLoading|UpdateProductSuccess|UpdateProductFailuer
 
 
 //Supplier Types
 
-export interface Supplier {
-    id?: number;
-    supplierName: string;
-    supplierAddress: string;
-    contactPersonName: string;
-    contactPersonNumber: string;
-    supplierEmail: string;
-    altContactNumber: string;
-    extraInfo: string;
-}
+
 
 export interface ISupplierState {
     suppliers: Supplier[];
@@ -262,12 +264,34 @@ export interface FetchSupplierErr {
     payload: string;
 }
 
+interface UpdateSupplierLoading {
+    type:'UPDATE_SUPPLIER_LOADING';
+
+}
+interface UpdateSupplierSuccess{
+    type:'UPDATE_SUPPLIER_SUCCESS'
+    payload:Supplier
+}
+interface UpdateSupplierErr {
+    type:'UPDATE_SUPPLIER_ERR';
+}
+interface DeleteSupplierLoading{
+    type:'DELETE_SUPPLIER_LOADING'
+}
+interface DeleteSupplierSuccess{
+    type:'DELETE_SUPPLIER_SUCCESS'
+    payload:Supplier[]
+}
+interface DeleteSupplierErr{
+    type:'DELETE_SUPPLIER_ERR'
+}
+
 export type FetchSupplierAction =
     | FetchSupplierErr
     | FetchSupplierLoading
-    | FetchSupplierSuccess;
+    | FetchSupplierSuccess
 
-export type SupplierActionType = CreateSupplierAction | FetchSupplierAction;
+export type SupplierActionType = CreateSupplierAction | FetchSupplierAction|UpdateSupplierLoading|UpdateSupplierSuccess|UpdateSupplierErr|DeleteSupplierLoading|DeleteSupplierSuccess|DeleteSupplierErr
 
 //Category Types
 
@@ -484,39 +508,6 @@ export interface ApiError {
     message: string;
 }
 
-//BARCODE
-
-interface PrintBarcodeAction {
-    type: typeof PRINT_BARCODE;
-    payload: Product[];
-}
-
-interface BarcodeLoading {
-    type: typeof BARCODE_LOADING;
-}
-
-interface SettingBarcode {
-    type: typeof SET_BARCODE;
-    payload: BarcodeSetting;
-}
-
-interface FetchBarcode {
-    type: typeof FETCH_BARCODE;
-    payload: BarcodeSetting;
-}
-
-interface BarcodeErr {
-    type: typeof BARCODE_ERR;
-}
-
-export type BarcodeActionType =
-    | PrintBarcodeAction
-    | SettingBarcode
-    | FetchBarcode
-    | BarcodeLoading
-    | BarcodeErr;
-
-
 //USer
 
 export interface IUserState {
@@ -556,7 +547,27 @@ interface FetchUserErr {
     type: typeof FETCH_USER_ERR;
     payload: ApiError
 }
+interface UpdateUserLoading {
+    type:'UPDATE_USER_LOADING'
+}
+interface UpdateUserSuccess {
+    type: 'UPDATE_USER_SUCCESS'
+    payload: IUser
+}
 
+interface UpdateUserError {
+    type: 'UPDATE_USER_ERR'
+}
+interface DeleteUserLoading {
+    type:'DELETE_USER_LOADING'
+}
+interface DeleteUserSuccess {
+    type: 'DELETE_USER_SUCCESS'
+    payload: IUser[]
+}
+interface DeleteUserErr {
+    type: 'DELETE_USER_ERR'
+}
 
 export type UserActionType =
     CreateUserLoading
@@ -564,7 +575,7 @@ export type UserActionType =
     | CreateUserSuccess
     | FetchUserLoading
     | FetchUserErr
-    | FetchUserSuccess
+    | FetchUserSuccess|UpdateUserLoading|UpdateUserSuccess|UpdateUserError|DeleteUserLoading|DeleteUserSuccess|DeleteUserErr
 
 // Invoice
 

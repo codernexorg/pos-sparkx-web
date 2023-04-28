@@ -1,22 +1,21 @@
-import React, {useEffect, useState} from 'react'
-import {useAppDispatch, useTypedSelector} from "../../../redux/store";
-import {uniqueItem} from "../../utils/helper";
-import {Form, Formik} from "formik";
-import {Button, CommonInput, SelectInput} from "../../components";
-import {filter, find} from "underscore";
-import {toast} from "react-toastify";
-import {AiOutlineDelete} from "react-icons/ai";
-import {Modal, Spin, Table} from "antd";
+import React, { useEffect, useState } from "react";
+import { useAppDispatch, useTypedSelector } from "../../../redux/store";
+import { uniqueItem } from "../../utils/helper";
+import { Form, Formik } from "formik";
+import { Button, CommonInput, SelectInput } from "../../components";
+import { filter, find } from "underscore";
+import { toast } from "react-toastify";
+import { AiOutlineDelete } from "react-icons/ai";
+import { Modal, Spin, Table } from "antd";
 import useDebounce from "react-debounced";
 import api from "../../../api";
-import {rejectedToast, successToast} from "../../utils/toaster";
-import {AxiosError} from "axios";
-import {ApiError} from "../../../redux/types";
-import {fetchTransfers} from "../../../redux/actions/transferred";
-import {FaHistory} from "react-icons/fa";
+import { rejectedToast, successToast } from "../../utils/toaster";
+import { AxiosError } from "axios";
+import { ApiError } from "../../../redux/types";
+import { fetchTransfers } from "../../../redux/actions/transferred";
+import { FaHistory } from "react-icons/fa";
 
-interface TransferProductProps {
-}
+interface TransferProductProps {}
 
 const TransferProduct: React.FC<TransferProductProps> = () => {
     const dispatch = useAppDispatch()
@@ -56,7 +55,7 @@ const TransferProduct: React.FC<TransferProductProps> = () => {
                 </Table>
             </Modal>
             <div className={'mb-10'}>
-                <button className={'px-2 py-1 border border-slate-400 w-fit flex gap-x-2 items-center'}
+                <button className={'px-2 py-1 border border-slate-400 w-fit flex gap-x-2 items-center dark:text-white'}
                         onClick={() => setShowModal(true)}>
                     <FaHistory/> History
                 </button>
@@ -122,7 +121,6 @@ const TransferProduct: React.FC<TransferProductProps> = () => {
                                         }
 
                                     </SelectInput>
-
                                     <CommonInput
                                         disabled={true} label={"From"} name={'whName'}
                                         placeholder={'From'} required={true}/>
@@ -149,9 +147,9 @@ const TransferProduct: React.FC<TransferProductProps> = () => {
                     <div className={'flex w-full space-x-5'}>
                         <div className={'w-full flex flex-col gap-3'}>
                             <div className={'flex justify-between'}>
-                                <h1 className={'text-xl font-semibold'}>Select Product To Transfer</h1>
+                                <h1 className={'text-xl font-semibold dark:text-white'}>Select Product To Transfer</h1>
                                 <button type={'button'}
-                                        className={'bg-dark-purple text-white px-2 py-0.5 rounded'}
+                                        className={'bg-primary-color text-white px-2 py-0.5 rounded'}
                                         onClick={() => {
                                             setSelectedTransfer(transferAbleProduct)
                                         }}>Select All
@@ -161,14 +159,14 @@ const TransferProduct: React.FC<TransferProductProps> = () => {
                             <ul className={'h-[400px] space-y-2 overflow-y-scroll p-4 scrollbar-thin scrollbar-thumb-amber-700 scrollbar-thumb-rounded '}>
 
                                 {
-                                    transferAbleProduct ? transferAbleProduct.map((item, index) => <li onClick={() => {
+                                    transferAbleProduct ? transferAbleProduct.filter(p=>p.sellingStatus==='Unsold').map((item, index) => <li onClick={() => {
                                         if (selectedTransfer.includes(item)) {
                                             return toast.error("Product Already Selected")
                                         } else {
                                             setSelectedTransfer(prev => [...prev, item])
                                         }
                                     }}
-                                                                                                       className={'rounded-md bg-dark-purple text-white p-4 cursor-pointer flex justify-between'}
+                                                                                                       className={'rounded-md bg-primary-color text-white p-4 cursor-pointer flex justify-between'}
                                                                                                        key={index}>
                                         <span>{item.productGroup}</span> <span>{item.itemCode}</span></li>) : <Spin/>
                                 }
@@ -176,7 +174,7 @@ const TransferProduct: React.FC<TransferProductProps> = () => {
                         </div>
                         <div className={'w-full flex flex-col gap-3 '}>
                             <div className={'flex justify-between'}>
-                                <h1 className={'text-xl font-semibold'}>Selected Products
+                                <h1 className={'text-xl font-semibold dark:text-white'}>Selected Products
                                     : {selectedTransfer.length} Items</h1>
                                 <button type={'button'} className={'bg-red-900 text-white px-2 py-0.5 rounded'}
                                         onClick={() => {
@@ -191,7 +189,7 @@ const TransferProduct: React.FC<TransferProductProps> = () => {
                                         <div key={index} onMouseEnter={() => setShowRemoveBtn(index)}
                                              onMouseLeave={() => setShowRemoveBtn(null)} className={'relative'}>
                                             <li
-                                                className={'z-10 rounded-md bg-dark-purple text-white p-4 cursor-pointer flex justify-between'}
+                                                className={'z-10 rounded-md bg-primary-color text-white p-4 cursor-pointer flex justify-between'}
 
                                             >
                                                 <span>{item.productGroup}</span>
