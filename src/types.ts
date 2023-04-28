@@ -1,5 +1,1 @@
-export const UserRole = [
-    'SuperAdmin',
-    'ShowroomManager',
-    'SalesOperator'
-];
+export const UserRole = ["SuperAdmin", "ShowroomManager", "SalesOperator"];

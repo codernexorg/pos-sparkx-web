@@ -57,7 +57,7 @@
     "yup": "^0.32.11"
   },
   "scripts": {
-    "start": "craco start",
+    "start": "react-scripts start",
     "build:staging": "craco build",
     "build:production": "craco build",
     "test": "react-scripts test",
