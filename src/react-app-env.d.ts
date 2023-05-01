@@ -4,7 +4,7 @@ interface IShowroom {
   showroomCode: string;
   showroomAddress: string;
 }
-type ThemMode='dark'|'light'
+type ThemMode = "dark" | "light";
 
 interface ISettingContext {
   isActive: boolean;
@@ -23,8 +23,8 @@ interface ISettingContext {
   currentUser: IUser | null;
   defaultBarcodeSettings: BarcodeSetting | undefined;
 
-  mode:ThemMode,
-  setMode: React.Dispatch<React.SetStateAction<ThemMode>>
+  mode: ThemMode;
+  setMode: React.Dispatch<React.SetStateAction<ThemMode>>;
 }
 
 interface Supplier {
@@ -39,10 +39,10 @@ interface Supplier {
 }
 
 type IUserRole =
-  | 'MasterAdmin'
-  | 'SuperAdmin'
-  | 'ShowroomManager'
-  | 'SalesOperator';
+  | "MasterAdmin"
+  | "SuperAdmin"
+  | "ShowroomManager"
+  | "SalesOperator";
 
 interface IUser {
   id: number;
@@ -74,16 +74,16 @@ interface Product {
   sellPriceAfterDiscount: number;
   grossProfit: string;
   grossMargin: string;
-  quantity:number
+  quantity: number;
   size: string;
 
   discount?: number;
 
-  returnStatus:number
-
+  returnStatus: number;
+  createdAt: string;
   updatedAt: string;
-  employee:IEmployee
-  tagless:boolean
+  employee: IEmployee;
+  tagless: boolean;
 }
 
 interface DeleteProductRes {
@@ -164,12 +164,11 @@ interface Invoice {
 
   paidAmount: number;
 
-
   discountAmount: number;
 
-  netAmount:number
-  withTax:number
-  withoutTax:number
+  netAmount: number;
+  withTax: number;
+  withoutTax: number;
 
   changeAmount: number;
 
@@ -205,14 +204,14 @@ interface ICustomer {
 
   credit?: number;
 
-  paid?: number;
+  paid: number;
   purchasedProducts: Product[];
 
   returnedProducts: Product[];
 
-  createdAt?: Date;
+  createdAt: string;
 
-  updatedAt?: Date;
+  updatedAt: string;
 }
 
 interface IEmployee {
@@ -325,15 +324,14 @@ interface Purchase {
   updatedAt: string;
 }
 
-
-interface IReturned{
-  id:number
-  amount:number
-  invoiceNo:string
-  customerPhone:string
-  check:string
-  salesDate:string
-  products:Product[]
-  createdAt:string
-  updatedAt:string
+interface IReturned {
+  id: number;
+  amount: number;
+  invoiceNo: string;
+  customerPhone: string;
+  check: string;
+  salesDate: string;
+  products: Product[];
+  createdAt: string;
+  updatedAt: string;
 }

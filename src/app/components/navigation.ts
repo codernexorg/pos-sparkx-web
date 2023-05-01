@@ -116,6 +116,19 @@ const navigation = [
         Icon: FaFileImport,
         text: "Transfer Products",
       },
+
+      {
+        access: ["SuperAdmin", "ShowroomManager", "SalesOperator"],
+        to: "products/best-products",
+        Icon: FaAccusoft,
+        text: "Best Products",
+      },
+      {
+        access: ["SuperAdmin", "ShowroomManager", "SalesOperator"],
+        to: "products/best-products/all-time",
+        Icon: FaAccusoft,
+        text: "Best Products All Time",
+      },
     ],
   },
   {
@@ -247,6 +260,7 @@ const navigation = [
     title: "Customer",
     Icon: RiFileUserFill,
     access: ["SuperAdmin", "ShowroomManager"],
+
     links: [
       {
         access: ["SuperAdmin", "ShowroomManager"],
@@ -259,6 +273,12 @@ const navigation = [
         to: "/dashboard/customer/add",
         Icon: FaAccusoft,
         text: "Add Customer",
+      },
+      {
+        access: ["SuperAdmin", "ShowroomManager"],
+        to: "/dashboard/customer/best",
+        Icon: FaAccusoft,
+        text: "Best Customers",
       },
       // {
       //   access: ["SuperAdmin", "ShowroomManager"],
