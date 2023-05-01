@@ -59,6 +59,8 @@ import { getProductGroup } from "./redux/actions/productGroup";
 import { getInvoice } from "./redux/actions/invoice";
 import { useSettingContext } from "./app/context/SettingProver";
 import DamagedProducts from "./app/view/Product/DamagedProduct";
+import BestProducts from "./app/view/Product/BestProducts";
+import BestCustomer from "./app/view/Customer/BestCustomer";
 
 interface DispatchActions {
   (): void;
@@ -103,6 +105,7 @@ function App() {
               <Route path="transfer" element={<TransferProduct />} />
               <Route path="lost" element={<LostProduct />} />
               <Route path="damaged" element={<DamagedProducts />} />
+              <Route path="best-products" element={<BestProducts />} />
             </Route>
             <Route path="product-group">
               <Route index element={<ProductGroup />} />
@@ -146,6 +149,7 @@ function App() {
               <Route index element={<Customer />} />
               <Route path=":id" element={<CustomerDetails />} />
               <Route path="add" element={<AddCustomer />} />
+              <Route path="best" element={<BestCustomer />} />
             </Route>
             <Route path={"employee"}>
               <Route index element={<Employee />} />
