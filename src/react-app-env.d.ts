@@ -136,6 +136,12 @@ interface ProductInfoMultiple {
   itemCode: string;
 }
 
+interface Payment {
+  id: number;
+  paymentMethod: string;
+  amount: number;
+}
+
 interface Invoice {
   id: number;
   invoiceNo: string;
@@ -144,6 +150,7 @@ interface Invoice {
   invoiceAmount: number;
 
   invoiceStatus: string;
+  paymentMethod: Payment;
 
   vat: number;
 

@@ -25,6 +25,7 @@ import { useSettingContext } from "../../context/SettingProver";
 import { fetchEmployee } from "../../../redux/actions/employee";
 import { ApiError } from "../../../redux/types";
 import { AxiosError } from "axios";
+import { PaymentMethod } from "../../../types";
 
 const Sell = () => {
   const { currentUser } = useSettingContext();
@@ -197,7 +198,7 @@ const Sell = () => {
             dataSource={invoices.filter(
               (invoice) => invoice.invoiceStatus === "Hold"
             )}
-            rowKey={(obj, idx) => obj.invoiceNo}
+            rowKey={(obj: Invoice, idx) => obj.invoiceNo}
             pagination={{ defaultPageSize: 30 }}
             rowClassName={
               "dark:bg-slate-700 dark:text-white dark:hover:text-primaryColor-900"
@@ -297,7 +298,7 @@ const Sell = () => {
 
 
 
-      Invoice Start
+      Invoice Modal Start
 
 
       */}
@@ -413,7 +414,9 @@ const Sell = () => {
               </div>
               <div className={"w-full flex text-center mb-2"}>
                 <div className={"w-full border border-slate-400 py-1"}>
-                  <h1 className={"border-b border-slate-400"}>Cash Amount</h1>
+                  <h1 className={"border-b border-slate-400"}>
+                    {invoiceData?.paymentMethod.paymentMethod}Amount
+                  </h1>
                   <h1 className={""}>{invoiceData?.paidAmount}৳</h1>
                 </div>
                 <div
@@ -552,7 +555,9 @@ const Sell = () => {
               </div>
               <div className={"w-full flex text-center mb-2"}>
                 <div className={"w-full border border-slate-400 py-1"}>
-                  <h1 className={"border-b border-slate-400"}>Cash Amount</h1>
+                  <h1 className={"border-b border-slate-400"}>
+                    {invoiceData?.paymentMethod.paymentMethod} Amount
+                  </h1>
                   <h1 className={""}>{invoiceData?.paidAmount}৳</h1>
                 </div>
                 <div
@@ -956,6 +961,7 @@ const Sell = () => {
             ? cart.map((item) => item.sellPrice)
             : [0, 0, 0, 0],
           employees: sellerEmp,
+          paymentMethod: PaymentMethod.CASH,
         }}
         enableReinitialize
         onSubmit={(values, { resetForm, setFieldValue }) => {
@@ -1223,6 +1229,19 @@ const Sell = () => {
                         )
                       }
                       disabled
+                    />
+                  </div>
+                  <div
+                    className={"text-[16px] font-black flex justify-between"}
+                  >
+                    Payment Method
+                    <Field
+                      className="border pl-2 rounded-md w-40"
+                      as="select"
+                      name="paymentMethod"
+                      children={Object.keys(PaymentMethod).map((key) => (
+                        <option value={key}>{key}</option>
+                      ))}
                     />
                   </div>
                 </div>
