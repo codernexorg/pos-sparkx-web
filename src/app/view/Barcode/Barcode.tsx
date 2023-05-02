@@ -1,4 +1,4 @@
-import { Typography } from "antd";
+import { Button as AntButton, Typography } from "antd";
 import { Field, Form, Formik } from "formik";
 import React, { useRef, useState } from "react";
 import BarcodeGeneratorComponent from "react-barcode";
@@ -6,8 +6,9 @@ import { FaPrint } from "react-icons/fa";
 import { useReactToPrint } from "react-to-print";
 import { printBarcode } from "../../../redux/actions/barcode";
 import { useAppDispatch, useTypedSelector } from "../../../redux/store";
-import { Button, Loader } from "../../components";
+import { Loader, Button } from "../../components";
 import { useSettingContext } from "../../context/SettingProver";
+import { toast } from "react-toastify";
 
 const Barcode = () => {
   const dispatch = useAppDispatch();
@@ -32,23 +33,39 @@ const Barcode = () => {
     return (
       <div>
         <Formik
-          initialValues={{ lotNumber: 0 }}
+          initialValues={{ startItemCode: "", endItemCode: "" }}
           onSubmit={(value) => {
-            dispatch(printBarcode(value));
-            setIsClicked(true);
+            if (!value.startItemCode || !value.endItemCode) {
+              toast.error("Invalid start item code ");
+            } else {
+              dispatch(printBarcode(value));
+              setIsClicked(true);
+            }
           }}
         >
           {() => (
             <Form className="bg-primary-color rounded p-10 rounder flex flex-col items-center gap-y-4 text-white">
-              <h1 className={"text-2xl "}>Lot Number</h1>
+              <h1 className={"text-2xl "}>Item Codes</h1>
               <Field
-                name={"lotNumber"}
-                placeholder={"Lot Number"}
-                type={"number"}
+                name={"startItemCode"}
+                placeholder={"Itemcode Start"}
                 className={
                   "w-full rounded h-8 text-black focus:outline-none pl-2"
                 }
               />
+              <Field
+                name={"endItemCode"}
+                placeholder={"Itemcode End"}
+                className={
+                  "w-full rounded h-8 text-black focus:outline-none pl-2"
+                }
+              />
+              <button
+                type="submit"
+                className="border-1 border-white text-white hover:text-light-white px-2  py-1 rounded-md"
+              >
+                Generate Barcode
+              </button>
             </Form>
           )}
         </Formik>
@@ -218,4 +235,3 @@ const Barcode = () => {
 };
 
 export default Barcode;
-
