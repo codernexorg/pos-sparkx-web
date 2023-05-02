@@ -322,6 +322,12 @@ const Invoice = () => {
           )}
         />
         <Table.Column
+          title="Payment Method"
+          render={(_, obj: Invoice) => {
+            return obj.paymentMethod.paymentMethod;
+          }}
+        />
+        <Table.Column
           title={"Customer"}
           render={(_, record: Invoice) => {
             const customer = customers.find(
