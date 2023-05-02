@@ -32,7 +32,7 @@ const Barcode = () => {
     return (
       <div>
         <Formik
-          initialValues={{ lotNumber: 0 }}
+          initialValues={{ startItemCode: "", endItemCode: "" }}
           onSubmit={(value) => {
             dispatch(printBarcode(value));
             setIsClicked(true);
@@ -42,13 +42,20 @@ const Barcode = () => {
             <Form className="bg-primary-color rounded p-10 rounder flex flex-col items-center gap-y-4 text-white">
               <h1 className={"text-2xl "}>Lot Number</h1>
               <Field
-                name={"lotNumber"}
-                placeholder={"Lot Number"}
-                type={"number"}
+                name={"startItemCode"}
+                placeholder={"Itemcode Start"}
                 className={
                   "w-full rounded h-8 text-black focus:outline-none pl-2"
                 }
               />
+              <Field
+                name={"endItemCode"}
+                placeholder={"Itemcode End"}
+                className={
+                  "w-full rounded h-8 text-black focus:outline-none pl-2"
+                }
+              />
+              <Button type="submit">Generate Barcode</Button>
             </Form>
           )}
         </Formik>
@@ -218,4 +225,3 @@ const Barcode = () => {
 };
 
 export default Barcode;
-
