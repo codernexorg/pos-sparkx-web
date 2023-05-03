@@ -8,7 +8,7 @@ import {
   SelectInput,
 } from "../../components";
 import { useSettingContext } from "../../context/SettingProver";
-import { handleExcel } from "../../utils/helper";
+import { formatPrice, handleExcel } from "../../utils/helper";
 import JsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
 import { AiOutlineEdit } from "react-icons/ai";
@@ -231,7 +231,11 @@ const AllProducts = () => {
           filtered={true}
           onFilter={(value, record: Product) => record.showroomName === value}
         />
-        <Table.Column title="Price" dataIndex={"sellPrice"} />
+        <Table.Column
+          title="Price"
+          dataIndex={"sellPrice"}
+          render={(_, obj: Product) => formatPrice(obj.sellPrice)}
+        />
         <Table.Column
           title="Selling Status"
           dataIndex={"sellingStatus"}

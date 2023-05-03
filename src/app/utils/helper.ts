@@ -1,6 +1,6 @@
 import printJS from "print-js";
 import * as XLSX from "xlsx";
-import moment, { MomentInput } from "moment";
+import moment from "moment";
 import { rejectedToast, successToast } from "./toaster";
 import api from "../../api";
 
@@ -31,8 +31,28 @@ export const handleExcel = (
   title: string = "Document",
   file: string = "Excel Data"
 ) => {
+  const formattedData = data.map((item) => {
+    const keyWithPrice: string[] = [];
+
+    for (const key in item) {
+      if (
+        key.toLocaleLowerCase().includes("price") ||
+        key.toLocaleLowerCase().includes("cost") ||
+        key.toLocaleLowerCase().includes("amount")
+      ) {
+        keyWithPrice.push(key);
+      }
+    }
+
+    const newItem = { ...item };
+    keyWithPrice.forEach((key) => {
+      newItem[key] = newItem[key] ? formatPrice(newItem[key]) : "";
+    });
+
+    return newItem;
+  });
   const wb = XLSX.utils.book_new();
-  const ws = XLSX.utils.json_to_sheet(data);
+  const ws = XLSX.utils.json_to_sheet(formattedData);
   const fileName =
     file +
     "_" +
@@ -213,5 +233,15 @@ export const dateFilter = <T extends DateObj>(
     }
   });
 };
+
+export function formatPrice(num: string | number): string {
+  const price = typeof num === "string" ? parseFloat(num) : num;
+  if (isNaN(price)) return "";
+
+  return price.toLocaleString("en-US", {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  });
+}
 
 export default function utils() {}
