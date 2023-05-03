@@ -814,10 +814,14 @@ const Sell = () => {
                     { autoClose: 2000 }
                   );
                 } else if (searchedProduct.length === 1) {
-                  if (searchedProduct[0].sellingStatus === "Sold") {
-                    toast.error("This Product Is Already Sold", {
-                      autoClose: 2000,
-                    });
+                  if (searchedProduct[0].sellingStatus !== "Unsold") {
+                    toast.error(
+                      searchedProduct[0].sellingStatus +
+                        " product can't be added to cart",
+                      {
+                        autoClose: 2000,
+                      }
+                    );
                   } else {
                     if (cart.includes(searchedProduct[0])) {
                       toast.error("This Product Is Already In Cart", {
@@ -878,10 +882,15 @@ const Sell = () => {
                 return (
                   <li
                     onClick={() => {
-                      if (product.sellingStatus === "Sold") {
-                        toast.error("This Product Is Already Sold", {
-                          autoClose: 3000,
-                        });
+                      if (product.sellingStatus !== "Unsold") {
+                        toast.error(
+                          product.sellingStatus +
+                            " product can't be added to cart ",
+
+                          {
+                            autoClose: 2000,
+                          }
+                        );
                       } else {
                         if (cart.includes(product)) {
                           toast.error("This Product Is Already In Cart", {
