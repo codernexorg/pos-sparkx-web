@@ -57,7 +57,8 @@ const Invoice = () => {
                   <h2 className={"text-[12px]"}>
                     {invoiceData?.showroomName
                       ? invoiceData?.showroomName
-                      : "Head Office"}
+                      : "Head Office"}{" "}
+                    Outlet
                   </h2>
                   <h2 className={"text-[12px]"}>
                     {invoiceData?.showroomMobile}
