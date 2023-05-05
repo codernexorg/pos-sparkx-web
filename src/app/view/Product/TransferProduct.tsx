@@ -24,7 +24,6 @@ const TransferProduct: React.FC<TransferProductProps> = () => {
   >([]);
   const [selectedTransfer, setSelectedTransfer] = React.useState<Product[]>([]);
   const [showRemoveBtn, setShowRemoveBtn] = React.useState<null | number>(null);
-  const [onPageLoading, setPageLoading] = useState(false);
   const [confirmationModal, setConfirmationModal] = useState(false);
 
   const initialValues = {
@@ -136,11 +135,14 @@ const TransferProduct: React.FC<TransferProductProps> = () => {
                   onChange={(e) => {
                     handleChange(e);
                     setFieldValue("currentShowroom", e.target.value);
-                    setPageLoading(true);
+
                     setTransferAbleProduct(
-                      products.filter((p) => p.showroomName === e.target.value)
+                      products.filter(
+                        (p) =>
+                          p.showroomName === e.target.value &&
+                          p.sellingStatus === "Unsold"
+                      )
                     );
-                    setPageLoading(false);
                   }}
                   children={showroom.map((item, i) => (
                     <option key={i} value={item.showroomName}>
@@ -174,156 +176,149 @@ const TransferProduct: React.FC<TransferProductProps> = () => {
        *
        *
        */}
-      {onPageLoading ? (
-        <Spin />
-      ) : (
-        <div className={"flex w-full space-x-5 shadow-md rounded-md py-4 px-3"}>
-          <div className={"w-full flex flex-col gap-3"}>
-            <div
-              className={
-                "flex justify-between border-dashed border-b border-slate-400 pb-3"
-              }
+
+      <div className={"flex w-full space-x-5 shadow-md rounded-md py-4 px-3"}>
+        <div className={"w-full flex flex-col gap-3"}>
+          <div
+            className={
+              "flex justify-between border-dashed border-b border-slate-400 pb-3"
+            }
+          >
+            <h1 className={"text-xl font-semibold dark:text-white"}>
+              Select / Search Product
+            </h1>
+            <Formik
+              initialValues={{
+                searchTerm: "",
+              }}
+              onSubmit={({ searchTerm }) => {
+                const searchedProduct = transferAbleProduct.find(
+                  (p) => p.itemCode === searchTerm
+                );
+                if (!searchedProduct) {
+                  toast.error("Product Not Exist on this showroom");
+                } else if (selectedTransfer.includes(searchedProduct)) {
+                  toast.error("Product already selected");
+                } else setSelectedTransfer((p) => [...p, searchedProduct]);
+              }}
             >
-              <h1 className={"text-xl font-semibold dark:text-white"}>
-                Select / Search Product
-              </h1>
-              <Formik
-                initialValues={{
-                  searchTerm: "",
-                }}
-                onSubmit={({ searchTerm }) => {
-                  const searchedProduct = transferAbleProduct.find(
-                    (p) => p.itemCode === searchTerm
-                  );
-                  if (!searchedProduct) {
-                    toast.error("Product Not Exist on this showroom");
-                  } else if (selectedTransfer.includes(searchedProduct)) {
-                    toast.error("Product already selected");
-                  } else setSelectedTransfer((p) => [...p, searchedProduct]);
-                }}
-              >
-                <Form>
-                  <Field
-                    name="searchTerm"
-                    placeholder="Enter Product Code To Select"
-                    className="w-80 py-1 border border-slate-400 rounded-md focus:border-slate-500 outline-none"
-                    list="productList"
-                  />
-                  {/* <datalist id="productList">
+              <Form>
+                <Field
+                  name="searchTerm"
+                  placeholder="Enter Product Code To Select"
+                  className="w-80 py-1 border border-slate-400 rounded-md focus:border-slate-500 outline-none"
+                  list="productList"
+                />
+                {/* <datalist id="productList">
                     {transferAbleProduct.map((item, i) => (
                       <option key={i} value={item.itemCode}>
                         {item.itemCode}
                       </option>
                     ))}
                   </datalist> */}
-                </Form>
-              </Formik>
-              <button
-                type={"button"}
-                className={"bg-primary-color text-white px-2 py-0.5 rounded"}
-                onClick={() => {
-                  setSelectedTransfer(transferAbleProduct);
-                }}
-              >
-                Select All
-              </button>
-            </div>
-
-            <ul
-              className={
-                "h-[400px] space-y-2 overflow-y-scroll p-4 scrollbar-thin scrollbar-thumb-amber-700 scrollbar-thumb-rounded "
-              }
+              </Form>
+            </Formik>
+            <button
+              type={"button"}
+              className={"bg-primary-color text-white px-2 py-0.5 rounded"}
+              onClick={() => {
+                setSelectedTransfer(transferAbleProduct);
+              }}
             >
-              {transferAbleProduct ? (
-                transferAbleProduct
-                  .filter((p) => p.sellingStatus === "Unsold")
-                  .map((item, index) => (
-                    <li
-                      onClick={() => {
-                        if (selectedTransfer.includes(item)) {
-                          return toast.error("Product Already Selected");
-                        } else {
-                          setSelectedTransfer((prev) => [...prev, item]);
-                        }
-                      }}
-                      className={
-                        "rounded-md bg-primary-color text-white p-4 cursor-pointer flex justify-between"
-                      }
-                      key={index}
-                    >
-                      <span>{item.productGroup}</span>{" "}
-                      <span>{item.itemCode}</span>
-                    </li>
-                  ))
-              ) : (
-                <Spin />
-              )}
-            </ul>
+              Select All
+            </button>
           </div>
-          <div className={"w-full flex flex-col gap-3 "}>
-            <div
-              className={
-                "flex justify-between border-dashed border-b border-slate-400 pb-3"
-              }
-            >
-              <h1 className={"text-xl font-semibold dark:text-white"}>
-                Selected Products : {selectedTransfer.length} Items
-              </h1>
-              <button
-                type={"button"}
-                className={"bg-red-900 text-white px-2 py-0.5 rounded"}
-                onClick={() => {
-                  setSelectedTransfer([]);
-                }}
-              >
-                Remove All
-              </button>
-            </div>
-            <ul
-              className={
-                "h-[400px] space-y-2 overflow-y-scroll p-4 scrollbar-thin scrollbar-thumb-amber-700 scrollbar-thumb-rounded"
-              }
-            >
-              {selectedTransfer.map((item, index) => (
-                <div
-                  key={index}
-                  onMouseEnter={() => setShowRemoveBtn(index)}
-                  onMouseLeave={() => setShowRemoveBtn(null)}
-                  className={"relative"}
-                >
+
+          <ul
+            className={
+              "h-[400px] space-y-2 overflow-y-scroll p-4 scrollbar-thin scrollbar-thumb-amber-700 scrollbar-thumb-rounded "
+            }
+          >
+            {transferAbleProduct
+              ? transferAbleProduct.map((item, index) => (
                   <li
+                    onClick={() => {
+                      if (selectedTransfer.includes(item)) {
+                        return toast.error("Product Already Selected");
+                      } else {
+                        setSelectedTransfer((prev) => [...prev, item]);
+                      }
+                    }}
                     className={
-                      "z-10 rounded-md bg-primary-color text-white p-4 cursor-pointer flex justify-between"
+                      "rounded-md bg-primary-color text-white p-4 cursor-pointer flex justify-between"
                     }
+                    key={index}
                   >
-                    <span>{item.productGroup}</span>
+                    <span>{item.productGroup}</span>{" "}
                     <span>{item.itemCode}</span>
                   </li>
-                  {showRemoveBtn === index ? (
-                    <button
-                      type="button"
-                      onClick={() => {
-                        setSelectedTransfer((prevState) => {
-                          return [
-                            ...prevState.filter(
-                              (p) => p.itemCode !== item.itemCode
-                            ),
-                          ];
-                        });
-                      }}
-                      className={
-                        "absolute duration-300 z-50 top-0 right-0 flex items-center justify-center h-full w-[80px] bg-red-500 text-white"
-                      }
-                    >
-                      <AiOutlineDelete />
-                    </button>
-                  ) : null}
-                </div>
-              ))}
-            </ul>
-          </div>
+                ))
+              : null}
+          </ul>
         </div>
-      )}
+        <div className={"w-full flex flex-col gap-3 "}>
+          <div
+            className={
+              "flex justify-between border-dashed border-b border-slate-400 pb-3"
+            }
+          >
+            <h1 className={"text-xl font-semibold dark:text-white"}>
+              Selected Products : {selectedTransfer.length} Items
+            </h1>
+            <button
+              type={"button"}
+              className={"bg-red-900 text-white px-2 py-0.5 rounded"}
+              onClick={() => {
+                setSelectedTransfer([]);
+              }}
+            >
+              Remove All
+            </button>
+          </div>
+          <ul
+            className={
+              "h-[400px] space-y-2 overflow-y-scroll p-4 scrollbar-thin scrollbar-thumb-amber-700 scrollbar-thumb-rounded"
+            }
+          >
+            {selectedTransfer.map((item, index) => (
+              <div
+                key={index}
+                onMouseEnter={() => setShowRemoveBtn(index)}
+                onMouseLeave={() => setShowRemoveBtn(null)}
+                className={"relative"}
+              >
+                <li
+                  className={
+                    "z-10 rounded-md bg-primary-color text-white p-4 cursor-pointer flex justify-between"
+                  }
+                >
+                  <span>{item.productGroup}</span>
+                  <span>{item.itemCode}</span>
+                </li>
+                {showRemoveBtn === index ? (
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setSelectedTransfer((prevState) => {
+                        return [
+                          ...prevState.filter(
+                            (p) => p.itemCode !== item.itemCode
+                          ),
+                        ];
+                      });
+                    }}
+                    className={
+                      "absolute duration-300 z-50 top-0 right-0 flex items-center justify-center h-full w-[80px] bg-red-500 text-white"
+                    }
+                  >
+                    <AiOutlineDelete />
+                  </button>
+                ) : null}
+              </div>
+            ))}
+          </ul>
+        </div>
+      </div>
     </div>
   );
 };
