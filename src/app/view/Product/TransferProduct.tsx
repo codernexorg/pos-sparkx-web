@@ -139,7 +139,8 @@ const TransferProduct: React.FC<TransferProductProps> = () => {
                     setTransferAbleProduct(
                       products.filter(
                         (p) =>
-                          p.showroomName === e.target.value &&
+                          p.showroomName.split(" ")[0] ===
+                            e.target.value.split(" ")[0] &&
                           p.sellingStatus === "Unsold"
                       )
                     );
