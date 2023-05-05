@@ -36,8 +36,11 @@ const AllProducts = () => {
         return "bg-red-400";
       case "Sold":
         return "bg-green-600";
-      case "Damaged":
+      case "Final Damaged":
         return "bg-red-400";
+
+      case "Return To Supplier":
+        return "bg-red-500";
       case "Lost":
         return "bg-red-700";
     }
@@ -164,7 +167,12 @@ const AllProducts = () => {
                       name={"sellingStatus"}
                       value={values.sellingStatus}
                       onChange={handleChange}
-                      children={["Lost", "Damaged", "Unsold"].map((item) => (
+                      children={[
+                        "Lost",
+                        "Final Damaged",
+                        "Unsold",
+                        "Return To Supplier",
+                      ].map((item) => (
                         <option key={item} value={item}>
                           {item}
                         </option>
@@ -254,7 +262,8 @@ const AllProducts = () => {
             { text: "Unsold", value: "Unsold" },
             { text: "Sold", value: "Sold" },
             { text: "Lost", value: "Lost" },
-            { text: "Damaged", value: "Damaged" },
+            { text: "Final Damaged", value: "Final Damaged" },
+            { text: "Return To Supplier", value: "Return To Supplier" },
           ]}
           onFilter={(value, record) => record.sellingStatus === value}
         />

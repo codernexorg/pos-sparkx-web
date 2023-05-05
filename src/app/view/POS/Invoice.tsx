@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { Button, DatePicker, Modal, Select, Table } from "antd";
 import { AiFillCloseCircle, AiOutlineEye } from "react-icons/ai";
 import Barcode from "react-barcode";
@@ -51,13 +51,14 @@ const Invoice = () => {
                     "flex flex-col items-center border-b border-dashed border-slate-400"
                   }
                 >
-                  <h1 className={"text-2xl text-center font-bold"}>
-                    {invoiceData?.businessName}
+                  <h1 className={"text-2xl text-center font-bold capitalize"}>
+                    {invoiceData.businessName.toLocaleLowerCase()}
                   </h1>
                   <h2 className={"text-[12px]"}>
-                    {invoiceData?.showroomAddress
-                      ? invoiceData?.showroomAddress
-                      : "Head Office"}
+                    {invoiceData?.showroomName
+                      ? invoiceData?.showroomName
+                      : "Head Office"}{" "}
+                    Outlet
                   </h2>
                   <h2 className={"text-[12px]"}>
                     {invoiceData?.showroomMobile}
@@ -153,7 +154,7 @@ const Invoice = () => {
                   <div className={"w-full flex text-center mb-2"}>
                     <div className={"w-full border border-slate-400 py-1"}>
                       <h1 className={"border-b border-slate-400"}>
-                        Cash Amount
+                        {invoiceData.paymentMethod.paymentMethod} Amount
                       </h1>
                       <h1 className={""}>{invoiceData?.paidAmount}৳</h1>
                     </div>
