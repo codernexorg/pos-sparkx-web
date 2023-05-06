@@ -65,7 +65,7 @@ const NavBar = () => {
         >
           <button onClick={(e) => e.preventDefault()}>
             <Space className="w-[120px]">
-              <p className={"text-primaryColor-900 dark:text-white"}>
+              <p className={"text-primaryColor-900 dark:text-white text-14"}>
                 {searchTerm}
               </p>
               <AiOutlineDown />
