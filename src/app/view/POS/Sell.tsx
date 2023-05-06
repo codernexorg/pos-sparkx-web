@@ -316,8 +316,8 @@ const Sell = () => {
                 "flex flex-col items-center border-b border-dashed border-slate-400"
               }
             >
-              <h1 className={"text-2xl text-center font-bold"}>
-                {invoiceData?.businessName}
+              <h1 className={"text-2xl text-center font-bold capitalize"}>
+                {invoiceData?.businessName.toLocaleLowerCase()}
               </h1>
               <h2 className={"text-[12px]"}>
                 {invoiceData?.showroomName
