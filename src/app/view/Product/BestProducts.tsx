@@ -9,9 +9,13 @@ import { useFilteredSoldProduct } from "../../hooks";
 const BestProducts: React.FC = () => {
   const { products } = useTypedSelector((state) => state.products);
   const [date, setDate] = useState<string[]>([]);
+  const soldProducts = useMemo(
+    () => products.filter((p) => p.sellingStatus === "Sold"),
+    [products]
+  );
 
   const filteredProducts = useFilteredSoldProduct(
-    products.filter((p) => p.sellingStatus === "Sold"),
+    soldProducts,
     date[0],
     date[1]
   );

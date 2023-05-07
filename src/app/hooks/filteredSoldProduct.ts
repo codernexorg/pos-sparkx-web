@@ -3,36 +3,42 @@ import { useEffect, useState } from "react";
 
 const dateFilter = <T extends Product>(
   arr: T[],
-  startDate: string,
-  endDate: string
+  startDate: moment.Moment,
+  endDate: moment.Moment
 ) => {
   return arr.filter((item) => {
-    const momentStart = moment(startDate).format("YYYY-MM-DD");
-    const momentEnd = moment(endDate).format("YYYY-MM-DD");
-    const formattedDate = moment(item.updatedAt).format("YYYY-MM-DD");
-
-    if (formattedDate >= momentStart && formattedDate <= momentEnd) {
-      return item;
-    } else {
-      return undefined;
-    }
+    const itemDate = moment(item?.updatedAt);
+    return (
+      itemDate.isValid() && itemDate.isBetween(startDate, endDate, "day", "[]")
+    );
   });
 };
+
 export const useFilteredSoldProduct = (
-  data: Product[],
-  start: string,
-  end: string
+  data: Product[] = [],
+  start?: string,
+  end?: string
 ) => {
   const [filteredData, setFilteredData] = useState<Product[]>([]);
 
   useEffect(() => {
-    if (typeof start === "undefined" || typeof end === "undefined") {
+    if (!start || !end) {
       setFilteredData(data);
       return;
     }
 
-    setFilteredData(dateFilter(data, start, end));
-  }, [start, end, data]);
+    const startDate = moment(start);
+    const endDate = moment(end);
+
+    if (startDate.isValid() && endDate.isValid()) {
+      const newFilteredData = dateFilter(data, startDate, endDate);
+      if (JSON.stringify(newFilteredData) !== JSON.stringify(filteredData)) {
+        setFilteredData(newFilteredData);
+      }
+    } else {
+      setFilteredData([]);
+    }
+  }, [start, end, data, filteredData]);
 
   return filteredData;
 };
