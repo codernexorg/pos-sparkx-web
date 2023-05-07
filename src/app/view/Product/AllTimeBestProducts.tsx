@@ -1,35 +1,27 @@
-import React, { useMemo, useState } from "react";
-import PrintAbleLayout from "../../components/PrintAbleLayout";
-import { Table } from "antd";
+import React, { useMemo } from "react";
 import { useTypedSelector } from "../../../redux/store";
 import { groupedProducts } from "../../utils";
-import DateFilter from "../../components/DateFilter";
-import { useFilteredSoldProduct } from "../../hooks";
+import PrintAbleLayout from "../../components/PrintAbleLayout";
+import { Table } from "antd";
 
-const BestProducts: React.FC = () => {
+const AllTimeBestProducts: React.FC = () => {
   const { products } = useTypedSelector((state) => state.products);
-  const [date, setDate] = useState<string[]>([]);
-
-  const filteredProducts = useFilteredSoldProduct(
-    products.filter((p) => p.sellingStatus === "Sold"),
-    date[0],
-    date[1]
-  );
 
   const bestProducts = useMemo(
     () =>
-      groupedProducts(filteredProducts).sort((a, b) => b.quantity - a.quantity),
-    [filteredProducts]
+      groupedProducts(products.filter((p) => p.sellingStatus === "Sold")).sort(
+        (a, b) => b.quantity - a.quantity
+      ),
+    [products]
   );
 
   return (
     <PrintAbleLayout
-      title="Best Products"
+      title="All Time Best Products"
       showExcel={false}
       showPDF={false}
       showPrint={false}
     >
-      <DateFilter onChange={setDate} />
       <Table
         dataSource={bestProducts}
         rowKey={(obj: Product) => obj.id}
@@ -46,4 +38,4 @@ const BestProducts: React.FC = () => {
     </PrintAbleLayout>
   );
 };
-export default BestProducts;
+export default AllTimeBestProducts;
