@@ -190,6 +190,7 @@ export const getTotalQuantityByProductName = (products: Product[]) => {
 interface GroupedProduct {
   productGroup: string;
   quantity: number;
+  sellPrice: number;
 }
 
 export const groupedProducts = (products: any): Product[] =>
@@ -205,7 +206,11 @@ export const groupedProducts = (products: any): Product[] =>
       groups[groupIndex].quantity++;
     } else {
       // If the group doesn't exist, create a new one with quantity 1
-      groups.push({ productGroup: productGroup, quantity: 1, ...newProduct });
+      groups.push({
+        productGroup: productGroup,
+        quantity: 1,
+        ...newProduct,
+      });
     }
 
     return groups;
