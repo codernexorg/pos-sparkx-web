@@ -14,6 +14,7 @@ import { Loader } from "../../components";
 import { AxiosError } from "axios";
 import { ApiError } from "../../../redux/types";
 import { rejectedToast } from "../../utils/toaster";
+import { formatPrice } from "../../utils";
 
 interface EmployeeSalesProps {}
 
@@ -234,7 +235,6 @@ const EmployeeSales: React.FC<EmployeeSalesProps> = () => {
               rejectedToast(err);
               setLoading(false);
             });
-          
         }}
         handlePdf={handleMomAmountPDF}
         handlePrint={() =>
@@ -248,8 +248,11 @@ const EmployeeSales: React.FC<EmployeeSalesProps> = () => {
         srCode={srCode}
         year={year}
         setYear={setYear}
-        excelTableId={'pdfAmount'}
-        excelTitle={'Employee MOM Amount OF'+showroom.find((sr) => sr.showroomCode === srCode)?.showroomName}
+        excelTableId={"pdfAmount"}
+        excelTitle={
+          "Employee MOM Amount OF" +
+          showroom.find((sr) => sr.showroomCode === srCode)?.showroomName
+        }
       >
         <div className={"text-center font-semibold"} id={"printAble"}>
           <div className={"report__info"}>
@@ -277,12 +280,16 @@ const EmployeeSales: React.FC<EmployeeSalesProps> = () => {
                     <td>{index + 1}</td>
                     <td>{employee.empName}</td>
                     {months.map((month, index) => (
-                      <td key={month}>{amount(month, employee.empName)}</td>
+                      <td key={month}>
+                        {formatPrice(amount(month, employee.empName))}
+                      </td>
                     ))}
                     <td>
-                      {totalAmountArr(months, employee.empName).reduce(
-                        (a, b) => a + b,
-                        0
+                      {formatPrice(
+                        totalAmountArr(months, employee.empName).reduce(
+                          (a, b) => a + b,
+                          0
+                        )
                       )}
                     </td>
                   </tr>
@@ -292,9 +299,13 @@ const EmployeeSales: React.FC<EmployeeSalesProps> = () => {
                 <td></td>
                 <td></td>
                 {months.map((month, index) => (
-                  <td>{totalAmount(month)}</td>
+                  <td>{formatPrice(totalAmount(month))}</td>
                 ))}
-                <td>{totalAmountByMonth(months).reduce((a, b) => a + b, 0)}</td>
+                <td>
+                  {formatPrice(
+                    totalAmountByMonth(months).reduce((a, b) => a + b, 0)
+                  )}
+                </td>
               </tr>
             </tbody>
           </table>
@@ -326,7 +337,6 @@ const EmployeeSales: React.FC<EmployeeSalesProps> = () => {
               rejectedToast(err);
               setLoading(false);
             });
-          
         }}
         handlePdf={handleMOMQty}
         handlePrint={() =>
@@ -340,8 +350,11 @@ const EmployeeSales: React.FC<EmployeeSalesProps> = () => {
         setYear={setYear}
         setSrCode={setSrCode}
         srCode={srCode}
-        excelTitle={'Employee MOM QTY of '+showroom.find((sr) => sr.showroomCode === srCode)?.showroomName}
-        excelTableId={'pdfQty'}
+        excelTitle={
+          "Employee MOM QTY of " +
+          showroom.find((sr) => sr.showroomCode === srCode)?.showroomName
+        }
+        excelTableId={"pdfQty"}
       >
         <div className={"text-center font-semibold"} id={"printAble"}>
           <div className={"report__info"}>
@@ -390,7 +403,7 @@ const EmployeeSales: React.FC<EmployeeSalesProps> = () => {
               </tr>
             </tbody>
           </table>
-          <div className={'print__footer'}>
+          <div className={"print__footer"}>
             <h2>NOTE</h2>
             <h2>1. EMPLOYEE MONTHLY SALES QUANTITY.</h2>
           </div>

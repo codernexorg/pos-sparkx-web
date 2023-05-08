@@ -6,7 +6,7 @@ import { AxiosError } from "axios";
 import { ApiError } from "../../../redux/types";
 import { rejectedToast } from "../../utils/toaster";
 import printJS from "print-js";
-import { getDayOfMonth } from "../../utils/helper";
+import { formatPrice, getDayOfMonth } from "../../utils/helper";
 import { useTypedSelector } from "../../../redux/store";
 import JsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
@@ -217,7 +217,10 @@ const Sales: React.FC<SalesProps> = () => {
           showroom.find((sr) => sr.showroomCode === srCode)?.showroomName
         }
       >
-        <div id={'printDailySales'} className={"text-center text-xl font-semibold"}>
+        <div
+          id={"printDailySales"}
+          className={"text-center text-xl font-semibold"}
+        >
           <div className={"report__info"} id={"dailySalesHeader"}>
             <h1>Daily Sales Summary </h1>
             <h2>
@@ -253,8 +256,14 @@ const Sales: React.FC<SalesProps> = () => {
                         {month.day}
                       </td>
                       <td>{salesData?.quantity ? salesData.quantity : `-`}</td>
-                      <td>{salesData?.total ? salesData.total : `-`}</td>
-                      <td>{salesData?.average ? salesData.average : `-`}</td>
+                      <td>
+                        {salesData?.total ? formatPrice(salesData.total) : `-`}
+                      </td>
+                      <td>
+                        {salesData?.average
+                          ? formatPrice(salesData.average)
+                          : `-`}
+                      </td>
                     </tr>
                   );
                 }
@@ -264,13 +273,13 @@ const Sales: React.FC<SalesProps> = () => {
                 <td></td>
                 <td></td>
                 <td>{dailySalesData[0]?.totalQty}</td>
-                <td>{dailySalesData[0]?.totalAmount}</td>
-                <td>{dailySalesData[0]?.totalAverage}</td>
+                <td>{formatPrice(dailySalesData[0]?.totalAmount)}</td>
+                <td>{formatPrice(dailySalesData[0]?.totalAverage)}</td>
               </tr>
             </tbody>
           </table>
         </div>
-        <div className={'print__footer'}>
+        <div className={"print__footer"}>
           <h2>NOTE:</h2>
           <h2>1. DAILY SALES SUMMARY</h2>
           <h2>2. CALCULATION MUST BE EXCLUDING RETURN QTY & AMOUNT.</h2>
@@ -301,7 +310,6 @@ const Sales: React.FC<SalesProps> = () => {
               rejectedToast(err);
               setLoading(false);
             });
-
         }}
         handlePdf={handleEmpPdf}
         handlePrint={() =>
@@ -362,10 +370,18 @@ const Sales: React.FC<SalesProps> = () => {
                         const salesData = item.sales.find(
                           (sales) => sales.date === month.date
                         );
-                        return <td key={index}>{salesData?.total || `-`}</td>;
+                        return (
+                          <td key={index}>
+                            {salesData?.total
+                              ? formatPrice(salesData.total)
+                              : `-`}
+                          </td>
+                        );
                       })}
                       <td>
-                        {totalAmountArr(month.date).reduce((a, b) => a + b, 0)}
+                        {formatPrice(
+                          totalAmountArr(month.date).reduce((a, b) => a + b, 0)
+                        )}
                       </td>
                     </tr>
                   );
@@ -378,27 +394,31 @@ const Sales: React.FC<SalesProps> = () => {
                 {empDailySalesData.map((item, index) => {
                   return (
                     <td key={index}>
-                      {totalAmountByDatesAndEmployees(
-                        getDayOfMonth(
-                          new Date().getFullYear(),
-                          monthNumber
-                        ).map((item) => item.date),
-                        item.empName
-                      ).reduce((a, b) => a + b, 0)}
+                      {formatPrice(
+                        totalAmountByDatesAndEmployees(
+                          getDayOfMonth(
+                            new Date().getFullYear(),
+                            monthNumber
+                          ).map((item) => item.date),
+                          item.empName
+                        ).reduce((a, b) => a + b, 0)
+                      )}
                     </td>
                   );
                 })}
                 <td>
-                  {totalAmountByDate(
-                    getDayOfMonth(new Date().getFullYear(), monthNumber).map(
-                      (item) => item.date
-                    )
-                  ).reduce((a, b) => a + b, 0)}
+                  {formatPrice(
+                    totalAmountByDate(
+                      getDayOfMonth(new Date().getFullYear(), monthNumber).map(
+                        (item) => item.date
+                      )
+                    ).reduce((a, b) => a + b, 0)
+                  )}
                 </td>
               </tr>
             </tbody>
           </table>
-          <div className={'print__footer'}>
+          <div className={"print__footer"}>
             <h2>NOTE:</h2>
             <h2>1. EMPLOYEE DAILY SALES.</h2>
           </div>
@@ -430,7 +450,7 @@ const Sales: React.FC<SalesProps> = () => {
       </div>
 
       <div className={"duration-300 transition-all"}>
-        {loading?<Loader/>:null}
+        {loading ? <Loader /> : null}
         {showDailySales ? <DailySales /> : null}
         {showEmployeeSales ? <EmployeeDailySales /> : null}
       </div>

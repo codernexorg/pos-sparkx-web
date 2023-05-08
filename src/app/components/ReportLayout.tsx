@@ -28,7 +28,7 @@ interface ReportLayoutProps {
   sellingStatus?: string;
   setSellingStatus?: React.Dispatch<SetStateAction<string>>;
   excelTableId?: string;
-  excelTitle?: string;
+  excelTitle: string;
   showPdf?: boolean;
 }
 
@@ -55,7 +55,8 @@ const ReportLayout: React.FC<ReportLayoutProps> = ({
   sellingStatus,
   setSellingStatus,
   excelTableId,
-  excelTitle,showPdf=true
+  excelTitle,
+  showPdf = true,
 }) => {
   const { currentUser } = useSettingContext();
   const { showroom } = useTypedSelector((state) => state.showroom);
@@ -189,15 +190,15 @@ const ReportLayout: React.FC<ReportLayoutProps> = ({
             <FaFileExcel />
             <span>Excel</span>
           </button>
-          {
-            showPdf?<button
-                onClick={handlePdf}
-                className={"report__btn bg-red-900 text-white"}
+          {showPdf ? (
+            <button
+              onClick={handlePdf}
+              className={"report__btn bg-red-900 text-white"}
             >
               <AiFillFilePdf />
               <span>PDF</span>
-            </button>:null
-          }
+            </button>
+          ) : null}
         </div>
       </div>
       <div className={"h-full p-5 bg-white rounded-md"}>{children}</div>
