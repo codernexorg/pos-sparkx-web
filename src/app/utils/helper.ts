@@ -68,7 +68,7 @@ export const handleExcel = (
   XLSX.writeFile(wb, fileName);
 };
 
-export const handleExcelHtml = (tableId: string, title?: string) => {
+export const handleExcelHtml = (tableId: string, title: string) => {
   const table = document.getElementById(tableId) as HTMLElement;
   const workbook = XLSX.utils.table_to_book(table);
   const ws = workbook.Sheets["Sheet1"];
@@ -80,7 +80,7 @@ export const handleExcelHtml = (tableId: string, title?: string) => {
     }
   );
   const fileName =
-    tableId.toUpperCase() + new Date(Date.now()).toString() + ".xlsx";
+    title.toUpperCase() + new Date(Date.now()).toString() + ".xlsx";
 
   XLSX.writeFile(workbook, fileName);
 };
