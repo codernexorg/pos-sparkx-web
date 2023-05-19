@@ -125,9 +125,10 @@ body {
     text-align: center;
 }
 .daily__sales-table th, .daily__sales-table td, .daily__sales-table tr{
-    padding: 0;
+    padding: 0 10px;
     border: 1px solid #000;
     width: fit-content;
+
 }
 .report__info{
     margin-bottom: 10px;
@@ -332,4 +333,22 @@ body {
 
 input:disabled{
     background: #dcdcdc;
+}
+th,
+td{
+    padding: 0 10px;
+}
+
+.return__table{
+    border-collapse: collapse;
+    width: 100%;
+    border: 1px solid;
+}
+
+.return__table table,.return__table th,.return__table td{
+   border: 1px solid;
+}
+.return__table td>tr>td{
+    border: none;
+    padding: 0;
 }

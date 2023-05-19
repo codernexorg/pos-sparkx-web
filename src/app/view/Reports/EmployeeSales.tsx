@@ -18,27 +18,44 @@ import { formatPrice } from "../../utils";
 
 interface EmployeeSalesProps {}
 
-interface EmployeeData {
+interface QtyData {
   empName: string;
   monthlySales: { month: string; quantity: number; date: string }[];
 }
 
-interface EmpAmountData {
+interface AmountData {
   empName: string;
   monthlySales: { month: string; amount: number; date: string }[];
 }
 
+interface EmpQtyData {
+  currentYearData: QtyData[];
+  prevYearData: QtyData[];
+}
+
+interface EmpAmountData {
+  currentYearData: AmountData[];
+  prevYearData: AmountData[];
+}
+
 const EmployeeSales: React.FC<EmployeeSalesProps> = () => {
-  const [empData, setEmpData] = useState<EmployeeData[]>([]);
+  const [empData, setEmpData] = useState<EmpQtyData>();
   const [year, setYear] = useState(new Date().getFullYear());
   const [showMOMqty, setShowMOMqty] = useState(true);
   const [showMOMAmount, setShowMOMAmount] = useState(false);
   const months = Array.apply(0, Array(12)).map(function (_, i) {
-    return moment().month(i).format("MMM-YYYY");
+    return moment().month(i).year(year).format("MMM-YYYY");
+  });
+
+  const prevYearMonth = Array.apply(0, Array(12)).map(function (_, i) {
+    return moment()
+      .month(i)
+      .year(year - 1)
+      .format("MMM-YYYY");
   });
   const { showroom, isLoading } = useTypedSelector((state) => state.showroom);
   const [srCode, setSrCode] = useState("");
-  const [empAmountData, setEmpAmountData] = useState<EmpAmountData[]>([]);
+  const [empAmountData, setEmpAmountData] = useState<EmpAmountData>();
   const [loading, setLoading] = useState(false);
 
   const { currentUser } = useSettingContext();
@@ -59,9 +76,10 @@ const EmployeeSales: React.FC<EmployeeSalesProps> = () => {
       }
     }
   }, [currentUser?.assignedShowroom, currentUser?.role, showroom]);
-  const totalQty = function (month: string) {
+  const totalQty = function (month: string, qtyData: QtyData[] | undefined) {
     let total = 0;
-    empData.forEach((employee) => {
+    if (!qtyData) return 0;
+    qtyData.forEach((employee) => {
       const salesForMonth = employee.monthlySales.find(
         (sale) => sale.date === month
       );
@@ -72,19 +90,23 @@ const EmployeeSales: React.FC<EmployeeSalesProps> = () => {
     return total;
   };
 
-  const totalAmount = function (month: string) {
+  const totalAmount = function (
+    month: string,
+    amountData: AmountData[] | undefined
+  ) {
     let total = 0;
-    empAmountData.forEach((employee) => {
+    if (!amountData) return 0;
+    amountData.forEach((employee) => {
       const salesForMonth = employee.monthlySales.find(
         (sale) => sale.date === month
       );
       if (salesForMonth) {
-        total += salesForMonth.amount;
+        total += salesForMonth?.amount;
       }
     });
     return total;
   };
-  const qty = function (month: string, emp: string) {
+  const qty = function (month: string, emp: string, empData: QtyData[]) {
     let total = 0;
     empData.forEach((employee) => {
       const salesForMonth = employee.monthlySales.find(
@@ -97,9 +119,13 @@ const EmployeeSales: React.FC<EmployeeSalesProps> = () => {
     return total;
   };
 
-  const amount = function (month: string, emp: string) {
+  const amount = function (
+    month: string,
+    emp: string,
+    amountData: AmountData[]
+  ) {
     let total = 0;
-    empAmountData.forEach((employee) => {
+    amountData.forEach((employee) => {
       const salesForMonth = employee.monthlySales.find(
         (sale) => sale.date === month
       );
@@ -109,10 +135,14 @@ const EmployeeSales: React.FC<EmployeeSalesProps> = () => {
     });
     return total;
   };
-  const totalQtyArr = function (months: string[], emp: string) {
+  const totalQtyArr = function (
+    months: string[],
+    emp: string,
+    qtyData: QtyData[]
+  ) {
     let total: number[] = [];
     months.forEach((month) => {
-      empData.forEach((employee) => {
+      qtyData.forEach((employee) => {
         const salesForMonth = employee.monthlySales.find(
           (sale) => sale.date === month
         );
@@ -123,10 +153,14 @@ const EmployeeSales: React.FC<EmployeeSalesProps> = () => {
     });
     return total;
   };
-  const totalAmountArr = function (months: string[], emp: string) {
+  const totalAmountArr = function (
+    months: string[],
+    emp: string,
+    amountData: AmountData[]
+  ) {
     let total: number[] = [];
     months.forEach((month) => {
-      empAmountData.forEach((employee) => {
+      amountData.forEach((employee) => {
         const salesForMonth = employee.monthlySales.find(
           (sale) => sale.date === month
         );
@@ -137,10 +171,15 @@ const EmployeeSales: React.FC<EmployeeSalesProps> = () => {
     });
     return total;
   };
-  const totalAmountByMonth = function (months: string[]) {
+  const totalAmountByMonth = function (
+    months: string[],
+    amountData: AmountData[] | undefined
+  ) {
     let total: number[] = [];
+
+    if (!amountData) return total;
     months.forEach((month) => {
-      empAmountData.forEach((employee) => {
+      amountData.forEach((employee) => {
         const salesForMonth = employee.monthlySales.find(
           (sale) => sale.date === month
         );
@@ -151,10 +190,14 @@ const EmployeeSales: React.FC<EmployeeSalesProps> = () => {
     });
     return total;
   };
-  const totalQtyByMonth = function (months: string[]) {
+  const totalQtyByMonth = function (
+    months: string[],
+    qtyData: QtyData[] | undefined
+  ) {
     let total: number[] = [];
+    if (!qtyData) return total;
     months.forEach((month) => {
-      empData.forEach((employee) => {
+      qtyData.forEach((employee) => {
         const salesForMonth = employee.monthlySales.find(
           (sale) => sale.date === month
         );
@@ -262,35 +305,56 @@ const EmployeeSales: React.FC<EmployeeSalesProps> = () => {
               {showroom.find((sr) => sr.showroomCode === srCode)?.showroomName}
             </h2>
           </div>
+
+          {/**
+           * Current Year Data
+           */}
           <table className={"mom__sales-table"} id={"pdfAmount"}>
             <thead>
               <tr>
-                <th>SL</th>
-                <th>Employee</th>
+                <th className="text-left">SL</th>
+                <th className="text-left">Employee</th>
                 {months.map((employee) => (
-                  <th key={employee}>{employee}</th>
+                  <th className="text-right" key={employee}>
+                    {employee}
+                  </th>
                 ))}
-                <th>Total</th>
+                <th className="text-right">Total</th>
+                <th className="text-right">%</th>
               </tr>
             </thead>
             <tbody>
-              {empAmountData.map((employee, index) => {
+              {empAmountData?.currentYearData.map((employee, index, arr) => {
                 return (
                   <tr key={employee.empName}>
-                    <td>{index + 1}</td>
-                    <td>{employee.empName}</td>
+                    <td className="text-left">{index + 1}</td>
+                    <td className="text-left">{employee.empName}</td>
                     {months.map((month, index) => (
-                      <td key={month}>
-                        {formatPrice(amount(month, employee.empName))}
+                      <td className="text-right" key={month}>
+                        {formatPrice(amount(month, employee.empName, arr))}
                       </td>
                     ))}
-                    <td>
+                    <td className="text-right">
                       {formatPrice(
-                        totalAmountArr(months, employee.empName).reduce(
+                        totalAmountArr(months, employee.empName, arr).reduce(
                           (a, b) => a + b,
                           0
                         )
                       )}
+                    </td>
+                    <td className="text-right">
+                      {Math.round(
+                        (totalAmountArr(months, employee.empName, arr).reduce(
+                          (a, b) => a + b,
+                          0
+                        ) /
+                          totalAmountByMonth(
+                            months,
+                            empAmountData?.currentYearData
+                          ).reduce((a, b) => a + b, 0)) *
+                          100
+                      )}
+                      %
                     </td>
                   </tr>
                 );
@@ -299,11 +363,129 @@ const EmployeeSales: React.FC<EmployeeSalesProps> = () => {
                 <td></td>
                 <td></td>
                 {months.map((month, index) => (
-                  <td>{formatPrice(totalAmount(month))}</td>
+                  <td key={index} className="text-right">
+                    {formatPrice(
+                      totalAmount(month, empAmountData?.currentYearData)
+                    )}
+                  </td>
                 ))}
-                <td>
+                <td className="text-right">
                   {formatPrice(
-                    totalAmountByMonth(months).reduce((a, b) => a + b, 0)
+                    totalAmountByMonth(
+                      months,
+                      empAmountData?.currentYearData
+                    ).reduce((a, b) => a + b, 0)
+                  )}
+                </td>
+                <td className="text-right">
+                  {totalAmountByMonth(
+                    months,
+                    empAmountData?.currentYearData
+                  ).reduce((a, b) => a + b, 0)
+                    ? (totalAmountByMonth(
+                        months,
+                        empAmountData?.currentYearData
+                      ).reduce((a, b) => a + b, 0) /
+                        totalAmountByMonth(
+                          months,
+                          empAmountData?.currentYearData
+                        ).reduce((a, b) => a + b, 0)) *
+                      100
+                    : 0}
+                  %
+                </td>
+              </tr>
+              <tr>
+                <td></td>
+                <td>Growth</td>
+                {months.map((month, index) => (
+                  <td className="text-right" key={index}>
+                    {Number(
+                      ((totalAmount(month, empAmountData?.currentYearData) -
+                        totalAmount(
+                          prevYearMonth[index],
+                          empAmountData?.prevYearData
+                        )) /
+                        100) *
+                        100
+                    ).toFixed(0)}
+                    %
+                  </td>
+                ))}
+                <td className="text-right">
+                  {Number(
+                    ((totalAmountByMonth(
+                      months,
+                      empAmountData?.currentYearData
+                    ).reduce((a, b) => a + b, 0) -
+                      totalAmountByMonth(
+                        prevYearMonth,
+                        empAmountData?.prevYearData
+                      ).reduce((a, b) => a + b, 0)) /
+                      100) *
+                      100
+                  ).toFixed(0)}
+                  %
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+          {/**
+           * Prev Year Data
+           */}
+          <table className={"mom__sales-table mt-20"} id={"pdfAmount"}>
+            <thead>
+              <tr>
+                <th className="text-left">SL</th>
+                <th className="text-left">Employee</th>
+                {prevYearMonth.map((m) => (
+                  <th className="text-right" key={m}>
+                    {m}
+                  </th>
+                ))}
+                <th className="text-right">Total</th>
+              </tr>
+            </thead>
+            <tbody>
+              {empAmountData?.prevYearData.map((employee, index, arr) => {
+                return (
+                  <tr key={employee.empName}>
+                    <td className="text-left">{index + 1}</td>
+                    <td className="text-left">{employee.empName}</td>
+                    {prevYearMonth.map((month, index) => (
+                      <td className="text-right" key={month}>
+                        {formatPrice(amount(month, employee.empName, arr))}
+                      </td>
+                    ))}
+                    <td className="text-right">
+                      {formatPrice(
+                        totalAmountArr(
+                          prevYearMonth,
+                          employee.empName,
+                          arr
+                        ).reduce((a, b) => a + b, 0)
+                      )}
+                    </td>
+                  </tr>
+                );
+              })}
+              <tr>
+                <td></td>
+                <td></td>
+                {prevYearMonth.map((month, index) => (
+                  <td key={index} className="text-right">
+                    {formatPrice(
+                      totalAmount(month, empAmountData?.prevYearData)
+                    )}
+                  </td>
+                ))}
+                <td className="text-right">
+                  {formatPrice(
+                    totalAmountByMonth(
+                      prevYearMonth,
+                      empAmountData?.prevYearData
+                    ).reduce((a, b) => a + b, 0)
                   )}
                 </td>
               </tr>
@@ -364,28 +546,165 @@ const EmployeeSales: React.FC<EmployeeSalesProps> = () => {
               {showroom.find((sr) => sr.showroomCode === srCode)?.showroomName}
             </h2>
           </div>
+          {/**
+           *
+           * Current Year Data
+           */}
           <table className={"mom__sales-table"} id={"pdfQty"}>
             <thead>
               <tr>
-                <th>SL</th>
-                <th>Employee</th>
+                <th className="text-left">SL</th>
+                <th className="text-left">Employee</th>
                 {months.map((employee) => (
-                  <th key={employee}>{employee}</th>
+                  <th className="text-right" key={employee}>
+                    {employee}
+                  </th>
                 ))}
-                <th>Total</th>
+                <th className="text-right">Total</th>
+                <th className="text-right"> %</th>
               </tr>
             </thead>
             <tbody>
-              {empData.map((employee, index) => {
+              {empData?.currentYearData.map((employee, index, arr) => {
                 return (
                   <tr key={employee.empName}>
-                    <td>{index + 1}</td>
-                    <td>{employee.empName}</td>
+                    <td className="text-left">{index + 1}</td>
+                    <td className="text-left"> {employee.empName}</td>
                     {months.map((month, index) => (
-                      <td key={month}>{qty(month, employee.empName)}</td>
+                      <td className="text-right" key={month}>
+                        {qty(month, employee.empName, arr)}
+                      </td>
                     ))}
-                    <td>
-                      {totalQtyArr(months, employee.empName).reduce(
+                    <td className="text-right">
+                      {totalQtyArr(months, employee.empName, arr).reduce(
+                        (a, b) => a + b,
+                        0
+                      )}
+                    </td>
+                    <td className="text-right">
+                      {totalQtyArr(months, employee.empName, arr).reduce(
+                        (a, b) => a + b,
+                        0
+                      )
+                        ? Math.fround(
+                            (totalQtyArr(months, employee.empName, arr).reduce(
+                              (a, b) => a + b,
+                              0
+                            ) /
+                              totalQtyByMonth(
+                                months,
+                                empData?.currentYearData
+                              ).reduce((a, b) => a + b, 0)) *
+                              100
+                          )
+                        : 0}
+                      %
+                    </td>
+                  </tr>
+                );
+              })}
+              <tr>
+                <td></td>
+                <td></td>
+                {months.map((month, index) => (
+                  <td key={index} className="text-right">
+                    {totalQty(month, empData?.currentYearData)}
+                  </td>
+                ))}
+                <td className="text-right">
+                  {totalQtyByMonth(months, empData?.currentYearData).reduce(
+                    (a, b) => a + b,
+                    0
+                  )}
+                </td>
+                <td>
+                  {totalQtyByMonth(months, empData?.currentYearData).reduce(
+                    (a, b) => a + b,
+                    0
+                  )
+                    ? (totalQtyByMonth(months, empData?.currentYearData).reduce(
+                        (a, b) => a + b,
+                        0
+                      ) /
+                        totalQtyByMonth(
+                          months,
+                          empData?.currentYearData
+                        ).reduce((a, b) => a + b, 0)) *
+                      100
+                    : 0}
+                  %
+                </td>
+              </tr>
+              <tr>
+                <td></td>
+                <td></td>
+                {months.map((month, index) => {
+                  return (
+                    <td key={index} className="text-right">
+                      {Number(
+                        ((totalQty(month, empData?.currentYearData) -
+                          totalQty(
+                            prevYearMonth[index],
+                            empData?.prevYearData
+                          )) /
+                          100) *
+                          100
+                      ).toFixed(0)}
+                      %
+                    </td>
+                  );
+                })}
+                <td className="text-right">
+                  {Number(
+                    ((totalQtyByMonth(months, empData?.currentYearData).reduce(
+                      (a, b) => a + b,
+                      0
+                    ) -
+                      totalQtyByMonth(
+                        prevYearMonth,
+                        empData?.prevYearData
+                      ).reduce((a, b) => a + b, 0)) /
+                      100) *
+                      100
+                  ).toFixed(0)}
+                  %
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+          {/**
+           *
+           * Previous Year data
+           *
+           */}
+
+          <table className={"mom__sales-table mt-10"} id={"pdfQty"}>
+            <thead>
+              <tr>
+                <th className="text-left">SL</th>
+                <th className="text-left">Employee</th>
+                {prevYearMonth.map((employee) => (
+                  <th className="text-right" key={employee}>
+                    {employee}
+                  </th>
+                ))}
+                <th className="text-right">Total</th>
+              </tr>
+            </thead>
+            <tbody>
+              {empData?.prevYearData.map((employee, index, arr) => {
+                return (
+                  <tr key={employee.empName}>
+                    <td className="text-left">{index + 1}</td>
+                    <td className="text-left"> {employee.empName}</td>
+                    {prevYearMonth.map((month, index) => (
+                      <td className="text-right" key={month}>
+                        {qty(month, employee.empName, arr)}
+                      </td>
+                    ))}
+                    <td className="text-right">
+                      {totalQtyArr(prevYearMonth, employee.empName, arr).reduce(
                         (a, b) => a + b,
                         0
                       )}
@@ -396,10 +715,17 @@ const EmployeeSales: React.FC<EmployeeSalesProps> = () => {
               <tr>
                 <td></td>
                 <td></td>
-                {months.map((month, index) => (
-                  <td>{totalQty(month)}</td>
+                {prevYearMonth.map((month, index) => (
+                  <td key={index} className="text-right">
+                    {totalQty(month, empData?.prevYearData)}
+                  </td>
                 ))}
-                <td>{totalQtyByMonth(months).reduce((a, b) => a + b, 0)}</td>
+                <td className="text-right">
+                  {totalQtyByMonth(prevYearMonth, empData?.prevYearData).reduce(
+                    (a, b) => a + b,
+                    0
+                  )}
+                </td>
               </tr>
             </tbody>
           </table>

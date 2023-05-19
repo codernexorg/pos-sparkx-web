@@ -30,6 +30,18 @@ interface DailySales {
   totalQty: number;
   totalAmount: number;
   totalAverage: number;
+  cashAmount: number;
+  cblAmount: number;
+  bkashAmount: number;
+  taglessTotal: number;
+  withOutTaglessTotal: number;
+  gapAmount: number;
+  totalGapAmount: number;
+  totalTaglessAmount: number;
+  totalWithOutTaglessAmount: number;
+  totalCashAmount: number;
+  totalBkashAmount: number;
+  totalCblAmount: number;
 }
 
 interface EmpDailySales {
@@ -132,12 +144,12 @@ const Sales: React.FC<SalesProps> = () => {
 
   //Handling PDF Generation
   const handlePdf = () => {
-    const doc = new JsPDF();
+    const doc = new JsPDF("landscape");
     doc.text(
       `Daily Sales Data ${dailySalesData[0]?.month} _ ${
         dailySalesData[0]?.year
       } \n${showroom.find((sr) => sr.showroomCode === srCode)?.showroomName}`,
-      110,
+      150,
       10,
       { align: "center" }
     );
@@ -147,6 +159,12 @@ const Sales: React.FC<SalesProps> = () => {
       html: "#printDailySalesData",
       theme: "grid",
       tableWidth: "auto",
+      styles: { halign: "center" },
+      columnStyles: {
+        totalAmount: {
+          halign: "right",
+        },
+      },
     });
 
     doc.save("daily_sales.pdf");
@@ -234,12 +252,17 @@ const Sales: React.FC<SalesProps> = () => {
           >
             <thead>
               <tr>
-                <th>SL</th>
-                <th>DATE</th>
-                <th>DAY'S</th>
-                <th>QUANTITY</th>
-                <th>TAKA</th>
-                <th>AVERAGE</th>
+                <th className="text-left">SL</th>
+                <th className="text-left">DATE</th>
+                <th className="text-left">DAY'S</th>
+                <th className="text-right">QUANTITY</th>
+                <th className="text-right">TAG</th>
+                <th className="text-right">TAGLESS</th>
+                <th className="text-right">CASH</th>
+                <th className="text-right">BKASH</th>
+                <th className="text-right">CBL</th>
+                <th className="text-right">TOTAL</th>
+                <th className="text-right">GAP</th>
               </tr>
             </thead>
             <tbody>
@@ -250,18 +273,43 @@ const Sales: React.FC<SalesProps> = () => {
                   );
                   return (
                     <tr key={index}>
-                      <td>{index + 1}</td>
-                      <td>{month.date}</td>
-                      <td style={{ textTransform: "capitalize" }}>
-                        {month.day}
+                      <td className="text-left">{index + 1}</td>
+                      <td className="text-left">{month.date}</td>
+                      <td className="capitalize text-left">{month.day}</td>
+                      <td className="text-right">
+                        {salesData?.quantity ? salesData.quantity : `-`}
                       </td>
-                      <td>{salesData?.quantity ? salesData.quantity : `-`}</td>
-                      <td>
+                      <td className="text-right">
+                        {salesData?.withOutTaglessTotal
+                          ? formatPrice(salesData.withOutTaglessTotal)
+                          : `-`}
+                      </td>
+                      <td className="text-right">
+                        {salesData?.taglessTotal
+                          ? formatPrice(salesData.taglessTotal)
+                          : `-`}
+                      </td>
+                      <td className="text-right">
+                        {salesData?.cashAmount
+                          ? formatPrice(salesData.cashAmount)
+                          : `-`}
+                      </td>
+                      <td className="text-right">
+                        {salesData?.bkashAmount
+                          ? formatPrice(salesData.bkashAmount)
+                          : `-`}
+                      </td>
+                      <td className="text-right">
+                        {salesData?.cblAmount
+                          ? formatPrice(salesData.cblAmount)
+                          : `-`}
+                      </td>
+                      <td className="text-right">
                         {salesData?.total ? formatPrice(salesData.total) : `-`}
                       </td>
-                      <td>
-                        {salesData?.average
-                          ? formatPrice(salesData.average)
+                      <td className="text-right">
+                        {salesData?.gapAmount
+                          ? formatPrice(salesData.gapAmount)
                           : `-`}
                       </td>
                     </tr>
@@ -272,9 +320,28 @@ const Sales: React.FC<SalesProps> = () => {
                 <td></td>
                 <td></td>
                 <td></td>
-                <td>{dailySalesData[0]?.totalQty}</td>
-                <td>{formatPrice(dailySalesData[0]?.totalAmount)}</td>
-                <td>{formatPrice(dailySalesData[0]?.totalAverage)}</td>
+                <td className="text-right">{dailySalesData[0]?.totalQty}</td>
+                <td className="text-right">
+                  {formatPrice(dailySalesData[0]?.totalWithOutTaglessAmount)}
+                </td>
+                <td className="text-right">
+                  {formatPrice(dailySalesData[0]?.totalTaglessAmount)}
+                </td>
+                <td className="text-right">
+                  {formatPrice(dailySalesData[0]?.totalCashAmount)}
+                </td>
+                <td className="text-right">
+                  {formatPrice(dailySalesData[0]?.totalBkashAmount)}
+                </td>
+                <td className="text-right">
+                  {formatPrice(dailySalesData[0]?.totalCblAmount)}
+                </td>
+                <td className="text-right">
+                  {formatPrice(dailySalesData[0]?.totalAmount)}
+                </td>
+                <td className="text-right">
+                  {formatPrice(dailySalesData[0]?.totalGapAmount)}
+                </td>
               </tr>
             </tbody>
           </table>
@@ -347,13 +414,15 @@ const Sales: React.FC<SalesProps> = () => {
           >
             <thead>
               <tr>
-                <th>SL</th>
-                <th>DATE</th>
-                <th>DAY'S</th>
+                <th className="text-left">SL</th>
+                <th className="text-left">DATE</th>
+                <th className="text-left">DAY'S</th>
                 {empDailySalesData.map((item) => (
-                  <th key={item.empName}>{item.empName}</th>
+                  <th className="text-right" key={item.empName}>
+                    {item.empName}
+                  </th>
                 ))}
-                <th>Total</th>
+                <th className="text-right">Total</th>
               </tr>
             </thead>
             <tbody>
@@ -361,9 +430,12 @@ const Sales: React.FC<SalesProps> = () => {
                 (month, index) => {
                   return (
                     <tr key={index}>
-                      <td>{index + 1}</td>
-                      <td>{month.date}</td>
-                      <td style={{ textTransform: "capitalize" }}>
+                      <td className="text-left">{index + 1}</td>
+                      <td className="text-left">{month.date}</td>
+                      <td
+                        className="text-left"
+                        style={{ textTransform: "capitalize" }}
+                      >
                         {month.day}
                       </td>
                       {empDailySalesData.map((item, index) => {
@@ -371,14 +443,14 @@ const Sales: React.FC<SalesProps> = () => {
                           (sales) => sales.date === month.date
                         );
                         return (
-                          <td key={index}>
+                          <td className="text-right" key={index}>
                             {salesData?.total
                               ? formatPrice(salesData.total)
                               : `-`}
                           </td>
                         );
                       })}
-                      <td>
+                      <td className="text-right">
                         {formatPrice(
                           totalAmountArr(month.date).reduce((a, b) => a + b, 0)
                         )}
@@ -393,7 +465,7 @@ const Sales: React.FC<SalesProps> = () => {
                 <td></td>
                 {empDailySalesData.map((item, index) => {
                   return (
-                    <td key={index}>
+                    <td className="text-right" key={index}>
                       {formatPrice(
                         totalAmountByDatesAndEmployees(
                           getDayOfMonth(
@@ -406,7 +478,7 @@ const Sales: React.FC<SalesProps> = () => {
                     </td>
                   );
                 })}
-                <td>
+                <td className="text-right">
                   {formatPrice(
                     totalAmountByDate(
                       getDayOfMonth(new Date().getFullYear(), monthNumber).map(

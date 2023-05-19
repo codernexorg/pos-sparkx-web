@@ -67,6 +67,8 @@ const LostProduct = React.lazy(() => import("./Product/LostProduct"));
 
 const DamagedProduct = React.lazy(() => import("./Product/DamagedProduct"));
 
+const ReturnReport = React.lazy(() => import("./Reports/ReturnReport"));
+
 export {
   AddCat,
   AddCustomer,
@@ -110,4 +112,6 @@ export {
   InventoryReport,
   PrevReturned,
   LostProduct,
+  DamagedProduct,
+  ReturnReport,
 };
