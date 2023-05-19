@@ -12,6 +12,7 @@ import { useSettingContext } from "../../context/SettingProver";
 import { useTypedSelector } from "../../../redux/store";
 import { UserRole } from "../../../types";
 import { find } from "underscore";
+import { formatPrice } from "../../utils";
 
 interface CustomerQTYProps {}
 
@@ -22,8 +23,8 @@ interface Customerqty {
   customerPhone: string;
   customerName: string;
   createdAt: string;
-  showroom:string
-  crm:string
+  showroom: string;
+  crm: string;
 }
 
 interface CustomerAmount {
@@ -33,8 +34,8 @@ interface CustomerAmount {
   customerPhone: string;
   customerName: string;
   createdAt: string;
-  showroom:string,
-  crm:string
+  showroom: string;
+  crm: string;
 }
 
 const CustomerQTY: React.FC<CustomerQTYProps> = () => {
@@ -44,10 +45,10 @@ const CustomerQTY: React.FC<CustomerQTYProps> = () => {
   const [showCustomerQty, setShowCustomerQty] = useState(true);
   const [showCustomerAmount, setShowCustomerAmount] = useState(false);
   const [srCode, setSrCode] = useState("");
-  const [loading,setLoading] = useState(false)
+  const [loading, setLoading] = useState(false);
 
   const { currentUser } = useSettingContext();
-  const { showroom,isLoading } = useTypedSelector((sr) => sr.showroom);
+  const { showroom, isLoading } = useTypedSelector((sr) => sr.showroom);
   //Setting Showroom Code For Current User
   useEffect(() => {
     if (currentUser?.role === UserRole[0]) {
@@ -66,11 +67,10 @@ const CustomerQTY: React.FC<CustomerQTYProps> = () => {
     }
   }, [currentUser?.assignedShowroom, currentUser?.role, showroom]);
 
-  if(isLoading) {
-    return <Loader/>
+  if (isLoading) {
+    return <Loader />;
   }
   const CustomerQTYRender = () => {
-
     return (
       <ReportLayout
         handleGenerate={() => {
@@ -82,22 +82,27 @@ const CustomerQTY: React.FC<CustomerQTYProps> = () => {
               },
             })
             .then((res) => {
-              setLoading(false)
-              setCustomerQty(res.data)
-            }).catch((err:AxiosError<ApiError>)=>{
-              setLoading(false)
-            rejectedToast(err)
-          })
-        }
-        }
+              setLoading(false);
+              setCustomerQty(res.data);
+            })
+            .catch((err: AxiosError<ApiError>) => {
+              setLoading(false);
+              rejectedToast(err);
+            });
+        }}
         handlePdf={() => {
           const doc = new JsPDF();
-          doc.text(`Customer Database QTY Report Of ${customerQty[0].showroom}`, 110, 10,{align:'center'});
+          doc.text(
+            `Customer Database QTY Report Of ${customerQty[0].showroom}`,
+            110,
+            10,
+            { align: "center" }
+          );
           autoTable(doc, {
             html: "#pdfQty",
             startY: 20,
           });
-          doc.save('customer_qty.pdf')
+          doc.save("customer_qty.pdf");
         }}
         handlePrint={() => {
           printJS({
@@ -106,9 +111,10 @@ const CustomerQTY: React.FC<CustomerQTYProps> = () => {
             targetStyles: ["*"],
           });
         }}
-        srCode={srCode} setSrCode={setSrCode}
-        excelTableId={'pdfQty'}
-        excelTitle={'Customer Database QTY Report of '+srCode}
+        srCode={srCode}
+        setSrCode={setSrCode}
+        excelTableId={"pdfQty"}
+        excelTitle={"Customer Database QTY Report of " + srCode}
       >
         <div id={"printQty"}>
           <h1 className={"text-center my-2 text-xl font-semibold"}>
@@ -117,36 +123,42 @@ const CustomerQTY: React.FC<CustomerQTYProps> = () => {
           <table className={"customer__table"} id={"pdfQty"}>
             <thead>
               <tr>
-                <th>SL</th>
-                <th>DATE</th>
-                <th>MOBILE NUMBER</th>
-                <th>NICK NAME</th>
-                <th>CRM</th>
+                <th className="text-left">SL</th>
+                <th className="text-left">DATE</th>
+                <th className="text-left">MOBILE NUMBER</th>
+                <th className="text-left">NICK NAME</th>
+                <th className="text-left">CRM</th>
                 {year.map((y) => (
-                  <th key={y}>{y}</th>
+                  <th className="text-right" key={y}>
+                    {y}
+                  </th>
                 ))}
-                <th>TOTAL</th>
+                <th className="text-right">GAP</th>
               </tr>
             </thead>
             <tbody>
               {customerQty.map((c, i) => {
                 return (
                   <tr key={i}>
-                    <td>{i + 1}</td>
-                    <td>{c.createdAt}</td>
-                    <td>{c.customerPhone}</td>
-                    <td>{c.customerName}</td>
-                    <td>{c.crm}</td>
+                    <td className="text-left">{i + 1}</td>
+                    <td className="text-left">{c.createdAt}</td>
+                    <td className="text-left">{c.customerPhone}</td>
+                    <td className="text-left">{c.customerName}</td>
+                    <td className="text-left">{c.crm}</td>
                     {year.map((y) => {
-                      return c.year === y ? <td>{c.quantity}</td> : <td>-</td>;
+                      return c.year === y ? (
+                        <td className="text-right">{c.quantity}</td>
+                      ) : (
+                        <td className="text-right">-</td>
+                      );
                     })}
-                    <td>{c.quantity}</td>
+                    <td className="text-right">0</td>
                   </tr>
                 );
               })}
             </tbody>
           </table>
-          <div className={'print__footer'}>
+          <div className={"print__footer"}>
             <h2>NOTE:</h2>
             <h2>1. YOY CUSTOMER PURCHES QUANTITY.</h2>
             <h2>2. EVERY UNIQUE NUMBER CUSTOMER NAME & CRM MUST BE SAME.</h2>
@@ -159,82 +171,100 @@ const CustomerQTY: React.FC<CustomerQTYProps> = () => {
 
   const CustomerAmount = () => {
     return (
-
-        <ReportLayout handleGenerate={() => {
-          setLoading(true)
+      <ReportLayout
+        handleGenerate={() => {
+          setLoading(true);
           api
-              .get("/reports/sales/customer/amount",{
-                params:{
-                  showroomCode:srCode
-                }
-              })
-              .then((res) => {
-                setCustomerAmount(res.data)
-                setLoading(false)
-              }).catch((err:AxiosError<ApiError>)=>{
-            setLoading(false)
-            rejectedToast(err)
-          })
-        }} handlePdf={() => {
+            .get("/reports/sales/customer/amount", {
+              params: {
+                showroomCode: srCode,
+              },
+            })
+            .then((res) => {
+              setCustomerAmount(res.data);
+              setLoading(false);
+            })
+            .catch((err: AxiosError<ApiError>) => {
+              setLoading(false);
+              rejectedToast(err);
+            });
+        }}
+        handlePdf={() => {
           const doc = new JsPDF();
-          doc.text(`Customer Database QTY Report Of ${customerAmount[0].showroom}`, 110, 10,{align:'center'});
+          doc.text(
+            `Customer Database QTY Report Of ${customerAmount[0].showroom}`,
+            110,
+            10,
+            { align: "center" }
+          );
           autoTable(doc, {
             html: "#pdfAmount",
             startY: 20,
           });
-          doc.save('customer_amount.pdf')
-        }} handlePrint={() => {
+          doc.save("customer_amount.pdf");
+        }}
+        handlePrint={() => {
           printJS({
             printable: "printAmount",
             type: "html",
             targetStyles: ["*"],
           });
-
-        }}  srCode={srCode} setSrCode={setSrCode} excelTableId={'pdfAmount'} excelTitle={'Customer Database Amount Report of '+srCode}>
-          <div id={"printAmount"}>
-            <h1 className={"text-center font-semibold text-xl my-2"}>
-              Customer Database Amount Report
-            </h1>
-            <table className={"customer__table"} id={'pdfAmount'}>
-              <thead>
+        }}
+        srCode={srCode}
+        setSrCode={setSrCode}
+        excelTableId={"pdfAmount"}
+        excelTitle={"Customer Database Amount Report of " + srCode}
+      >
+        <div id={"printAmount"}>
+          <h1 className={"text-center font-semibold text-xl my-2"}>
+            Customer Database Amount Report
+          </h1>
+          <table className={"customer__table"} id={"pdfAmount"}>
+            <thead>
               <tr>
-                <th>SL</th>
-                <th>DATE</th>
-                <th>MOBILE NUMBER</th>
-                <th>NICK NAME</th>
-                <th>CRM</th>
+                <th className="text-left">SL</th>
+                <th className="text-left">DATE</th>
+                <th className="text-left">MOBILE NUMBER</th>
+                <th className="text-left">NICK NAME</th>
+                <th className="text-left">CRM</th>
                 {year.map((y) => (
-                    <th key={y}>{y}</th>
+                  <th className="text-right" key={y}>
+                    {y}
+                  </th>
                 ))}
-                <th>TOTAL</th>
+                <th className="text-right">GAP</th>
               </tr>
-              </thead>
-              <tbody>
+            </thead>
+            <tbody>
               {customerAmount.map((c, i) => {
                 return (
-                    <tr key={i}>
-                      <td>{i + 1}</td>
-                      <td>{c.createdAt}</td>
-                      <td>{c.customerPhone}</td>
-                      <td>{c.customerName}</td>
-                      <td>{c.crm}</td>
-                      {year.map((y) => {
-                        return c.year === y ? <td>{c.amount}</td> : <td>-</td>;
-                      })}
-                      <td>{c.amount}</td>
-                    </tr>
+                  <tr key={i}>
+                    <td className="text-left">{i + 1}</td>
+                    <td className="text-left"> {c.createdAt}</td>
+                    <td className="text-left">{c.customerPhone}</td>
+                    <td className="text-left">{c.customerName}</td>
+                    <td className="text-left">{c.crm}</td>
+                    {year.map((y) => {
+                      return c.year === y ? (
+                        <td className="text-right">{formatPrice(c.amount)}</td>
+                      ) : (
+                        <td className="text-right"> -</td>
+                      );
+                    })}
+                    <td className="text-right">0</td>
+                  </tr>
                 );
               })}
-              </tbody>
-            </table>
-            <div className={'print__footer'}>
-              <h2>NOTE:</h2>
-              <h2>1. YOY CUSTOMER PURCHASE AMOUNT.</h2>
-              <h2>2. EVERY UNIQUE NUMBER CUSTOMER NAME & CRM MUST BE SAME.</h2>
-              <h2>3. QTY CALCULATION EXCLUDING RETURN AMOUNT.</h2>
-            </div>
+            </tbody>
+          </table>
+          <div className={"print__footer"}>
+            <h2>NOTE:</h2>
+            <h2>1. YOY CUSTOMER PURCHASE AMOUNT.</h2>
+            <h2>2. EVERY UNIQUE NUMBER CUSTOMER NAME & CRM MUST BE SAME.</h2>
+            <h2>3. QTY CALCULATION EXCLUDING RETURN AMOUNT.</h2>
           </div>
-        </ReportLayout>
+        </div>
+      </ReportLayout>
     );
   };
 
@@ -260,7 +290,7 @@ const CustomerQTY: React.FC<CustomerQTYProps> = () => {
           Customer Amount
         </Button>
       </div>
-      {loading&&<Loader/>}
+      {loading && <Loader />}
       {showCustomerQty ? <CustomerQTYRender /> : null}
       {showCustomerAmount ? <CustomerAmount /> : null}
     </div>

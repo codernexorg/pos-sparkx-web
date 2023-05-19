@@ -359,6 +359,12 @@ const navigation = [
         Icon: FaAccusoft,
         text: "Customer Reports",
       },
+      {
+        access: ["SuperAdmin", "ShowroomManager"],
+        to: "/dashboard/reports/return",
+        Icon: FaAccusoft,
+        text: "Return Reports",
+      },
       // {
       //   access: ["SuperAdmin", "ShowroomManager"],
       //   to: "/dashboard/reports/unit",

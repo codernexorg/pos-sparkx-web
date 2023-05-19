@@ -36,33 +36,49 @@ const InventoryReport: React.FC<InventoryReportProps> = () => {
   const [loading, setLoading] = useState(false);
   const [sellingStatus, setSellingStatus] = useState("");
   const [sizeData, setSizeData] = useState<SizeData[]>([]);
-  const sizes=['Pend','N/A','38','39','40','41','42','43','44','45','46','47','48']
+  const sizes = [
+    "Pend",
+    "N/A",
+    "38",
+    "39",
+    "40",
+    "41",
+    "42",
+    "43",
+    "44",
+    "45",
+    "46",
+    "47",
+    "48",
+  ];
 
-    //Size Wise Total Qunantity
-    const sizeWiseTotal=(sizeData:SizeData[],size:string)=>{
-        const productData:{
-            productGroup: string;
-            quantity: number;
-            size: string;
-        }[] =[]
-        sizeData.forEach((item)=>{
-            productData.push(...item.showroomProducts.filter(item=>item.size===size))
-        })
+  //Size Wise Total Qunantity
+  const sizeWiseTotal = (sizeData: SizeData[], size: string) => {
+    const productData: {
+      productGroup: string;
+      quantity: number;
+      size: string;
+    }[] = [];
+    sizeData.forEach((item) => {
+      productData.push(
+        ...item.showroomProducts.filter((item) => item.size === size)
+      );
+    });
 
-        return productData.reduce((a,b)=>a+Number(b.quantity),0)
-    }
+    return productData.reduce((a, b) => a + Number(b.quantity), 0);
+  };
 
-    //Total Quantity
-    const totalQty=(sizeData:SizeData[])=>{
-      const productData:{
-          productGroup: string;
-          quantity: number;
-          size: string;
-      }[] =[]
-      sizeData.forEach((item)=>productData.push(...item.showroomProducts))
+  //Total Quantity
+  const totalQty = (sizeData: SizeData[]) => {
+    const productData: {
+      productGroup: string;
+      quantity: number;
+      size: string;
+    }[] = [];
+    sizeData.forEach((item) => productData.push(...item.showroomProducts));
 
-        return productData.reduce((a,b)=>a+Number(b.quantity),0)
-    }
+    return productData.reduce((a, b) => a + Number(b.quantity), 0);
+  };
   const SoldUnsold = () => {
     return (
       <ReportLayout
@@ -108,8 +124,8 @@ const InventoryReport: React.FC<InventoryReportProps> = () => {
         setSupplierName={setSupplier}
         productGroup={productGroup}
         setProductGroup={setProductGroup}
-        excelTableId={'pdfSoldUnsold'}
-        excelTitle={'Sold Unsold Report'}
+        excelTableId={"pdfSoldUnsold"}
+        excelTitle={"Sold Unsold Report"}
       >
         <div id={"printSoldUnsold"}>
           <h1 className={"mt-10 text-center text-xl font-semibold"}>
@@ -139,32 +155,51 @@ const InventoryReport: React.FC<InventoryReportProps> = () => {
                     <td>{item.total ? item.total : "-"}</td>
                     <td>{item.sold ? item.sold : "-"}</td>
                     <td>{item.unsold ? item.unsold : "-"}</td>
-                    <td>{item.rating}%</td>
+                    <td>{Math.fround(item.rating)}%</td>
                   </tr>
                 );
               })}
               <tr>
                 <td></td>
                 <td></td>
-                <td>{soldUnsoldData.reduce((a, item) => a + item.total, 0)?soldUnsoldData.reduce((a, item) => a + item.total, 0):'-'}</td>
-                <td>{soldUnsoldData.reduce((a, item) => a + item.sold, 0)?soldUnsoldData.reduce((a, item) => a + item.sold, 0):'-'}</td>
                 <td>
-                  {soldUnsoldData.reduce((a, item) => a + item.unsold, 0)?soldUnsoldData.reduce((a, item) => a + item.unsold, 0):'-'}
+                  {soldUnsoldData.reduce((a, item) => a + item.total, 0)
+                    ? soldUnsoldData.reduce((a, item) => a + item.total, 0)
+                    : "-"}
                 </td>
                 <td>
-                    {
-                        (soldUnsoldData.reduce((a, item) => a + item.sold, 0)/soldUnsoldData.reduce((a, item) => a + item.total, 0)*100)?(soldUnsoldData.reduce((a, item) => a + item.sold, 0)/soldUnsoldData.reduce((a, item) => a + item.total, 0)*100):'-'
-                    }%
+                  {soldUnsoldData.reduce((a, item) => a + item.sold, 0)
+                    ? soldUnsoldData.reduce((a, item) => a + item.sold, 0)
+                    : "-"}
+                </td>
+                <td>
+                  {soldUnsoldData.reduce((a, item) => a + item.unsold, 0)
+                    ? soldUnsoldData.reduce((a, item) => a + item.unsold, 0)
+                    : "-"}
+                </td>
+                <td>
+                  {(soldUnsoldData.reduce((a, item) => a + item.sold, 0) /
+                    soldUnsoldData.reduce((a, item) => a + item.total, 0)) *
+                  100
+                    ? Math.floor(
+                        (soldUnsoldData.reduce((a, item) => a + item.sold, 0) /
+                          soldUnsoldData.reduce(
+                            (a, item) => a + item.total,
+                            0
+                          )) *
+                          100
+                      )
+                    : "-"}
+                  %
                 </td>
               </tr>
             </tbody>
           </table>
-            <div className={'print__footer'}>
-                <h2>Note:</h2>
-                <h2>1. single product single supplier sold & unsold report</h2>
-                <h2>2. all product single supplier sold & unsold report</h2>
-            </div>
-
+          <div className={"print__footer"}>
+            <h2>Note:</h2>
+            <h2>1. single product single supplier sold & unsold report</h2>
+            <h2>2. all product single supplier sold & unsold report</h2>
+          </div>
         </div>
       </ReportLayout>
     );
@@ -172,30 +207,29 @@ const InventoryReport: React.FC<InventoryReportProps> = () => {
   const Size = () => {
     return (
       <ReportLayout
-          handlePdf={async () => {
-              const doc = new JsPDF('landscape');
-              doc.text(
-                  `SOLD UNSOLD REPORT ${supplier ? supplier : "All Supplier"} _ ${
-                      sizeData[0]?.showroomProducts[0].productGroup
-                  }`,
-                  110,
-                  10,
-                  { align: "center" }
-              );
-              autoTable(doc, {
-                  startY: 20,
-                  html:'#pdfSize',
-                  includeHiddenHtml:true,
-
-              });
-           await  doc.save("size_report.pdf",{returnPromise:true});
-          }}
+        handlePdf={async () => {
+          const doc = new JsPDF("landscape");
+          doc.text(
+            `SOLD UNSOLD REPORT ${supplier ? supplier : "All Supplier"} _ ${
+              sizeData[0]?.showroomProducts[0].productGroup
+            }`,
+            110,
+            10,
+            { align: "center" }
+          );
+          autoTable(doc, {
+            startY: 20,
+            html: "#pdfSize",
+            includeHiddenHtml: true,
+          });
+          await doc.save("size_report.pdf", { returnPromise: true });
+        }}
         handlePrint={() => {
-            printJS({
-                printable:'printSize',
-                type:'html',
-                targetStyles:['*']
-            })
+          printJS({
+            printable: "printSize",
+            type: "html",
+            targetStyles: ["*"],
+          });
         }}
         handleGenerate={() => {
           setLoading(true);
@@ -222,65 +256,75 @@ const InventoryReport: React.FC<InventoryReportProps> = () => {
         setProductGroup={setProductGroup}
         sellingStatus={sellingStatus}
         setSellingStatus={setSellingStatus}
-        excelTableId={'pdfSize'}
-        excelTitle={'Sold Unsold Report'}
+        excelTableId={"pdfSize"}
+        excelTitle={"Sold Unsold Report"}
       >
-        <div id={'printSize'}>
-            <h1 className={'text-center text-xl font-semibold my-4'}>Inventory Size Wise Data</h1>
-            <table className="common__table" id={'pdfSize'}>
-                <thead>
-                <tr>
-                    <th>Supplier Name</th><th>{supplier?supplier:'All Supplier'}</th>
-                </tr>
-                <tr>
-                 <th>Product Name</th><th>{productGroup}</th>
-                </tr>
-                <tr>
-                    <th>Size</th>
-                    <th></th>
-                    <th>Total</th>
-                    {
-                        sizes.map((size)=><th key={size}>{size}</th>)
-                    }
-                </tr>
-                </thead>
-                <tbody>
-                {
-                    sizeData.map((item,index)=>{
-                        return <tr key={index}>
-                            <td>{item.showroomName}</td>
-                            <td></td>
-                            <td>{item.showroomProducts.reduce((a,b)=>a+Number(b.quantity),0)}</td>
-                            {
-                                sizes.map((size)=>{
-                                    const product = item.showroomProducts.find(p=>p.size===size)
-                                    if(product){
-                                        return <td key={size}>{product.quantity}</td>
-                                    }else{
-                                        return  <td key={size}>-</td>
-                                    }
-                                })
-                            }
-                        </tr>
-                    })
-                }
-                <tr>
+        <div id={"printSize"}>
+          <h1 className={"text-center text-xl font-semibold my-4"}>
+            Inventory Size Wise Data
+          </h1>
+          <table className="common__table" id={"pdfSize"}>
+            <thead>
+              <tr>
+                <th>Supplier Name</th>
+                <th>{supplier ? supplier : "All Supplier"}</th>
+              </tr>
+              <tr>
+                <th>Product Name</th>
+                <th>{productGroup}</th>
+              </tr>
+              <tr>
+                <th>Size</th>
+                <th></th>
+                <th>Total</th>
+                {sizes.map((size) => (
+                  <th key={size}>{size}</th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {sizeData.map((item, index) => {
+                return (
+                  <tr key={index}>
+                    <td>{item.showroomName}</td>
                     <td></td>
-                    <td></td>
-                    <td>{totalQty(sizeData)}</td>
-                    {
-                        sizes.map(size=>{
-                            const itemSizes=sizeWiseTotal(sizeData,size)
-                            return <td key={size}>{itemSizes?itemSizes:'-'}</td>
-                        })
-                    }
-                </tr>
-                </tbody>
-            </table>
-            <div className={'print__footer'}>
-                <h2>Note:</h2>
-                <h2>1. showroom, supplier & product basis size wisesales, stock & purchase report</h2>
-            </div>
+                    <td>
+                      {item.showroomProducts.reduce(
+                        (a, b) => a + Number(b.quantity),
+                        0
+                      )}
+                    </td>
+                    {sizes.map((size) => {
+                      const product = item.showroomProducts.find(
+                        (p) => p.size === size
+                      );
+                      if (product) {
+                        return <td key={size}>{product.quantity}</td>;
+                      } else {
+                        return <td key={size}>-</td>;
+                      }
+                    })}
+                  </tr>
+                );
+              })}
+              <tr>
+                <td></td>
+                <td></td>
+                <td>{totalQty(sizeData)}</td>
+                {sizes.map((size) => {
+                  const itemSizes = sizeWiseTotal(sizeData, size);
+                  return <td key={size}>{itemSizes ? itemSizes : "-"}</td>;
+                })}
+              </tr>
+            </tbody>
+          </table>
+          <div className={"print__footer"}>
+            <h2>Note:</h2>
+            <h2>
+              1. showroom, supplier & product basis size wisesales, stock &
+              purchase report
+            </h2>
+          </div>
         </div>
       </ReportLayout>
     );

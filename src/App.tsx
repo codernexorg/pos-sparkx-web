@@ -33,6 +33,7 @@ import {
   Products,
   Purchase,
   Return,
+  ReturnReport,
   SalesReport,
   Sell,
   ShowRoom,
@@ -168,6 +169,7 @@ function App() {
               <Route path={"employee"} element={<EmpMOM_YOY />} />
               <Route path={"customer"} element={<CustomerQTY />} />
               <Route path={"inventory"} element={<InventoryReport />} />
+              <Route path={"return"} element={<ReturnReport />} />
             </Route>
           </Route>
           <Route path="login" element={<Login />} />
