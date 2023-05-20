@@ -25,6 +25,8 @@ const TransferProduct: React.FC<TransferProductProps> = () => {
   const [selectedTransfer, setSelectedTransfer] = React.useState<Product[]>([]);
   const [showRemoveBtn, setShowRemoveBtn] = React.useState<null | number>(null);
   const [confirmationModal, setConfirmationModal] = useState(false);
+  const [showModal, setShowModal] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const initialValues = {
     itemCodes: [{ itemCode: "" }],
@@ -37,7 +39,6 @@ const TransferProduct: React.FC<TransferProductProps> = () => {
     dispatch(fetchTransfers());
   }, [products, dispatch]);
 
-  const [showModal, setShowModal] = useState(false);
   return (
     <div className={"mt-10"}>
       {/*
@@ -135,15 +136,16 @@ const TransferProduct: React.FC<TransferProductProps> = () => {
                   onChange={(e) => {
                     handleChange(e);
                     setFieldValue("currentShowroom", e.target.value);
-
-                    setTransferAbleProduct(
-                      products.filter(
-                        (p) =>
-                          p.showroomName.split(" ")[0] ===
-                            e.target.value.split(" ")[0] &&
-                          p.sellingStatus === "Unsold"
-                      )
+                    setIsLoading(true);
+                    const filteredProducts = products.filter(
+                      (p) =>
+                        p.showroomName.split(" ")[0] ===
+                          e.target.value.split(" ")[0] &&
+                        p.sellingStatus === "Unsold"
                     );
+                    setTransferAbleProduct(filteredProducts);
+
+                    setIsLoading(false);
                   }}
                   children={showroom.map((item, i) => (
                     <option key={i} value={item.showroomName}>
