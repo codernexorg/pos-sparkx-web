@@ -12,6 +12,7 @@ import {
   updateUser,
 } from "../../../redux/actions/user";
 import ConfirmationModal from "../../components/ConfirmationModal";
+import * as bcrypt from "bcryptjs";
 
 interface UserProps {}
 
@@ -32,7 +33,10 @@ const User: React.FC<UserProps> = () => {
   const [confirmationModal, setConfirmationModal] = useState(false);
   const [deleteConfirmationModal, setDeleteConfirmationModal] = useState(false);
   const [userDelete, setUserDelete] = useState<number | null>(null);
-  if(isLoading)return<Loader/>
+  if (isLoading) return <Loader />;
+
+  console.log(userToEdit);
+
   return (
     <div className={"mt-10"}>
       <Modal
@@ -70,6 +74,7 @@ const User: React.FC<UserProps> = () => {
             } else {
               await dispatch(createUser(values));
             }
+            setShowModal(false);
           }}
         >
           {({ handleSubmit }) => (
@@ -125,40 +130,47 @@ const User: React.FC<UserProps> = () => {
                 name={"password"}
                 placeholder={"Password"}
               />
-                {
-                    userToEdit&&userToEdit.role===UserRole[0]?null:<SelectInput label={"Role"} name={"role"}>
-                        {UserRole.map((role) => (
-                            <option key={role} value={role}>
-                                {role}
-                            </option>
-                        ))}
-                    </SelectInput>
-                }
+              {userToEdit && userToEdit.role === UserRole[0] ? null : (
+                <SelectInput label={"Role"} name={"role"}>
+                  {UserRole.map((role) => (
+                    <option key={role} value={role}>
+                      {role}
+                    </option>
+                  ))}
+                </SelectInput>
+              )}
 
-                {
-                    userToEdit&&userToEdit.role===UserRole[0]?null:  <SelectInput label={"Assign Showroom"} name={"assignedShowroom"}>
-                        <option value={"All"}>All</option>
-                        {showroom.map((showroom) => (
-                            <option key={showroom.id} value={showroom.showroomName}>
-                                {showroom.showroomName}
-                            </option>
-                        ))}
-                    </SelectInput>
-                }
+              {userToEdit && userToEdit.role === UserRole[0] ? null : (
+                <SelectInput
+                  label={"Assign Showroom"}
+                  name={"assignedShowroom"}
+                >
+                  <option value={"All"}>All</option>
+                  {showroom.map((showroom) => (
+                    <option key={showroom.id} value={showroom.showroomName}>
+                      {showroom.showroomName}
+                    </option>
+                  ))}
+                </SelectInput>
+              )}
               <Button type={"submit"}>{userToEdit ? "Update" : "Save"}</Button>
             </Form>
           )}
         </Formik>
       </Modal>
       <div className={"flex justify-between items-center mb-10"}>
-        <h1 className={"text-2xl font-semibold dark:text-white"}>Manage Users</h1>
+        <h1 className={"text-2xl font-semibold dark:text-white"}>
+          Manage Users
+        </h1>
         <Button onClick={() => setShowModal(true)}>Add User</Button>
       </div>
       <Table
         dataSource={user}
         loading={isLoading}
         rowKey={(obj: IUser, index) => obj.username + index}
-        rowClassName={'dark:bg-slate-700 dark:text-white dark:hover:text-primaryColor-900'}
+        rowClassName={
+          "dark:bg-slate-700 dark:text-white dark:hover:text-primaryColor-900"
+        }
       >
         <Table.Column title={"#"} render={(text, record, index) => index + 1} />
         <Table.Column title={"Name"} dataIndex={"name"} />
