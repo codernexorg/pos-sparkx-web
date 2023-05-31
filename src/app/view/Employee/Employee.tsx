@@ -13,13 +13,17 @@ import { AiOutlineDelete, AiOutlineEdit, AiOutlineEye } from "react-icons/ai";
 import ConfirmationModal from "../../components/ConfirmationModal";
 import { handleExcel, handlePrint } from "../../utils/helper";
 import moment from "moment";
+import { useSettingContext } from "../../context/SettingProver";
 
 interface EmployeeProps {}
 
 const Employee: React.FC<EmployeeProps> = () => {
   const dispatch = useAppDispatch();
 
-  const { isLoading, employees } = useTypedSelector((state) => state.employee);
+  const {
+    employee: { employees, isLoading },
+    showroom,
+  } = useTypedSelector((state) => state);
   const [openAdd, setOpenAdd] = React.useState(false);
   const [openEdit, setOpenEdit] = React.useState(false);
   const [editAble, setEditAble] = React.useState<IEmployee | null>(null);
@@ -27,6 +31,7 @@ const Employee: React.FC<EmployeeProps> = () => {
   const [itemToDelete, setItemToDelete] = React.useState(0);
   const [openViewModal, setOpenViewModal] = React.useState(false);
   const [employee, setEmployee] = React.useState<IEmployee | null>(null);
+  const { currentUser } = useSettingContext();
   return (
     <div>
       {/*Add Employee Modal*/}
@@ -39,6 +44,7 @@ const Employee: React.FC<EmployeeProps> = () => {
             empAddress: "",
             empEmail: "",
             empSalary: 0,
+            showroomCode: "",
           }}
           onSubmit={async (values) => {
             console.log(values);
@@ -87,6 +93,24 @@ const Employee: React.FC<EmployeeProps> = () => {
               <option value={"SalesMan"}>SalesMan</option>
               <option value={"Other"}>Other</option>
             </SelectInput>
+
+            {currentUser?.role === "SuperAdmin" ? (
+              <SelectInput
+                required={true}
+                name={"showroomCode"}
+                label={"Select Showroom Code"}
+              >
+                {showroom.showroom.map((sr) => {
+                  return (
+                    <option key={sr.id} value={sr.showroomCode}>
+                      {sr.showroomName}
+                    </option>
+                  );
+                })}
+              </SelectInput>
+            ) : (
+              ""
+            )}
             <Button type={"submit"}>Add Employee</Button>
           </Form>
         </Formik>
@@ -190,7 +214,13 @@ const Employee: React.FC<EmployeeProps> = () => {
             </tbody>
           </table>
           <div className={"mt-6"}>
-            <h1 className={"text-xl font-semibold font-inter text-primaryColor-900"}>Sales Table</h1>
+            <h1
+              className={
+                "text-xl font-semibold font-inter text-primaryColor-900"
+              }
+            >
+              Sales Table
+            </h1>
             <Table dataSource={employee?.sales} rowKey={(obj) => obj.id}>
               <Table.Column title={"sl"} render={(_, rec, i) => i + 1} />
               <Table.Column
@@ -211,27 +241,33 @@ const Employee: React.FC<EmployeeProps> = () => {
             </Table>
           </div>
 
-            <div className={"mt-6"}>
-                <h1 className={"text-xl font-semibold font-inter text-primaryColor-900"}>Sales Return Table</h1>
-                <Table dataSource={employee?.returnSales} rowKey={(obj) => obj.id}>
-                    <Table.Column title={"sl"} render={(_, rec, i) => i + 1} />
-                    <Table.Column
-                        title={"Item Code"}
-                        render={(_, rec: Product) => rec.itemCode}
-                    />
-                    <Table.Column
-                        title={"Sells Price"}
-                        render={(_, rec: Product) => rec.sellPriceAfterDiscount}
-                    />
-                    <Table.Column
-                        title={"Date"}
-                        filtered={true}
-                        render={(_, record: Invoice) =>
-                            moment(record.updatedAt).format("DD-MMM-YYYY hh:mm:a")
-                        }
-                    />
-                </Table>
-            </div>
+          <div className={"mt-6"}>
+            <h1
+              className={
+                "text-xl font-semibold font-inter text-primaryColor-900"
+              }
+            >
+              Sales Return Table
+            </h1>
+            <Table dataSource={employee?.returnSales} rowKey={(obj) => obj.id}>
+              <Table.Column title={"sl"} render={(_, rec, i) => i + 1} />
+              <Table.Column
+                title={"Item Code"}
+                render={(_, rec: Product) => rec.itemCode}
+              />
+              <Table.Column
+                title={"Sells Price"}
+                render={(_, rec: Product) => rec.sellPriceAfterDiscount}
+              />
+              <Table.Column
+                title={"Date"}
+                filtered={true}
+                render={(_, record: Invoice) =>
+                  moment(record.updatedAt).format("DD-MMM-YYYY hh:mm:a")
+                }
+              />
+            </Table>
+          </div>
         </div>
       </Modal>
 
@@ -273,7 +309,9 @@ const Employee: React.FC<EmployeeProps> = () => {
           id={"employee"}
           dataSource={employees}
           loading={isLoading}
-          rowClassName={'dark:bg-slate-700 dark:text-white dark:hover:text-primaryColor-900'}
+          rowClassName={
+            "dark:bg-slate-700 dark:text-white dark:hover:text-primaryColor-900"
+          }
         >
           <Table.Column title="Name" dataIndex="empName" key="empName" />
           <Table.Column title="Phone" dataIndex={"empPhone"} key={"empPhone"} />
@@ -297,6 +335,11 @@ const Employee: React.FC<EmployeeProps> = () => {
             title="Sales Count"
             render={(_, record: IEmployee) => record.sales?.length}
             key={"sales"}
+          />
+          <Table.Column
+            title="Showroom"
+            render={(_, record: IEmployee) => record.showroom?.showroomName}
+            key={"showroom"}
           />
           <Table.Column
             title={"Actions"}

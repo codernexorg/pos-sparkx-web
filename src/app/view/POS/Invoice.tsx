@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import { Button, DatePicker, Modal, Select, Table } from "antd";
 import { AiFillCloseCircle, AiOutlineEye } from "react-icons/ai";
 import Barcode from "react-barcode";
@@ -266,31 +266,37 @@ const Invoice = () => {
           <FaFileExcel />
           Excel
         </button>
-        <Select
-          className={"w-[200px]"}
-          placeholder={"Select Showroom"}
-          onChange={(e) => {
-            setShowroomName(e);
-          }}
-          options={showroom.map((sr) => ({
-            value: sr.showroomName,
-            label: sr.showroomName,
-          }))}
-        />
-        <RangePicker
-          onChange={(_, values) => {
-            setDate(values);
-          }}
-        />
-        <CustomButton
-          onClick={async () => {
-            if (date.length) {
-              await dispatch(filterInvoice(date[0], date[1], showroomName));
-            }
-          }}
-        >
-          Filter
-        </CustomButton>
+        {currentUser?.role === "SuperAdmin" ? (
+          <>
+            <Select
+              className={"w-[200px]"}
+              placeholder={"Select Showroom"}
+              onChange={(e) => {
+                setShowroomName(e);
+              }}
+              options={showroom.map((sr) => ({
+                value: sr.showroomName,
+                label: sr.showroomName,
+              }))}
+            />
+            <RangePicker
+              onChange={(_, values) => {
+                setDate(values);
+              }}
+            />
+            <CustomButton
+              onClick={async () => {
+                if (date.length) {
+                  await dispatch(filterInvoice(date[0], date[1], showroomName));
+                }
+              }}
+            >
+              Filter
+            </CustomButton>
+          </>
+        ) : (
+          ""
+        )}
       </div>
       <Table
         loading={isLoading}

@@ -25,8 +25,6 @@ interface ReturnReportData {
 const ReturnReport: React.FC<ReturnReportProps> = ({}) => {
   const [reportData, setReportData] = useState<ReturnReportData[]>([]);
 
-  console.log(reportData);
-
   return (
     <ReportLayout
       handleGenerate={() => {

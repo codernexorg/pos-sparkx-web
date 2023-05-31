@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button } from "antd";
 import { Loader, ReportLayout } from "../../components";
 import api from "../../../api";
@@ -6,6 +6,10 @@ import printJS from "print-js";
 import JsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
 import { rejectedToast } from "../../utils/toaster";
+import { useSettingContext } from "../../context/SettingProver";
+import { UserRole } from "../../../types";
+import { useTypedSelector } from "../../../redux/store";
+import { find } from "underscore";
 
 interface SizeData {
   showroomName: string;
@@ -15,9 +19,8 @@ interface SizeData {
     size: string;
   }[];
 }
-interface InventoryReportProps {}
 
-const InventoryReport: React.FC<InventoryReportProps> = () => {
+const InventoryReport: React.FC = () => {
   const [showSoldUnsold, setShowSoldUnsold] = useState(true);
   const [showSize, setShowSize] = useState(false);
   const [supplier, setSupplier] = useState("");
@@ -204,6 +207,7 @@ const InventoryReport: React.FC<InventoryReportProps> = () => {
       </ReportLayout>
     );
   };
+
   const Size = () => {
     return (
       <ReportLayout

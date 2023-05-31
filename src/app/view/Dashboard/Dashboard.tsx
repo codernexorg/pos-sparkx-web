@@ -1,4 +1,4 @@
-import { Col, DatePicker, Row, Table } from "antd";
+import { Col, DatePicker, Row, Table, Tooltip } from "antd";
 import {
   FaFileInvoice,
   FaPeopleArrows,
@@ -21,6 +21,7 @@ import { SiCashapp } from "react-icons/si";
 import { fetchReturned } from "../../../redux/actions/returned";
 import { groupedProducts } from "../../utils/helper";
 import { useFilteredSoldProduct } from "../../hooks";
+import { useAuthUser } from "react-auth-kit";
 
 const Wrapper = styled.div`
   margin-top: 20px;
@@ -30,6 +31,8 @@ const Wrapper = styled.div`
 
 const Dashboard = () => {
   const dispatch = useAppDispatch();
+
+  const user = useAuthUser();
 
   useEffect(() => {
     dispatch(fetchReturned());
@@ -47,7 +50,7 @@ const Dashboard = () => {
     []
   );
   const [topCustomers, setTopCustomers] = useState<
-    { customerName: string; quantity: number }[]
+    { customerName: string; quantity: number; showroomName: string }[]
   >([]);
 
   const soldProducts = useMemo(
@@ -66,6 +69,8 @@ const Dashboard = () => {
       groupedProducts(filteredProducts).sort((a, b) => b.quantity - a.quantity),
     [filteredProducts]
   );
+
+  const currentUser = useMemo(() => user(), [user]) as IUser;
 
   const fetchData = useCallback(async () => {
     const [reportQty, reportAmount, topCustomers] = await Promise.all([
@@ -225,7 +230,9 @@ const Dashboard = () => {
           </h1>
           <Table
             loading={invoice.isLoading}
-            className={"text-center dark:bg-primaryColor-800 rounded-md"}
+            className={
+              "text-center dark:bg-primaryColor-800 rounded-md min-h-590"
+            }
             dataSource={invoice.invoices
               .sort((a, b) => b.id - a.id)
               .slice(0, 6)}
@@ -288,7 +295,15 @@ const Dashboard = () => {
           </h1>
           <Table
             rowKey={(obj) => obj.customerName}
-            dataSource={topCustomers}
+            dataSource={topCustomers.filter((customer) => {
+              if (currentUser.role !== "SuperAdmin") {
+                return customer.showroomName.includes(
+                  currentUser.assignedShowroom
+                );
+              } else {
+                return customer;
+              }
+            })}
             pagination={false}
             rowClassName={
               "dark:bg-slate-700 dark:text-white dark:hover:text-primaryColor-900"

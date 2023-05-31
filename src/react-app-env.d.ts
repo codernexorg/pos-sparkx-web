@@ -237,7 +237,7 @@ interface IEmployee {
   sales: Product[];
   returnSales: Product[];
 
-  showroom: string;
+  showroom: IShowroom;
 
   empSalary: number;
 
