@@ -8,7 +8,6 @@ import { Button, CommonInput } from "../../../components";
 interface CustomerProps {
   showCustomerModal: boolean;
   setShowCustomerModal: React.Dispatch<SetStateAction<boolean>>;
-  setCustomerTerm: React.Dispatch<SetStateAction<string | null>>;
   setCustomerPhone: React.Dispatch<SetStateAction<string | null>>;
 }
 
@@ -16,7 +15,6 @@ const Customer: React.FC<CustomerProps> = ({
   setShowCustomerModal,
   showCustomerModal,
   setCustomerPhone,
-  setCustomerTerm,
 }) => {
   const dispatch = useAppDispatch();
   const { isLoading } = useTypedSelector((state) => state.customer);
@@ -35,9 +33,7 @@ const Customer: React.FC<CustomerProps> = ({
           customerAddress: "",
         }}
         onSubmit={async (values) => {
-          await dispatch(
-            createCustomer(values, setCustomerTerm, setCustomerPhone)
-          );
+          await dispatch(createCustomer(values, setCustomerPhone));
         }}
       >
         <Form className="space-y-2">

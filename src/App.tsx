@@ -63,7 +63,6 @@ import DamagedProducts from "./app/view/Product/DamagedProduct";
 import BestProducts from "./app/view/Product/BestProducts";
 import BestCustomer from "./app/view/Customer/BestCustomer";
 import AllTimeBestProducts from "./app/view/Product/AllTimeBestProducts";
-
 interface DispatchActions {
   (): void;
 }
@@ -91,6 +90,15 @@ function App() {
     dispatchActions.forEach((action) => action());
   }, [dispatchActions]);
   const { mode } = useSettingContext();
+
+  useEffect(() => {
+    const invoiceData: ILocalHoldInvoice = { invoices: [] };
+
+    const invoices = localStorage.getItem("invoice");
+
+    if (!invoices?.length)
+      localStorage.setItem("invoice", JSON.stringify(invoiceData));
+  }, []);
 
   return (
     <div className={mode === "dark" ? "dark" : ""}>

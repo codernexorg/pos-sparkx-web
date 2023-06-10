@@ -17,6 +17,7 @@ import transferred from "./transfered";
 import user from "./user";
 import warehouse from "./warehouse";
 import returned from "./returned";
+import { hold } from "./holdInvoice";
 
 const reducers = combineReducers({
   products,
@@ -37,6 +38,7 @@ const reducers = combineReducers({
   audit,
   purchase,
   returned,
+  hold,
 });
 
 export default reducers;

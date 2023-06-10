@@ -3,21 +3,33 @@ import React, { SetStateAction, useState } from "react";
 import ConfirmationModal from "../../../components/ConfirmationModal";
 import { AiOutlineEdit } from "react-icons/ai";
 import { BiReset } from "react-icons/bi";
+import moment from "moment";
+import { useAppDispatch } from "../../../../redux/store";
+import { fetchHold, removeHold } from "../../../../redux/actions/hold";
 
 interface HoldTransactionsProps {
   showHoldInvoice: boolean;
   setShowHoldInvoice: React.Dispatch<SetStateAction<boolean>>;
   isLoading: boolean;
-  invoices: Invoice[];
+  setCart: React.Dispatch<SetStateAction<Product[]>>;
+  setEmpPhone: React.Dispatch<SetStateAction<string | null>>;
+  setCustomerPhone: React.Dispatch<SetStateAction<string | null>>;
+  holdInvoices: HoldInvoice[];
 }
 
 const HoldTransactions: React.FC<HoldTransactionsProps> = ({
   showHoldInvoice,
   setShowHoldInvoice,
   isLoading,
-  invoices,
+  setCart,
+  setEmpPhone,
+  setCustomerPhone,
+  holdInvoices,
 }) => {
   const [holdReset, setHoldReset] = useState(false);
+
+  const dispatch = useAppDispatch();
+
   return (
     <Modal
       open={showHoldInvoice}
@@ -29,10 +41,8 @@ const HoldTransactions: React.FC<HoldTransactionsProps> = ({
         <Table
           loading={isLoading}
           className={"text-center"}
-          dataSource={invoices.filter(
-            (invoice) => invoice.invoiceStatus === "Hold"
-          )}
-          rowKey={(obj: Invoice, idx) => obj.invoiceNo}
+          dataSource={holdInvoices}
+          rowKey={(obj: HoldInvoice, idx) => obj.id + obj.invoiceNo}
           pagination={{ defaultPageSize: 30 }}
           rowClassName={
             "dark:bg-slate-700 dark:text-white dark:hover:text-primaryColor-900"
@@ -42,34 +52,22 @@ const HoldTransactions: React.FC<HoldTransactionsProps> = ({
             title={"#"}
             render={(text, record, index) => index + 1}
           />
-          <Table.Column
-            title={"Invoice No"}
-            dataIndex={"showroomInvoiceCode"}
-          />
-          <Table.Column
-            title={"Invoice Amount"}
-            dataIndex="invoiceAmount"
-            render={(text) => `${text}৳`}
-          />
+          <Table.Column title={"Invoice No"} dataIndex={"invoiceNo"} />
           <Table.Column
             title={"Invoice Status"}
             dataIndex={"invoiceStatus"}
-            render={(text) => (
-              <p
-                className={`${
-                  text === "Paid" ? "text-green-500" : "text-red-500"
-                }`}
-              >
-                {text}
-              </p>
-            )}
+            render={(text) => "Hold"}
           />
-          <Table.Column title={"Customer"} dataIndex={"customerName"} />
+          <Table.Column title={"Customer"} dataIndex={"customerPhone"} />
+          <Table.Column
+            title="Product Count"
+            render={(_, rec: HoldInvoice) => rec.items.length}
+          />
 
           <Table.Column
             title={"Actions"}
             dataIndex={"invoiceNo"}
-            render={(text, record: Invoice, index) => {
+            render={(text, record: HoldInvoice, index) => {
               return (
                 <div className={"flex gap-x-3"}>
                   <ConfirmationModal
@@ -78,7 +76,15 @@ const HoldTransactions: React.FC<HoldTransactionsProps> = ({
                     execute={async () => {}}
                   />
                   <button
-                    onClick={() => {
+                    onClick={async () => {
+                      console.log(record.items);
+
+                      setCart((prev) => [...prev, ...record.items]);
+                      setEmpPhone(record.crmPhone);
+                      setCustomerPhone(record.customerPhone);
+
+                      await dispatch(removeHold(record.id));
+                      await dispatch(fetchHold());
                       setShowHoldInvoice(false);
                     }}
                     className={"report__btn bg-green-500 text-white"}
@@ -87,8 +93,9 @@ const HoldTransactions: React.FC<HoldTransactionsProps> = ({
                   </button>
                   <button
                     className={"report__btn bg-red-500 text-white"}
-                    onClick={() => {
-                      setHoldReset(true);
+                    onClick={async () => {
+                      await dispatch(removeHold(record.id));
+                      await dispatch(fetchHold());
                     }}
                   >
                     <BiReset />
@@ -99,13 +106,12 @@ const HoldTransactions: React.FC<HoldTransactionsProps> = ({
           />
           <Table.Column
             title={"Created"}
-            render={(text, record: Invoice) => {
-              return new Date(record.createdAt).toDateString();
+            render={(text, record: HoldInvoice) => {
+              return moment(record.createdAt).format("DD-MMM-YYYY");
             }}
           />
         </Table>
       </div>
-      ;
     </Modal>
   );
 };

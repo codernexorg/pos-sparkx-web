@@ -179,7 +179,7 @@ const SingleInvoice: React.FC<SingleInvoiceProps> = ({
                   {invoiceData?.showroomInvoiceCode && (
                     <div className={"flex gap-x-5"}>
                       <Barcode
-                        width={0.8}
+                        width={1.1}
                         height={25}
                         margin={0}
                         value={invoiceData?.showroomInvoiceCode}

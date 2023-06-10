@@ -1,4 +1,4 @@
-import { Modal, Select, Spin, Table, Tooltip } from "antd";
+import { Modal, Select, Table } from "antd";
 import { Field, Form, Formik } from "formik";
 import React, { useEffect, useState } from "react";
 import { AiOutlineClose } from "react-icons/ai";
@@ -25,21 +25,17 @@ import Customer from "./Components/Customer";
 import Tagless from "./Components/Tagless";
 import SearchProduct from "./Components/SearchProduct";
 import { Button } from "../../components";
-
+import { createHold, fetchHold } from "../../../redux/actions/hold";
 const Sell = () => {
   const dispatch = useAppDispatch();
   const [confirmationModal, setConfirmationModal] = useState(false);
 
   useEffect(() => {
     dispatch(getInvoice());
-    setUpdateInvoice(false);
-    setUpdateInvoiceId(null);
+    dispatch(fetchHold());
   }, [dispatch]);
 
   //Invoice
-
-  const [updateInvoice, setUpdateInvoice] = useState(false);
-  const [updateInvoiceId, setUpdateInvoiceId] = useState<number | null>(null);
 
   const [showInvoice, setShowInvoice] = useState(false);
   const [invoiceData, setInvoiceData] = useState<Invoice | null>(null);
@@ -63,7 +59,6 @@ const Sell = () => {
   //Product End
 
   const [showCustomerModal, setShowCustomerModal] = useState(false);
-  const [customerTerm, setCustomerTerm] = useState<string | null>(null);
   const [customerPhone, setCustomerPhone] = useState<string | null>(null);
   //Customer
 
@@ -91,6 +86,12 @@ const Sell = () => {
 
   //Multiple Payment Methods Modal
   const [showMultiplePayments, setShowMultiplePayments] = useState(false);
+
+  // Hold Invoices
+  const { holds, isLoading: holdLoading } = useTypedSelector(
+    (state) => state.hold
+  );
+
   return (
     <div
       className="bg-white min-h-[50vh] p-4 flex flex-col gap-y-6 rounded-md dark:bg-primaryColor-900"
@@ -122,10 +123,13 @@ const Sell = () => {
       {/*Hold Transactions Modal*/}
 
       <HoldTransactions
-        invoices={invoices}
-        isLoading={isLoading}
+        holdInvoices={holds}
+        isLoading={holdLoading}
         setShowHoldInvoice={setShowHoldInvoice}
         showHoldInvoice={showHoldInvoice}
+        setCart={setCart}
+        setCustomerPhone={setCustomerPhone}
+        setEmpPhone={setEmpPhone}
       />
 
       {/**
@@ -149,7 +153,6 @@ const Sell = () => {
 
       <Customer
         setCustomerPhone={setCustomerPhone}
-        setCustomerTerm={setCustomerTerm}
         setShowCustomerModal={setShowCustomerModal}
         showCustomerModal={showCustomerModal}
       />
@@ -175,7 +178,7 @@ const Sell = () => {
                 label: customer.customerName + " " + customer.customerPhone,
                 value: customer.customerPhone,
               }))}
-              value={customerTerm}
+              value={customerPhone}
               onChange={(value) => {
                 const searchedCustomer = find(customers, (element) =>
                   element.customerPhone.includes(value)
@@ -183,9 +186,6 @@ const Sell = () => {
                 if (!searchedCustomer) {
                   return toast.error("Customer Not Found");
                 }
-                setCustomerTerm(
-                  searchedCustomer && searchedCustomer.customerName
-                );
 
                 const employee = employees.find(
                   (emp) => emp.empPhone === searchedCustomer.crm
@@ -288,42 +288,20 @@ const Sell = () => {
             toast.error("Please Select Employee", {});
             return;
           } else {
-            if (updateInvoice && updateInvoiceId) {
-              api
-                .patch(`/invoice/${updateInvoiceId}`, values)
-                .then(async (res) => {
-                  setInvoiceData(res.data);
-                  setShowInvoice(true);
-                  await dispatch(fetchProduct());
-                  await dispatch(getInvoice());
-                  await dispatch(fetchEmployee());
-                  await dispatch(fetchCustomer());
-                })
-                .catch((err: AxiosError<ApiError>) => {
-                  rejectedToast(err);
-                });
-            } else {
-              //Creating Invoice
-              api
-                .post("/invoice", values)
-                .then(async (res) => {
-                  if (res.data.invoiceStatus !== "Hold") {
-                    setInvoiceData(res.data);
-                    setShowInvoice(true);
-                  } else {
-                    toast.success("Invoice Added To Hold");
-                  }
-                  await dispatch(fetchProduct());
-                  await dispatch(getInvoice());
-                  await dispatch(fetchEmployee());
-                  await dispatch(fetchCustomer());
-                })
-                .catch((err: AxiosError<ApiError>) => {
-                  rejectedToast(err);
-                });
-            }
-            setUpdateInvoice(false);
-            setUpdateInvoiceId(null);
+            //Creating Invoice
+            api
+              .post("/invoice", values)
+              .then(async (res) => {
+                setInvoiceData(res.data);
+                setShowInvoice(true);
+                await dispatch(fetchProduct());
+                await dispatch(getInvoice());
+                await dispatch(fetchEmployee());
+                await dispatch(fetchCustomer());
+              })
+              .catch((err: AxiosError<ApiError>) => {
+                rejectedToast(err);
+              });
             setCart([]);
             setEmpPhone(null);
             setCustomerPhone(null);
@@ -649,8 +627,15 @@ const Sell = () => {
                 </Link>
                 <button
                   type={"submit"}
-                  onClick={() => {
-                    setFieldValue("invoiceStatus", "Hold");
+                  onClick={async () => {
+                    if (values.items.length) {
+                      await dispatch(createHold(values));
+                      setCustomerPhone(null);
+                      setCart([]);
+                      setEmpPhone(null);
+                    } else {
+                      toast.error("No Product TO HOLD");
+                    }
                   }}
                   className={
                     "flex items-center gap-x-2 bg-red-500 text-white w-auto px-2 py-1 rounded min-w-[140px] justify-center"
@@ -666,7 +651,8 @@ const Sell = () => {
                   type={"button"}
                   onClick={() => {
                     resetForm();
-                    setCustomerTerm("Walker Customer");
+                    setEmpPhone(null);
+                    setCustomerPhone(null);
                     setCart([]);
                   }}
                   className={
@@ -682,7 +668,6 @@ const Sell = () => {
                   }
                   type="button"
                   onClick={() => {
-                    setFieldValue("invoiceStatus", "Paid");
                     if (values.paymentMethod === PaymentMethod.MULTIPLE) {
                       setShowMultiplePayments(true);
                     } else {

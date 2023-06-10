@@ -4,6 +4,30 @@ interface IShowroom {
   showroomCode: string;
   showroomAddress: string;
 }
+
+interface HoldInvoice {
+  discounts: number[];
+  subtotal: number;
+  paidAmount: number;
+  items: Product[];
+  customerPhone: string;
+  discountTk: number[];
+  crmPhone: string;
+  vat: number;
+  payable: number[];
+  employees: string[];
+  paymentMethod: string;
+  cash: number;
+  bkash: number;
+  cbl: number;
+  createdAt: string;
+  id: number;
+  invoiceNo: string;
+}
+interface ILocalHoldInvoice {
+  invoices: HoldInvoice[];
+}
+
 type ThemMode = "dark" | "light";
 
 interface ISettingContext {

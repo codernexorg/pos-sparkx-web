@@ -22,7 +22,6 @@ import React from "react";
 export const createCustomer =
   (
     data: any,
-    setCustomer?: React.Dispatch<React.SetStateAction<string | null>>,
     setCustomerPhone?: React.Dispatch<React.SetStateAction<string | null>>
   ) =>
   async (dispatch: AppDispatch) => {
@@ -31,7 +30,6 @@ export const createCustomer =
       .post("/customer", data)
       .then((res) => {
         successToast("Customer created successfully");
-        setCustomer && setCustomer(res.data?.customerName);
         setCustomerPhone && setCustomerPhone(res.data?.customerPhone);
         dispatch({ type: ADD_CUSTOMER_SUCCESS, payload: res.data });
       })
