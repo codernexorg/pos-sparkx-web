@@ -172,10 +172,8 @@ interface Invoice {
   paidAmount: number;
 
   discountAmount: number;
-
   netAmount: number;
-  withTax: number;
-  withoutTax: number;
+  subtotal: number;
 
   changeAmount: number;
 
@@ -216,6 +214,7 @@ interface ICustomer {
 
   returnedProducts: Product[];
 
+  showroom: IShowroom;
   createdAt: string;
 
   updatedAt: string;

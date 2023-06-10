@@ -4,4 +4,5 @@ export enum PaymentMethod {
   CASH = "CASH",
   BKASH = "BKASH",
   CBL = "CBL",
+  MULTIPLE = "MULTIPLE",
 }

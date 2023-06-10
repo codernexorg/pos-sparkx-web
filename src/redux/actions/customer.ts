@@ -22,8 +22,8 @@ import React from "react";
 export const createCustomer =
   (
     data: any,
-    setCustomer?: React.Dispatch<React.SetStateAction<string>>,
-    setCustomerPhone?: React.Dispatch<React.SetStateAction<string>>
+    setCustomer?: React.Dispatch<React.SetStateAction<string | null>>,
+    setCustomerPhone?: React.Dispatch<React.SetStateAction<string | null>>
   ) =>
   async (dispatch: AppDispatch) => {
     dispatch({ type: ADD_CUSTOMER_LOADING });
@@ -42,31 +42,41 @@ export const createCustomer =
   };
 
 export const fetchCustomer = () => async (dispatch: AppDispatch) => {
-    dispatch({type: FETCH_CUSTOMER_LOADING})
-    api.get('/customer').then(res => {
-        dispatch({type: FETCH_CUSTOMER_SUCCESS, payload: res.data})
-    }).catch((err: AxiosError<ApiError>) => {
-        dispatch({type: FETCH_CUSTOMER_ERR, payload: err.response?.data})
+  dispatch({ type: FETCH_CUSTOMER_LOADING });
+  api
+    .get("/customer")
+    .then((res) => {
+      dispatch({ type: FETCH_CUSTOMER_SUCCESS, payload: res.data });
     })
-}
+    .catch((err: AxiosError<ApiError>) => {
+      dispatch({ type: FETCH_CUSTOMER_ERR, payload: err.response?.data });
+    });
+};
 
-export const updateCustomer = (data: ICustomer) => async (dispatch: AppDispatch) => {
-    dispatch({type: UPDATE_CUSTOMER_LOADING})
-    api.patch(`/customer/${data.id}`, data).then(res => {
-        successToast("Customer Updated")
-        dispatch({type: UPDATE_CUSTOMER_SUCCESS, payload: res.data})
-    }).catch((err: AxiosError<ApiError>) => {
-        dispatch({type: UPDATE_CUSTOMER_ERR, payload: err.response?.data})
-    })
-}
+export const updateCustomer =
+  (data: ICustomer) => async (dispatch: AppDispatch) => {
+    dispatch({ type: UPDATE_CUSTOMER_LOADING });
+    api
+      .patch(`/customer/${data.id}`, data)
+      .then((res) => {
+        successToast("Customer Updated");
+        dispatch({ type: UPDATE_CUSTOMER_SUCCESS, payload: res.data });
+      })
+      .catch((err: AxiosError<ApiError>) => {
+        dispatch({ type: UPDATE_CUSTOMER_ERR, payload: err.response?.data });
+      });
+  };
 
 export const deleteCustomer = (id: number) => async (dispatch: AppDispatch) => {
-    dispatch({type: REMOVE_CUSTOMER_LOADING})
-    api.delete(`/customer/${id}`).then(res => {
-        successToast('Customer Deleted')
-        dispatch({type: REMOVE_CUSTOMER_SUCCESS, payload: res.data})
-    }).catch((err: AxiosError<ApiError>) => {
-        rejectedToast(err)
-        dispatch({type: REMOVE_CUSTOMER_ERR, payload: err.response?.data})
+  dispatch({ type: REMOVE_CUSTOMER_LOADING });
+  api
+    .delete(`/customer/${id}`)
+    .then((res) => {
+      successToast("Customer Deleted");
+      dispatch({ type: REMOVE_CUSTOMER_SUCCESS, payload: res.data });
     })
-}
+    .catch((err: AxiosError<ApiError>) => {
+      rejectedToast(err);
+      dispatch({ type: REMOVE_CUSTOMER_ERR, payload: err.response?.data });
+    });
+};

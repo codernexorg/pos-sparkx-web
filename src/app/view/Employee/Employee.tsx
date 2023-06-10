@@ -66,9 +66,9 @@ const Employee: React.FC<EmployeeProps> = () => {
               required={false}
             />
             <CommonInput
-              label={"Phone *"}
+              label={"Emp ID *"}
               name={"empPhone"}
-              placeholder={"Employee Phone"}
+              placeholder={"Employee ID"}
               required={true}
             />
             <CommonInput
@@ -195,7 +195,7 @@ const Employee: React.FC<EmployeeProps> = () => {
             <thead>
               <tr>
                 <th>Name</th>
-                <th>Phone</th>
+                <th>EMP ID</th>
                 <th>Email</th>
                 <th>Designation</th>
                 <th>Address</th>
@@ -288,7 +288,7 @@ const Employee: React.FC<EmployeeProps> = () => {
             employees,
             [
               { field: "empName", displayName: "Name" },
-              { field: "empPhone", displayName: "Phone" },
+              { field: "empPhone", displayName: "Emp ID" },
               { field: "designation", displayName: "Designation" },
               { field: "empAddress", displayName: "Address" },
               { field: "showroom", displayName: "Showroom" },
@@ -314,7 +314,11 @@ const Employee: React.FC<EmployeeProps> = () => {
           }
         >
           <Table.Column title="Name" dataIndex="empName" key="empName" />
-          <Table.Column title="Phone" dataIndex={"empPhone"} key={"empPhone"} />
+          <Table.Column
+            title="EMP ID"
+            dataIndex={"empPhone"}
+            key={"empPhone"}
+          />
           <Table.Column title="Email" dataIndex={"empEmail"} key={"empEmail"} />
           <Table.Column
             title="Address"
