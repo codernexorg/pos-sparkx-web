@@ -77,14 +77,12 @@ const HoldTransactions: React.FC<HoldTransactionsProps> = ({
                   />
                   <button
                     onClick={async () => {
-                      console.log(record.items);
-
                       setCart((prev) => [...prev, ...record.items]);
                       setEmpPhone(record.crmPhone);
                       setCustomerPhone(record.customerPhone);
-
-                      await dispatch(removeHold(record.id));
-                      await dispatch(fetchHold());
+                      dispatch(removeHold(record.id)).then(async () => {
+                        await dispatch(fetchHold());
+                      });
                       setShowHoldInvoice(false);
                     }}
                     className={"report__btn bg-green-500 text-white"}

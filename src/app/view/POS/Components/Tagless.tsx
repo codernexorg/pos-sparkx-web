@@ -45,6 +45,7 @@ const Tagless: React.FC<TaglessProps> = ({
             .catch((err) => {
               rejectedToast(err);
             });
+          setShowTaglessModal(false);
         }}
       >
         {

@@ -32,7 +32,6 @@ import {
   ProductGroup,
   Products,
   Purchase,
-  Return,
   ReturnReport,
   SalesReport,
   Sell,
@@ -150,7 +149,6 @@ function App() {
             <Route path="pos">
               <Route index element={<Sell />} />
               <Route path="invoice" element={<Invoice />} />
-              <Route path="return" element={<Return />} />
               <Route path="return/prev" element={<PrevReturned />} />
             </Route>
             <Route path="setting">

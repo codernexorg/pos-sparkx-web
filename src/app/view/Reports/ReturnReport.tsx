@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import ReportLayout from "../../components/ReportLayout";
 import api from "../../../api";
 import { rejectedToast } from "../../utils/toaster";
@@ -6,6 +6,10 @@ import { formatPrice } from "../../utils";
 import printJS from "print-js";
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
+import { useTypedSelector } from "../../../redux/store";
+import { useSettingContext } from "../../context/SettingProver";
+import { UserRole } from "../../../types";
+import { find } from "underscore";
 
 interface ReturnReportProps {}
 
@@ -24,15 +28,41 @@ interface ReturnReportData {
 
 const ReturnReport: React.FC<ReturnReportProps> = ({}) => {
   const [reportData, setReportData] = useState<ReturnReportData[]>([]);
+  const { showroom, isLoading } = useTypedSelector((state) => state.showroom);
+  const [srCode, setSrCode] = useState("");
 
+  const { currentUser } = useSettingContext();
+  //Setting Showroom Code For Current User
+  useEffect(() => {
+    if (currentUser?.role === UserRole[0]) {
+      if (setSrCode) {
+        setSrCode(showroom[0]?.showroomCode);
+      }
+    } else {
+      const srCode = find(showroom, {
+        showroomName: currentUser?.assignedShowroom,
+      });
+      if (srCode) {
+        if (setSrCode) {
+          setSrCode(srCode.showroomCode);
+        }
+      }
+    }
+  }, [currentUser?.assignedShowroom, currentUser?.role, showroom]);
   return (
     <ReportLayout
       handleGenerate={() => {
         api
-          .get("/reports/return")
+          .get("/reports/return", {
+            params: {
+              showroomCode: srCode,
+            },
+          })
           .then((res) => setReportData(res.data))
           .catch((err) => rejectedToast(err));
       }}
+      srCode={srCode}
+      setSrCode={setSrCode}
       excelTitle="Return Report"
       handlePdf={() => {
         const doc = new jsPDF("landscape");
@@ -75,28 +105,28 @@ const ReturnReport: React.FC<ReturnReportProps> = ({}) => {
           </tr>
         </thead>
         <tbody>
-          {reportData.map((r, i) => {
+          {reportData?.map((r, i) => {
             return (
               <tr key={i}>
                 <td className="text-left">{i + 1}</td>
                 <td className="text-left">{r.day}</td>
                 <td className="text-left">{r.date}</td>
                 <td className="text-left">
-                  {r.products.map((p, i) => (
+                  {r.products?.map((p, i) => (
                     <tr key={i}>
                       <td>{p.itemCode}</td>
                     </tr>
                   ))}
                 </td>
                 <td>
-                  {r.tagPrice.map((p, i) => (
+                  {r.tagPrice?.map((p, i) => (
                     <tr className="flex flex-col items-end w-[100%]" key={i}>
                       <td>{formatPrice(p)}</td>
                     </tr>
                   ))}
                 </td>
                 <td>
-                  {r.finalPrice.map((p, i) => (
+                  {r.finalPrice?.map((p, i) => (
                     <tr className="flex flex-col items-end w-[100%]" key={i}>
                       <td>{formatPrice(p)}</td>
                     </tr>
@@ -104,14 +134,14 @@ const ReturnReport: React.FC<ReturnReportProps> = ({}) => {
                 </td>
                 <td className="text-left">{r.invoiceNo}</td>
                 <td className="text-left">
-                  {r.products.map((p, i) => (
+                  {r.products?.map((p, i) => (
                     <tr key={i}>
                       <td>{p.productName}</td>
                     </tr>
                   ))}
                 </td>
                 <td className="text-left">
-                  {r.seller.map((p, i) => (
+                  {r.seller?.map((p, i) => (
                     <tr key={i}>
                       <td>{p.empName}</td>
                     </tr>

@@ -333,15 +333,6 @@ interface IBrand {
   createdAt: string;
 }
 
-interface IReturned {
-  id: number;
-  note: string;
-  amount: number;
-  products: Product[];
-  customer: ICustomer;
-  createdAt: string;
-}
-
 interface Purchase {
   id: number;
   invoiceNo: string;
@@ -357,11 +348,13 @@ interface Purchase {
 interface IReturned {
   id: number;
   amount: number;
-  invoiceNo: string;
-  customerPhone: string;
   check: string;
-  salesDate: string;
-  products: Product[];
+  returnProducts: Product[];
+  exchange: boolean;
+  customerPhone: string;
   createdAt: string;
   updatedAt: string;
+  cash: number;
+  bkash: number;
+  cbl: 0;
 }

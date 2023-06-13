@@ -1,6 +1,6 @@
 import axios from "axios";
 
-export const baseURL = "http://localhost:9000/api/v1";
+export const baseURL = "https://server.sparkxfashion.com/api/v1";
 
 const api = axios.create({ baseURL, withCredentials: true });
 

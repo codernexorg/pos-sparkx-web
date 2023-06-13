@@ -57,12 +57,6 @@ const navigation = [
       },
       {
         access: ["SuperAdmin", "ShowroomManager", "SalesOperator"],
-        to: "/dashboard/pos/return",
-        Icon: FaAccusoft,
-        text: "Sells Return",
-      },
-      {
-        access: ["SuperAdmin", "ShowroomManager", "SalesOperator"],
         to: "/dashboard/pos/return/prev",
         Icon: FaAccusoft,
         text: "Previous Return Products",

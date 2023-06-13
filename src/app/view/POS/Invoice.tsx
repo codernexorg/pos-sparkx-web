@@ -10,6 +10,8 @@ import { Link } from "react-router-dom";
 import { FaFileExcel } from "react-icons/fa";
 import * as XLSX from "xlsx";
 import SingleInvoice from "./Components/SingleInvoice";
+import moment from "moment";
+import { formatPrice } from "../../utils";
 
 const Invoice = () => {
   const [showInvoice, setShowInvoice] = useState<boolean>(false);
@@ -71,19 +73,19 @@ const Invoice = () => {
                       itemCode,
                       employee,
                     }) => ({
+                      Date: new Date(createdAt).toLocaleDateString("en-US", {
+                        day: "numeric",
+                        month: "numeric",
+                        year: "numeric",
+                      }),
                       Invoice_Code: showroomInvoiceCode,
                       Customer_Name: customerName,
                       Customer_Mobile: customerPhone,
                       Product_Name: productGroup,
                       Product_Code: itemCode,
                       EMP_NAME: employee?.empName,
-                      Discount_Price: sellPriceAfterDiscount,
-                      Tag_Price: sellPrice,
-                      Date: new Date(createdAt).toLocaleTimeString("en-US", {
-                        day: "numeric",
-                        month: "numeric",
-                        year: "numeric",
-                      }),
+                      Discount_Price: formatPrice(sellPriceAfterDiscount),
+                      Tag_Price: formatPrice(sellPrice),
                     })
                   )
               )
@@ -173,7 +175,7 @@ const Invoice = () => {
         <Table.Column
           title="Payment Method"
           render={(_, obj: Invoice) => {
-            return obj.paymentMethod.paymentMethod;
+            return obj?.paymentMethod?.paymentMethod;
           }}
         />
         <Table.Column
@@ -225,7 +227,7 @@ const Invoice = () => {
         <Table.Column
           title={"Created"}
           render={(text, record: Invoice) => {
-            return new Date(record.createdAt).toLocaleDateString();
+            return moment(record.createdAt).format("DD-MMM-YY  hh:mm a");
           }}
         />
       </Table>

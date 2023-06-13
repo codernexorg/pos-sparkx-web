@@ -153,10 +153,14 @@ const SingleInvoice: React.FC<SingleInvoiceProps> = ({
                 <div className={"w-full flex text-center mb-2"}>
                   <div className={"w-full border border-slate-400 py-1"}>
                     <h1 className={"border-b border-slate-400"}>
-                      {invoiceData?.paymentMethod.paymentMethod ===
+                      {invoiceData?.paymentMethod?.paymentMethod ===
                       PaymentMethod.MULTIPLE
                         ? "Multiple Payment"
-                        : `${invoiceData?.paymentMethod.paymentMethod} Amount`}
+                        : `${
+                            invoiceData?.paymentMethod?.paymentMethod
+                              ? invoiceData?.paymentMethod?.paymentMethod
+                              : ""
+                          } Amount`}
                     </h1>
                     <h1 className={""}>{invoiceData?.paidAmount}৳</h1>
                   </div>

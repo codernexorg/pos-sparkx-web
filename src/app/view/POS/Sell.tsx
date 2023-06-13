@@ -1,6 +1,13 @@
-import { Modal, Select, Table } from "antd";
+import {
+  Modal,
+  Select,
+  Table,
+  Button as AntButton,
+  Spin,
+  notification,
+} from "antd";
 import { Field, Form, Formik } from "formik";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { AiOutlineClose } from "react-icons/ai";
 import { BiReceipt, BiReset } from "react-icons/bi";
 import { FaHandHolding, FaPlus, FaUser } from "react-icons/fa";
@@ -26,14 +33,10 @@ import Tagless from "./Components/Tagless";
 import SearchProduct from "./Components/SearchProduct";
 import { Button } from "../../components";
 import { createHold, fetchHold } from "../../../redux/actions/hold";
+import ReturnModal from "./Components/ReturnModal";
 const Sell = () => {
   const dispatch = useAppDispatch();
   const [confirmationModal, setConfirmationModal] = useState(false);
-
-  useEffect(() => {
-    dispatch(getInvoice());
-    dispatch(fetchHold());
-  }, [dispatch]);
 
   //Invoice
 
@@ -92,11 +95,42 @@ const Sell = () => {
     (state) => state.hold
   );
 
+  // Return Product
+
+  const [showReturnModal, setShowReturnModal] = useState(false);
+  const [returnId, setReturnId] = useState<number | null>(null);
+  const [returnLoading, setReturnLoading] = useState(false);
+  const [returns, setReturns] = useState<IReturned[]>([]);
+  const [filteredReturn, setFilteredReturn] = useState<IReturned | undefined>(
+    undefined
+  );
+
+  useEffect(() => {
+    const filteredR = returns.find((r) => r.id === returnId);
+    setFilteredReturn(filteredR);
+  }, [returnId, returns]);
+  if (returnLoading) {
+    return <Spin />;
+  }
+
   return (
     <div
       className="bg-white min-h-[50vh] p-4 flex flex-col gap-y-6 rounded-md dark:bg-primaryColor-900"
       onClick={() => setFilteredProducts([])}
     >
+      {returnId ? (
+        <div>
+          <h1 className="text-xl font-semibold text-center text-red-500">
+            Please Exchange The Product{" "}
+          </h1>
+          <p className="text-center">
+            Don't Refresh Before Completing The Excange
+          </p>
+        </div>
+      ) : (
+        ""
+      )}
+
       <div className={"flex justify-end"}>
         <button
           className={"flex gap-x-2 items-center px-2 py-1 dark:text-white"}
@@ -106,7 +140,11 @@ const Sell = () => {
         </button>
         <button
           className={"flex gap-x-2 items-center px-2 py-1 dark:text-white"}
-          onClick={() => setShowHoldInvoice(true)}
+          onClick={async () => {
+            dispatch(fetchHold()).then(() => {
+              setShowHoldInvoice(true);
+            });
+          }}
         >
           <FaHandHolding /> Hold Transactions
         </button>
@@ -227,6 +265,18 @@ const Sell = () => {
           setFilteredProducts={setFilteredProducts}
           setShowTaglessModal={setShowTaglessModal}
         />
+
+        <div>
+          <ReturnModal
+            setReturns={setReturns}
+            setReturnLoading={setReturnLoading}
+            returnId={returnId}
+            setReturnId={setReturnId}
+            showReturnModal={showReturnModal}
+            setShowReturnModal={setShowReturnModal}
+          />
+          <AntButton onClick={() => setShowReturnModal(true)}>Return</AntButton>
+        </div>
         {/*
         *
         *
@@ -257,6 +307,7 @@ const Sell = () => {
 
       <Formik
         initialValues={{
+          salesTime: "",
           discounts: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
           subtotal: totalPrice(cart),
           paidAmount: 0,
@@ -273,17 +324,11 @@ const Sell = () => {
           cash: 0,
           bkash: 0,
           cbl: 0,
+          returnId: returnId,
         }}
         enableReinitialize={true}
         onSubmit={(values, { resetForm, setFieldValue }) => {
-          if (
-            values.payable.reduce((a, b) => a + b) +
-              Math.floor((values.subtotal / 100) * values.vat) >
-            values.paidAmount
-          ) {
-            toast.error("Please Enter Correct Amount");
-            return;
-          }
+          console.log(values);
           if (!values.employees.length) {
             toast.error("Please Select Employee", {});
             return;
@@ -305,6 +350,7 @@ const Sell = () => {
             setCart([]);
             setEmpPhone(null);
             setCustomerPhone(null);
+            setReturnId(null);
           }
         }}
       >
@@ -511,6 +557,19 @@ const Sell = () => {
                   <div
                     className={"text-[16px] font-black flex justify-between"}
                   >
+                    Sales Time{" "}
+                    <input
+                      className="border pl-2 rounded-md focus:outline-none w-40"
+                      type="datetime-local"
+                      id="salesTime"
+                      value={values.salesTime}
+                      name="salesTime"
+                      onChange={handleChange}
+                    />
+                  </div>
+                  <div
+                    className={"text-[16px] font-black flex justify-between"}
+                  >
                     Subtotal{" "}
                     <input
                       value={values.subtotal}
@@ -537,16 +596,18 @@ const Sell = () => {
                       className="border pl-2 rounded-md w-40"
                       name={"vat"}
                       type={"number"}
+                      disabled
                     />
                   </div>
                   <div
                     className={"text-[16px] font-black flex justify-between"}
                   >
-                    Total Payable
+                    Total {returnId ? "Returnable" : " Payable"}
                     <input
                       value={
+                        (filteredReturn?.amount ? filteredReturn.amount : 0) -
                         values.payable.reduce((a, b) => a + b) +
-                        Math.floor((values.subtotal / 100) * values.vat)
+                        Math.round((values.subtotal / 100) * values.vat)
                       }
                       disabled
                       className="border pl-2 rounded-md w-40"
@@ -572,21 +633,23 @@ const Sell = () => {
                     className={"text-[16px] font-black flex justify-between"}
                   >
                     <span>
-                      {values.paidAmount -
+                      {values.paidAmount +
+                        (filteredReturn?.amount ? filteredReturn.amount : 0) -
                         (values.payable.reduce((a, b) => a + b) +
-                          (values.subtotal / 100) * values.vat) <
+                          Math.round((values.subtotal / 100) * values.vat)) <
                       0
                         ? "Due"
+                        : returnId
+                        ? "Return"
                         : "Change"}
                     </span>
                     <input
                       className="border pl-2 rounded-md w-40"
                       value={
                         values.paidAmount +
-                        -(
-                          values.payable.reduce((a, b) => a + b) +
-                          Math.round((values.subtotal / 100) * values.vat)
-                        )
+                        (filteredReturn?.amount ? filteredReturn.amount : 0) -
+                        (values.payable.reduce((a, b) => a + b) +
+                          Math.round((values.subtotal / 100) * values.vat))
                       }
                       disabled
                     />
@@ -628,13 +691,22 @@ const Sell = () => {
                 <button
                   type={"submit"}
                   onClick={async () => {
-                    if (values.items.length) {
-                      await dispatch(createHold(values));
-                      setCustomerPhone(null);
-                      setCart([]);
-                      setEmpPhone(null);
+                    if (returnId) {
+                      toast.error(
+                        "You are not allowed to hold when Exchanging"
+                      );
+                      return;
                     } else {
-                      toast.error("No Product TO HOLD");
+                      if (values.items.length) {
+                        dispatch(createHold(values)).then(() => {
+                          dispatch(fetchHold());
+                        });
+                        setCustomerPhone(null);
+                        setCart([]);
+                        setEmpPhone(null);
+                      } else {
+                        toast.error("No Product TO HOLD");
+                      }
                     }
                   }}
                   className={
@@ -668,6 +740,10 @@ const Sell = () => {
                   }
                   type="button"
                   onClick={() => {
+                    if (!customerPhone || !empPhone) {
+                      toast.error("Sells Not Possible Without Customer Or CRM");
+                      return;
+                    }
                     if (values.paymentMethod === PaymentMethod.MULTIPLE) {
                       setShowMultiplePayments(true);
                     } else {
