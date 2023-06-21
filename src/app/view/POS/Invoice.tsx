@@ -227,7 +227,7 @@ const Invoice = () => {
         <Table.Column
           title={"Created"}
           render={(text, record: Invoice) => {
-            return moment(record.createdAt).format("DD-MMM-YY  hh:mm a");
+            return moment(record.createdAt).format("DD-MMM-YYYY");
           }}
         />
       </Table>

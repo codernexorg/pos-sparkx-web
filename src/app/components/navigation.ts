@@ -117,12 +117,6 @@ const navigation = [
         Icon: FaAccusoft,
         text: "Best Products",
       },
-      {
-        access: ["SuperAdmin", "ShowroomManager", "SalesOperator"],
-        to: "products/best-products/all-time",
-        Icon: FaAccusoft,
-        text: "Best Products All Time",
-      },
     ],
   },
   {

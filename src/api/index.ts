@@ -17,6 +17,7 @@ api.interceptors.response.use(
   (response) => response,
   (error) => {
     const errorMessage = error.response?.data?.message || "An error occurred";
+    const errorStatus = error.response?.status;
 
     // Clear the previous timer
     clearTimeout(errorTimer);
@@ -24,7 +25,7 @@ api.interceptors.response.use(
     // Start a new timer to display the toast after 1 second
     errorTimer = setTimeout(() => {
       // Show a toast notification
-      toast.error(errorMessage);
+      if (errorStatus === 401 || errorStatus === 500) toast.error(errorMessage);
     }, 1000);
 
     return Promise.reject(error);

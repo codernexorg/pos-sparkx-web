@@ -1,11 +1,4 @@
-import {
-  Modal,
-  Select,
-  Table,
-  Button as AntButton,
-  Spin,
-  notification,
-} from "antd";
+import { Modal, Select, Table, Button as AntButton, Spin } from "antd";
 import { Field, Form, Formik } from "formik";
 import React, { useEffect, useMemo, useState } from "react";
 import { AiOutlineClose } from "react-icons/ai";
@@ -327,7 +320,7 @@ const Sell = () => {
           returnId: returnId,
         }}
         enableReinitialize={true}
-        onSubmit={(values, { resetForm, setFieldValue }) => {
+        onSubmit={(values) => {
           console.log(values);
           if (!values.employees.length) {
             toast.error("Please Select Employee", {});
@@ -343,14 +336,20 @@ const Sell = () => {
                 await dispatch(getInvoice());
                 await dispatch(fetchEmployee());
                 await dispatch(fetchCustomer());
+
+                setCart([]);
+                setEmpPhone(null);
+                setCustomerPhone(null);
+                setReturnId(null);
               })
               .catch((err: AxiosError<ApiError>) => {
                 rejectedToast(err);
+
+                setCart([]);
+                setEmpPhone(null);
+                setCustomerPhone(null);
+                setReturnId(null);
               });
-            setCart([]);
-            setEmpPhone(null);
-            setCustomerPhone(null);
-            setReturnId(null);
           }
         }}
       >
@@ -543,7 +542,10 @@ const Sell = () => {
                   <Table.Column
                     title={<AiOutlineClose />}
                     render={(_text, record: Product, index) => (
-                      <button onClick={() => removeFromCart(record.itemCode)}>
+                      <button
+                        type="button"
+                        onClick={() => removeFromCart(record.itemCode)}
+                      >
                         X
                       </button>
                     )}
@@ -689,7 +691,7 @@ const Sell = () => {
                   <FaPlus /> Add New
                 </Link>
                 <button
-                  type={"submit"}
+                  type={"button"}
                   onClick={async () => {
                     if (returnId) {
                       toast.error(
@@ -700,10 +702,10 @@ const Sell = () => {
                       if (values.items.length) {
                         dispatch(createHold(values)).then(() => {
                           dispatch(fetchHold());
+                          setCustomerPhone(null);
+                          setCart([]);
+                          setEmpPhone(null);
                         });
-                        setCustomerPhone(null);
-                        setCart([]);
-                        setEmpPhone(null);
                       } else {
                         toast.error("No Product TO HOLD");
                       }

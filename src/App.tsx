@@ -61,7 +61,6 @@ import { useSettingContext } from "./app/context/SettingProver";
 import DamagedProducts from "./app/view/Product/DamagedProduct";
 import BestProducts from "./app/view/Product/BestProducts";
 import BestCustomer from "./app/view/Customer/BestCustomer";
-import AllTimeBestProducts from "./app/view/Product/AllTimeBestProducts";
 interface DispatchActions {
   (): void;
 }
@@ -115,10 +114,6 @@ function App() {
               <Route path="lost" element={<LostProduct />} />
               <Route path="damaged" element={<DamagedProducts />} />
               <Route path="best-products" element={<BestProducts />} />
-              <Route
-                path="best-products/all-time"
-                element={<AllTimeBestProducts />}
-              />
             </Route>
             <Route path="product-group">
               <Route index element={<ProductGroup />} />
