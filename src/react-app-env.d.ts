@@ -147,7 +147,6 @@ interface MultipleProductInput {
   invoiceTotalPrice: number;
   lotNumber: number;
   supplierName: string;
-  whName: string;
   showroomName: string;
   unitCost: number;
 
@@ -205,6 +204,7 @@ interface Invoice {
   showroomAddress: string;
   showroomMobile: string;
   showroomName: string;
+  returned: IReturned;
 
   deletedAt: string;
 }

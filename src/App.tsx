@@ -73,7 +73,7 @@ function App() {
     return [
       () => dispatch(fetchProduct()),
       () => dispatch(getSupplier()),
-      () => dispatch(getWareHouse()),
+      // () => dispatch(getWareHouse()),
       () => dispatch(getShowroom()),
       () => dispatch(fetchCustomer()),
       () => dispatch(fetchEmployee()),
@@ -128,11 +128,11 @@ function App() {
               <Route index element={<Barcode />} />
               <Route path="setting" element={<BarcodeSetting />} />
             </Route>
-            <Route path="warehouse" element={<Outlet />}>
+            {/* <Route path="warehouse" element={<Outlet />}>
               <Route index element={<WareHouse />} />
               <Route path=":id" element={<EditWHouse />} />
               <Route path="add" element={<AddWareHouse />} />
-            </Route>
+            </Route> */}
             <Route path="showroom" element={<Outlet />}>
               <Route index element={<ShowRoom />} />
               <Route path="add" element={<AddShowRoom />} />

@@ -83,40 +83,100 @@ const Invoice: React.FC<InvoiceProps> = ({
                 <h1>{invoiceData?.customerMobile}</h1>
               </div>
             </div>
-            <table className={"invoice__table"}>
-              <thead>
-                <tr>
-                  <th>SL</th>
-                  <th>P.Name</th>
-                  <th>T.Price</th>
-                  <th>Dis</th>
-                  <th>Net Taka</th>
-                </tr>
-              </thead>
-              <tbody>
-                {invoiceData?.products.map((pr, idx) => {
-                  return (
-                    <tr key={pr.id}>
-                      <td>{idx + 1}</td>
-                      <td>
-                        <p>{pr.productGroup}</p>
-                        <p>{pr.itemCode}</p>
-                      </td>
-                      <td>{pr.sellPrice}</td>
-                      <td>{pr.sellPrice - pr.sellPriceAfterDiscount}</td>
-                      <td>{pr.sellPriceAfterDiscount}</td>
+            {invoiceData?.products.length ? (
+              <>
+                {invoiceData?.returned ? (
+                  <h1 className="font-semibold">Sales Table</h1>
+                ) : (
+                  ""
+                )}
+                <table className={"invoice__table"}>
+                  <thead>
+                    <tr>
+                      <th>SL</th>
+                      <th>P.Name</th>
+                      <th>T.Price</th>
+                      <th>Dis</th>
+                      <th>Net Taka</th>
                     </tr>
-                  );
-                })}
-                <tr>
-                  <td>TOTAL</td>
-                  <td></td>
-                  <td>{invoiceData?.subtotal}</td>
-                  <td>{invoiceData?.discountAmount}</td>
-                  <td>{invoiceData?.netAmount}</td>
-                </tr>
-              </tbody>
-            </table>
+                  </thead>
+                  <tbody>
+                    {invoiceData?.products.map((pr, idx) => {
+                      return (
+                        <tr key={pr.id}>
+                          <td>{idx + 1}</td>
+                          <td>
+                            <p>{pr.productGroup}</p>
+                            <p>{pr.itemCode}</p>
+                          </td>
+                          <td>{pr.sellPrice}</td>
+                          <td>
+                            {Math.round(
+                              pr.sellPrice - pr.sellPriceAfterDiscount
+                            )}
+                          </td>
+                          <td>{pr.sellPriceAfterDiscount}</td>
+                        </tr>
+                      );
+                    })}
+                    <tr>
+                      <td>TOTAL</td>
+                      <td></td>
+                      <td>{invoiceData?.subtotal}</td>
+                      <td>{invoiceData?.discountAmount}</td>
+                      <td>{Math.round(invoiceData?.netAmount)}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </>
+            ) : (
+              ""
+            )}
+            {invoiceData?.returned?.returnProducts.length ? (
+              <>
+                <h1 className="font-semibold">Return Table</h1>
+                <table className={"invoice__table"}>
+                  <thead>
+                    <tr>
+                      <th>SL</th>
+                      <th>P.Name</th>
+                      <th>T.Price</th>
+                      <th>Dis</th>
+                      <th>Net Taka</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {invoiceData?.returned?.returnProducts.map((pr, idx) => {
+                      return (
+                        <tr key={pr.id}>
+                          <td>{idx + 1}</td>
+                          <td>
+                            <p>{pr.productGroup}</p>
+                            <p>{pr.itemCode}</p>
+                          </td>
+                          <td>{pr.sellPrice}</td>
+                          <td>
+                            {Math.round(
+                              pr.sellPrice - pr.sellPriceAfterDiscount
+                            )}
+                          </td>
+                          <td>{pr.sellPriceAfterDiscount}</td>
+                        </tr>
+                      );
+                    })}
+                    <tr>
+                      <td>TOTAL</td>
+                      <td></td>
+                      <td>{invoiceData?.subtotal}</td>
+                      <td>{invoiceData?.discountAmount}</td>
+                      <td>{invoiceData?.netAmount}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </>
+            ) : (
+              ""
+            )}
           </main>
           <footer className={"w-full "}>
             <p className={"mt-2"}>
@@ -141,15 +201,25 @@ const Invoice: React.FC<InvoiceProps> = ({
               ) : (
                 ""
               )}
-              <h1>T. Payable: {invoiceData?.invoiceAmount}৳</h1>
+              <h1>
+                T. Payable:{" "}
+                {invoiceData?.invoiceAmount
+                  ? Math.round(invoiceData?.invoiceAmount)
+                  : 0}
+                ৳
+              </h1>
             </div>
             <div className={"w-full flex text-center mb-2"}>
               <div className={"w-full border border-slate-400 py-1"}>
                 <h1 className={"border-b border-slate-400"}>
-                  {invoiceData?.paymentMethod.paymentMethod ===
+                  {invoiceData?.paymentMethod?.paymentMethod ===
                   PaymentMethod.MULTIPLE
                     ? "Multiple Payment"
-                    : `${invoiceData?.paymentMethod.paymentMethod} Amount`}
+                    : `${
+                        invoiceData?.paymentMethod?.paymentMethod
+                          ? invoiceData?.paymentMethod?.paymentMethod
+                          : ""
+                      } Amount`}
                 </h1>
                 <h1 className={""}>{invoiceData?.paidAmount}৳</h1>
               </div>
@@ -235,40 +305,100 @@ const Invoice: React.FC<InvoiceProps> = ({
                 <h1>{invoiceData?.customerMobile}</h1>
               </div>
             </div>
-            <table className={"invoice__table"}>
-              <thead>
-                <tr>
-                  <th>SL</th>
-                  <th>P.Name</th>
-                  <th>T.Price</th>
-                  <th>Dis</th>
-                  <th>Net Taka</th>
-                </tr>
-              </thead>
-              <tbody>
-                {invoiceData?.products.map((pr, idx) => {
-                  return (
-                    <tr key={pr.id}>
-                      <td>{idx + 1}</td>
-                      <td>
-                        <p>{pr.productGroup}</p>
-                        <p>{pr.itemCode}</p>
-                      </td>
-                      <td>{pr.sellPrice}</td>
-                      <td>{pr.sellPrice - pr.sellPriceAfterDiscount}</td>
-                      <td>{pr.sellPriceAfterDiscount}</td>
+            {invoiceData?.products.length ? (
+              <>
+                {invoiceData?.returned ? (
+                  <h1 className="font-semibold">Sales Table</h1>
+                ) : (
+                  ""
+                )}
+                <table className={"invoice__table"}>
+                  <thead>
+                    <tr>
+                      <th>SL</th>
+                      <th>P.Name</th>
+                      <th>T.Price</th>
+                      <th>Dis</th>
+                      <th>Net Taka</th>
                     </tr>
-                  );
-                })}
-                <tr>
-                  <td>TOTAL</td>
-                  <td></td>
-                  <td>{invoiceData?.subtotal}</td>
-                  <td>{invoiceData?.discountAmount}</td>
-                  <td>{invoiceData?.netAmount}</td>
-                </tr>
-              </tbody>
-            </table>
+                  </thead>
+                  <tbody>
+                    {invoiceData?.products.map((pr, idx) => {
+                      return (
+                        <tr key={pr.id}>
+                          <td>{idx + 1}</td>
+                          <td>
+                            <p>{pr.productGroup}</p>
+                            <p>{pr.itemCode}</p>
+                          </td>
+                          <td>{pr.sellPrice}</td>
+                          <td>
+                            {Math.round(
+                              pr.sellPrice - pr.sellPriceAfterDiscount
+                            )}
+                          </td>
+                          <td>{pr.sellPriceAfterDiscount}</td>
+                        </tr>
+                      );
+                    })}
+                    <tr>
+                      <td>TOTAL</td>
+                      <td></td>
+                      <td>{invoiceData?.subtotal}</td>
+                      <td>{invoiceData?.discountAmount}</td>
+                      <td>{Math.round(invoiceData?.netAmount)}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </>
+            ) : (
+              ""
+            )}
+            {invoiceData?.returned?.returnProducts.length ? (
+              <>
+                <h1 className="font-semibold">Return Table</h1>
+                <table className={"invoice__table"}>
+                  <thead>
+                    <tr>
+                      <th>SL</th>
+                      <th>P.Name</th>
+                      <th>T.Price</th>
+                      <th>Dis</th>
+                      <th>Net Taka</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {invoiceData?.returned?.returnProducts.map((pr, idx) => {
+                      return (
+                        <tr key={pr.id}>
+                          <td>{idx + 1}</td>
+                          <td>
+                            <p>{pr.productGroup}</p>
+                            <p>{pr.itemCode}</p>
+                          </td>
+                          <td>{pr.sellPrice}</td>
+                          <td>
+                            {Math.round(
+                              pr.sellPrice - pr.sellPriceAfterDiscount
+                            )}
+                          </td>
+                          <td>{pr.sellPriceAfterDiscount}</td>
+                        </tr>
+                      );
+                    })}
+                    <tr>
+                      <td>TOTAL</td>
+                      <td></td>
+                      <td>{invoiceData?.subtotal}</td>
+                      <td>{invoiceData?.discountAmount}</td>
+                      <td>{invoiceData?.netAmount}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </>
+            ) : (
+              ""
+            )}
           </main>
           <footer className={"w-full "}>
             <p className={"mt-2"}>
@@ -293,15 +423,25 @@ const Invoice: React.FC<InvoiceProps> = ({
               ) : (
                 ""
               )}
-              <h1>T. Payable: {invoiceData?.invoiceAmount}৳</h1>
+              <h1>
+                T. Payable:{" "}
+                {invoiceData?.invoiceAmount
+                  ? Math.round(invoiceData?.invoiceAmount)
+                  : 0}
+                ৳
+              </h1>
             </div>
             <div className={"w-full flex text-center mb-2"}>
               <div className={"w-full border border-slate-400 py-1"}>
                 <h1 className={"border-b border-slate-400"}>
-                  {invoiceData?.paymentMethod.paymentMethod ===
+                  {invoiceData?.paymentMethod?.paymentMethod ===
                   PaymentMethod.MULTIPLE
                     ? "Multiple Payment"
-                    : `${invoiceData?.paymentMethod.paymentMethod} Amount`}
+                    : `${
+                        invoiceData?.paymentMethod?.paymentMethod
+                          ? invoiceData?.paymentMethod?.paymentMethod
+                          : ""
+                      } Amount`}
                 </h1>
                 <h1 className={""}>{invoiceData?.paidAmount}৳</h1>
               </div>

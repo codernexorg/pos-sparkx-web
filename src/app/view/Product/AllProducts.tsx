@@ -278,9 +278,9 @@ const AllProducts = () => {
             return record.size ? record.size : "-";
           }}
         />
-        <Table.Column title="Current Location" dataIndex={"whName"} />
+        {/* <Table.Column title="Current Location" dataIndex={"whName"} /> */}
         <Table.Column
-          title="Planned Showroom"
+          title="Current Location"
           dataIndex={"showroomName"}
           filters={showroom.map((item) => ({
             text: item.showroomName,

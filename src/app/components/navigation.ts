@@ -202,25 +202,25 @@ const navigation = [
       },
     ],
   },
-  {
-    title: "Locations",
-    Icon: FaWarehouse,
-    access: ["SuperAdmin"],
-    links: [
-      {
-        access: ["SuperAdmin"],
-        to: "/dashboard/warehouse",
-        Icon: FaAccusoft,
-        text: "Manage Locations",
-      },
-      {
-        access: ["SuperAdmin"],
-        to: "/dashboard/warehouse/add",
-        Icon: FaAccusoft,
-        text: "Add Location",
-      },
-    ],
-  },
+  // {
+  //   title: "Locations",
+  //   Icon: FaWarehouse,
+  //   access: ["SuperAdmin"],
+  //   links: [
+  //     {
+  //       access: ["SuperAdmin"],
+  //       to: "/dashboard/warehouse",
+  //       Icon: FaAccusoft,
+  //       text: "Manage Locations",
+  //     },
+  //     {
+  //       access: ["SuperAdmin"],
+  //       to: "/dashboard/warehouse/add",
+  //       Icon: FaAccusoft,
+  //       text: "Add Location",
+  //     },
+  //   ],
+  // },
 
   {
     title: "Purchase",

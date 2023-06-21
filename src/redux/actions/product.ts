@@ -56,7 +56,6 @@ type ProductData = {
   invoiceTotalPrice: number;
   lotNumber: number;
   supplierName: string;
-  whName: string;
   showroomName: string;
   unitCost: number;
   productGroup: string;

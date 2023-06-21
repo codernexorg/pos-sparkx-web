@@ -1,6 +1,6 @@
 import { Modal, Select, Button, Table } from "antd";
 import { Formik, Form } from "formik";
-import React, { SetStateAction, useState } from "react";
+import React, { SetStateAction, useEffect, useState } from "react";
 import { useAppDispatch, useTypedSelector } from "../../../../redux/store";
 import { toast } from "react-toastify";
 import { CommonInput, SelectInput } from "../../../components";
@@ -31,6 +31,24 @@ const ReturnModal: React.FC<ReturnModalProps> = ({
   const [returnProduct, setReturnProduct] = useState<Product[]>([]);
 
   const dispatch = useAppDispatch();
+
+  const [customerPhone, setCustomerPhone] = useState("");
+
+  useEffect(() => {
+    if (returnProduct.length > 0) {
+      const customer = customers.find((c) => {
+        return c.purchasedProducts.some((p) => {
+          return p.itemCode === returnProduct[0].itemCode;
+        });
+      });
+
+      console.log(customer);
+
+      if (customer) {
+        setCustomerPhone(customer.customerPhone);
+      }
+    }
+  }, [returnProduct, customers]);
 
   return (
     <>
@@ -102,7 +120,7 @@ const ReturnModal: React.FC<ReturnModalProps> = ({
                 items: returnProduct.map((item) => item.itemCode),
                 check: "",
                 exchange: "",
-                customerPhone: "Select A Customer",
+                customerPhone: customerPhone,
                 cash: 0,
                 bkash: 0,
                 cbl: 0,
@@ -120,6 +138,7 @@ const ReturnModal: React.FC<ReturnModalProps> = ({
                       });
                     } else {
                       setReturnId(null);
+                      setReturnLoading(false);
                     }
                     toast.success("Product Successfully Returned");
                     dispatch(fetchProduct());
@@ -153,51 +172,48 @@ const ReturnModal: React.FC<ReturnModalProps> = ({
                     ))}
                   />
 
-                  <Select
-                    className="w-full"
-                    placeholder="Search Customer"
-                    value={values.customerPhone}
-                    options={customers.map((c) => ({
-                      value: c.customerPhone,
-                      label: c.customerName + " " + c.customerPhone,
-                    }))}
-                    onChange={(e) => {
-                      setFieldValue("customerPhone", e);
-                    }}
-                    showSearch
+                  <CommonInput
+                    name="customerPhone"
+                    value={customerPhone}
+                    disabled
+                    label="Customer Phone"
                   />
-                  <h1 className="text-xl font-semibold">
-                    You Have To Return Maximumn{" "}
-                    {returnProduct.reduce(
-                      (acc, a) => acc + a.sellPriceAfterDiscount,
-                      0
-                    )}
-                    tk
-                  </h1>
+
                   {values.exchange === "Not Exchanging" ? (
-                    <div className="flex gap-x-2">
-                      <CommonInput
-                        name="cash"
-                        placeholder="CASH"
-                        label="CASH"
-                        type="number"
-                        step={1}
-                      />
-                      <CommonInput
-                        name="bkash"
-                        placeholder="Bkash"
-                        label="Bkash"
-                        type="number"
-                        step={1}
-                      />
-                      <CommonInput
-                        name="cbl"
-                        placeholder="CBL"
-                        label="CBL"
-                        type="number"
-                        step={1}
-                      />
-                    </div>
+                    <>
+                      <h1 className="text-xl font-semibold">
+                        You Have To Return Maximumn{" "}
+                        {returnProduct.reduce(
+                          (acc, a) => acc + a.sellPriceAfterDiscount,
+                          0
+                        )}
+                        tk
+                      </h1>
+
+                      <div className="flex gap-x-2">
+                        <CommonInput
+                          name="cash"
+                          placeholder="CASH"
+                          label="CASH"
+                          type="number"
+                          step={1}
+                        />
+                        <CommonInput
+                          name="bkash"
+                          placeholder="Bkash"
+                          label="Bkash"
+                          type="number"
+                          step={1}
+                        />
+                        <CommonInput
+                          name="cbl"
+                          placeholder="CBL"
+                          label="CBL"
+                          type="number"
+                          step={1}
+                        />
+                      </div>
+                    </>
                   ) : (
                     ""
                   )}

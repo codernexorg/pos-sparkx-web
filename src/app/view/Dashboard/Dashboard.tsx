@@ -38,7 +38,7 @@ const Dashboard = () => {
     dispatch(fetchReturned());
   }, [dispatch]);
 
-  const { products, supplier, invoice, customer, returned } = useTypedSelector(
+  const { products, supplier, invoice, customer } = useTypedSelector(
     (state) => state
   );
 
@@ -97,6 +97,22 @@ const Dashboard = () => {
   useEffect(() => {
     fetchData();
   }, [fetchData]);
+
+  const [returns, setReturns] = useState<IReturned[]>([]);
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    setLoading(true);
+    api
+      .get("/invoice/return")
+      .then((res) => {
+        setReturns(res.data);
+        setLoading(false);
+      })
+      .catch((err) => {
+        setLoading(false);
+      });
+  }, []);
 
   return (
     <Wrapper>
@@ -162,8 +178,8 @@ const Dashboard = () => {
         />
         <Stats
           title="Total Sales Return"
-          value={returned.returned.reduce((acc, iv) => acc + iv.amount, 0)}
-          isLoading={returned.isLoading}
+          value={returns.reduce((acc, iv) => acc + iv.amount, 0)}
+          isLoading={loading}
           icon={<FaRetweet />}
         />
       </div>
@@ -326,7 +342,7 @@ const Dashboard = () => {
             Top 5 Best Selling Product Of {moment().format("MMMM_YYYY")}
           </h1>
           <Table
-            dataSource={bestProduct}
+            dataSource={bestProduct.slice(0, 5)}
             rowKey={(obj: Product) => obj.id}
             pagination={false}
           >

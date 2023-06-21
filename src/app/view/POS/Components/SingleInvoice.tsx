@@ -89,40 +89,96 @@ const SingleInvoice: React.FC<SingleInvoiceProps> = ({
                     <h1>{invoiceData?.customerMobile}</h1>
                   </div>
                 </div>
-                <table className={"invoice__table"}>
-                  <thead>
-                    <tr>
-                      <th>SL</th>
-                      <th>P.Name</th>
-                      <th>T.Price</th>
-                      <th>Dis</th>
-                      <th>Net Taka</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {invoiceData?.products.map((pr, idx) => {
-                      return (
-                        <tr key={pr.id}>
-                          <td>{idx + 1}</td>
-                          <td>
-                            <p>{pr.productGroup}</p>
-                            <p>{pr.itemCode}</p>
-                          </td>
-                          <td>{pr.sellPrice}</td>
-                          <td>{pr.sellPrice - pr.sellPriceAfterDiscount}</td>
-                          <td>{pr.sellPriceAfterDiscount}</td>
+                {invoiceData.products.length ? (
+                  <>
+                    {invoiceData?.returned ? (
+                      <h1 className="font-semibold">Sales Table</h1>
+                    ) : (
+                      ""
+                    )}
+                    <table className={"invoice__table"}>
+                      <thead>
+                        <tr>
+                          <th>SL</th>
+                          <th>P.Name</th>
+                          <th>T.Price</th>
+                          <th>Dis</th>
+                          <th>Net Taka</th>
                         </tr>
-                      );
-                    })}
-                    <tr>
-                      <td>TOTAL</td>
-                      <td></td>
-                      <td>{invoiceData?.subtotal}</td>
-                      <td>{invoiceData?.discountAmount}</td>
-                      <td>{invoiceData?.netAmount}</td>
-                    </tr>
-                  </tbody>
-                </table>
+                      </thead>
+                      <tbody>
+                        {invoiceData?.products.map((pr, idx) => {
+                          return (
+                            <tr key={pr.id}>
+                              <td>{idx + 1}</td>
+                              <td>
+                                <p>{pr.productGroup}</p>
+                                <p>{pr.itemCode}</p>
+                              </td>
+                              <td>{pr.sellPrice}</td>
+                              <td>
+                                {pr.sellPrice - pr.sellPriceAfterDiscount}
+                              </td>
+                              <td>{pr.sellPriceAfterDiscount}</td>
+                            </tr>
+                          );
+                        })}
+                        <tr>
+                          <td>TOTAL</td>
+                          <td></td>
+                          <td>{invoiceData?.subtotal}</td>
+                          <td>{invoiceData?.discountAmount}</td>
+                          <td>{invoiceData?.netAmount}</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </>
+                ) : (
+                  ""
+                )}
+                {invoiceData?.returned?.returnProducts.length ? (
+                  <>
+                    <h1 className="font-semibold">Return Table</h1>
+                    <table className={"invoice__table"}>
+                      <thead>
+                        <tr>
+                          <th>SL</th>
+                          <th>P.Name</th>
+                          <th>T.Price</th>
+                          <th>Dis</th>
+                          <th>Net Taka</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {invoiceData?.returned.returnProducts.map((pr, idx) => {
+                          return (
+                            <tr key={pr.id}>
+                              <td>{idx + 1}</td>
+                              <td>
+                                <p>{pr.productGroup}</p>
+                                <p>{pr.itemCode}</p>
+                              </td>
+                              <td>{pr.sellPrice}</td>
+                              <td>
+                                {pr.sellPrice - pr.sellPriceAfterDiscount}
+                              </td>
+                              <td>{pr.sellPriceAfterDiscount}</td>
+                            </tr>
+                          );
+                        })}
+                        <tr>
+                          <td>TOTAL</td>
+                          <td></td>
+                          <td>{invoiceData?.subtotal}</td>
+                          <td>{invoiceData?.discountAmount}</td>
+                          <td>{invoiceData?.netAmount}</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </>
+                ) : (
+                  ""
+                )}
               </main>
               <footer className={"w-full "}>
                 <p className={"mt-2"}>

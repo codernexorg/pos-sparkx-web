@@ -39,7 +39,6 @@ const AddSingle = () => {
           supplierName: "",
           totalItem: 0,
           unitCost: 0,
-          whName: "",
           sellPrice: 0,
           showroomName: "",
           productGroup: "",
