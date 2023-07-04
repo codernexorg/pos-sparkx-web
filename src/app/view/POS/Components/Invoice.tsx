@@ -49,7 +49,7 @@ const Invoice: React.FC<InvoiceProps> = ({
             }
           >
             <h1 className={"text-2xl text-center font-bold capitalize"}>
-              {invoiceData?.businessName.toLocaleLowerCase()}
+              {"SPARKX Lifestyle".toLocaleLowerCase()}
             </h1>
             <h2 className={"text-[12px]"}>
               {invoiceData?.showroomName
@@ -308,7 +308,7 @@ const Invoice: React.FC<InvoiceProps> = ({
             }
           >
             <h1 className={"text-2xl text-center font-bold capitalize"}>
-              {invoiceData?.businessName.toLocaleLowerCase()}
+              {"SPARKX Lifestyle".toLocaleLowerCase()}
             </h1>
             <h2 className={"text-[12px]"}>
               {invoiceData?.showroomName

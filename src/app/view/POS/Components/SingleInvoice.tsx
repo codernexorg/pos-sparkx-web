@@ -55,7 +55,7 @@ const SingleInvoice: React.FC<SingleInvoiceProps> = ({
                 }
               >
                 <h1 className={"text-2xl text-center font-bold capitalize"}>
-                  {invoiceData?.businessName.toLocaleLowerCase()}
+                  {"SPARKX Lifestyle".toLocaleLowerCase()}
                 </h1>
                 <h2 className={"text-[12px]"}>
                   {invoiceData?.showroomName
@@ -244,7 +244,7 @@ const SingleInvoice: React.FC<SingleInvoiceProps> = ({
                       : "Payable"}
                     :{" "}
                     {invoiceData?.invoiceAmount && invoiceData.invoiceAmount < 0
-                      ? Math.abs(invoiceData.invoiceAmount)
+                      ? invoiceData.invoiceAmount
                       : invoiceData?.invoiceAmount}
                     ৳
                   </h1>

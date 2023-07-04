@@ -1,23 +1,19 @@
-import React, { useEffect, useState } from "react";
-import { useAppDispatch, useTypedSelector } from "../../../redux/store";
+import React, { useState } from "react";
+import { useTypedSelector } from "../../../redux/store";
 import { Field, Form, Formik } from "formik";
 import { Button, SelectInput } from "../../components";
 import { toast } from "react-toastify";
 import { AiOutlineDelete } from "react-icons/ai";
-import { Modal, Spin, Table } from "antd";
+import { Spin } from "antd";
 import api from "../../../api";
 import { rejectedToast, successToast } from "../../utils/toaster";
 import { AxiosError } from "axios";
 import { ApiError } from "../../../redux/types";
-import { fetchTransfers } from "../../../redux/actions/transferred";
-import { FaHistory } from "react-icons/fa";
 import ConfirmationModal from "../../components/ConfirmationModal";
 
 interface TransferProductProps {}
 
 const TransferProduct: React.FC<TransferProductProps> = () => {
-  const dispatch = useAppDispatch();
-  const { products } = useTypedSelector((state) => state.products);
   const { showroom } = useTypedSelector((state) => state.showroom);
   const [transferAbleProduct, setTransferAbleProduct] = React.useState<
     Product[]
@@ -25,7 +21,6 @@ const TransferProduct: React.FC<TransferProductProps> = () => {
   const [selectedTransfer, setSelectedTransfer] = React.useState<Product[]>([]);
   const [showRemoveBtn, setShowRemoveBtn] = React.useState<null | number>(null);
   const [confirmationModal, setConfirmationModal] = useState(false);
-  const [showModal, setShowModal] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
   const initialValues = {
@@ -33,18 +28,13 @@ const TransferProduct: React.FC<TransferProductProps> = () => {
     currentShowroom: "",
     plannedShowroom: "",
   };
-  const { transferred } = useTypedSelector((state) => state.transferred);
-
-  useEffect(() => {
-    dispatch(fetchTransfers());
-  }, [products, dispatch]);
 
   return (
     <div className={"mt-10"}>
       {/*
                     Previous Transferred Product
                 */}
-      <Modal
+      {/* <Modal
         width={800}
         open={showModal}
         footer={false}
@@ -67,7 +57,7 @@ const TransferProduct: React.FC<TransferProductProps> = () => {
         >
           <FaHistory /> History
         </button>
-      </div>
+      </div> */}
 
       {/**
        * End Previous Returned Showroom
@@ -203,7 +193,7 @@ const TransferProduct: React.FC<TransferProductProps> = () => {
                 initialValues={{
                   searchTerm: "",
                 }}
-                onSubmit={({ searchTerm }) => {
+                onSubmit={({ searchTerm }, { resetForm }) => {
                   const searchedProduct = transferAbleProduct.find(
                     (p) => p.itemCode === searchTerm
                   );
@@ -212,6 +202,8 @@ const TransferProduct: React.FC<TransferProductProps> = () => {
                   } else if (selectedTransfer.includes(searchedProduct)) {
                     toast.error("Product already selected");
                   } else setSelectedTransfer((p) => [...p, searchedProduct]);
+
+                  resetForm();
                 }}
               >
                 <Form>
