@@ -4,6 +4,30 @@ interface IShowroom {
   showroomCode: string;
   showroomAddress: string;
 }
+
+interface HoldInvoice {
+  discounts: number[];
+  subtotal: number;
+  paidAmount: number;
+  items: Product[];
+  customerPhone: string;
+  discountTk: number[];
+  crmPhone: string;
+  vat: number;
+  payable: number[];
+  employees: string[];
+  paymentMethod: string;
+  cash: number;
+  bkash: number;
+  cbl: number;
+  createdAt: string;
+  id: number;
+  invoiceNo: string;
+}
+interface ILocalHoldInvoice {
+  invoices: HoldInvoice[];
+}
+
 type ThemMode = "dark" | "light";
 
 interface ISettingContext {
@@ -123,7 +147,6 @@ interface MultipleProductInput {
   invoiceTotalPrice: number;
   lotNumber: number;
   supplierName: string;
-  whName: string;
   showroomName: string;
   unitCost: number;
 
@@ -172,10 +195,8 @@ interface Invoice {
   paidAmount: number;
 
   discountAmount: number;
-
   netAmount: number;
-  withTax: number;
-  withoutTax: number;
+  subtotal: number;
 
   changeAmount: number;
 
@@ -183,6 +204,7 @@ interface Invoice {
   showroomAddress: string;
   showroomMobile: string;
   showroomName: string;
+  returned: IReturned;
 
   deletedAt: string;
 }
@@ -216,6 +238,7 @@ interface ICustomer {
 
   returnedProducts: Product[];
 
+  showroom: IShowroom;
   createdAt: string;
 
   updatedAt: string;
@@ -310,15 +333,6 @@ interface IBrand {
   createdAt: string;
 }
 
-interface IReturned {
-  id: number;
-  note: string;
-  amount: number;
-  products: Product[];
-  customer: ICustomer;
-  createdAt: string;
-}
-
 interface Purchase {
   id: number;
   invoiceNo: string;
@@ -334,11 +348,13 @@ interface Purchase {
 interface IReturned {
   id: number;
   amount: number;
-  invoiceNo: string;
-  customerPhone: string;
   check: string;
-  salesDate: string;
-  products: Product[];
+  returnProducts: Product[];
+  exchange: boolean;
+  customerPhone: string;
   createdAt: string;
   updatedAt: string;
+  cash: number;
+  bkash: number;
+  cbl: 0;
 }

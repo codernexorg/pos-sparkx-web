@@ -108,7 +108,6 @@ const AddMultiple = () => {
                 invoiceTotalPrice: 0,
                 lotNumber: 0,
                 supplierName: "",
-                whName: "",
                 showroomName: "",
                 unitCost: 0,
                 productGroup: "",
@@ -183,22 +182,12 @@ const AddMultiple = () => {
                   </FormGroup>
                   <FormGroup>
                     <SelectInput
-                      label="Showroom Name"
+                      label="Select Location"
                       name="showroomName"
                       required
                       children={showroom.map((sp) => (
                         <option key={sp.id} value={sp.showroomName}>
                           {sp.showroomName}
-                        </option>
-                      ))}
-                    />
-                    <SelectInput
-                      label="Select Location"
-                      name="whName"
-                      required
-                      children={warehouses.map((sp) => (
-                        <option key={sp.whId} value={sp.whName}>
-                          {sp.whName}
                         </option>
                       ))}
                     />

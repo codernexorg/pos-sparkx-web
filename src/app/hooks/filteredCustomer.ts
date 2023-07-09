@@ -1,28 +1,35 @@
-import { useState, useEffect } from "react";
+import moment from "moment";
+import { useState, useEffect, SetStateAction } from "react";
 
-export const useFilteredHook = <T extends { updatedAt: string }>(
+export const useFilteredHook = <T extends ICustomer>(
   start: string,
   end: string,
-  data: T[]
+  data: T[],
+  showroom?: string
 ): T[] => {
   const [filteredData, setFilteredData] = useState<T[]>(data);
 
   useEffect(() => {
-    if (typeof start === "undefined" || typeof end === "undefined") {
-      setFilteredData(data);
-      return;
+    const startDate = new Date(start).getTime();
+    const endDate = new Date(end).getTime();
+
+    let filtered: T[];
+
+    if (showroom) {
+      filtered = data.filter((item) => item.showroom.showroomCode === showroom);
+    } else {
+      filtered = data;
     }
 
-    const startDate = new Date(start);
-    const endDate = new Date(end);
+    if (moment(startDate).isValid() && moment(endDate).isValid()) {
+      filtered = filtered.filter((item) => {
+        const itemDate = new Date(item.updatedAt).getTime();
 
-    const filtered = data.filter((item) => {
-      const itemDate = new Date(item.updatedAt);
-      return itemDate >= startDate && itemDate <= endDate;
-    });
-
+        return itemDate >= startDate && itemDate <= endDate;
+      });
+    }
     setFilteredData(filtered);
-  }, [start, end, data]);
+  }, [start, end, data, showroom]);
 
   return filteredData;
 };

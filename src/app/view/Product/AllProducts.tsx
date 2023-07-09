@@ -1,4 +1,4 @@
-import { Modal, Table } from "antd";
+import { Button, Modal, Table, Upload } from "antd";
 import { useEffect, useRef, useState } from "react";
 import { useAppDispatch, useTypedSelector } from "../../../redux/store";
 import {
@@ -14,8 +14,11 @@ import autoTable from "jspdf-autotable";
 import { AiOutlineEdit } from "react-icons/ai";
 import { Form, Formik } from "formik";
 import ConfirmationModal from "../../components/ConfirmationModal";
-import { updateProduct } from "../../../redux/actions/product";
+import { fetchProduct, updateProduct } from "../../../redux/actions/product";
 import { filter } from "underscore";
+import { baseURL } from "../../../api";
+import { toast } from "react-toastify";
+import { DraggerProps } from "antd/es/upload";
 
 const AllProducts = () => {
   const tableComponent = useRef<HTMLDivElement>(null);
@@ -52,6 +55,34 @@ const AllProducts = () => {
 
   const handleFilter = (data: string) => {
     setDataTable(() => filter(products, (item) => item.itemCode === data));
+  };
+
+  // Update Bulk Product
+  const { Dragger } = Upload;
+  const [updateBulkModal, setUpdateBulkModal] = useState(false);
+
+  const uploaderProps: DraggerProps = {
+    name: "file",
+    multiple: false,
+    action: `${baseURL}/product/update`,
+    onChange(info: any) {
+      const { status, response } = info.file;
+      if (status === "done") {
+        toast.success(
+          `Data Updating On Background, Please Reload After Some Time`
+        );
+        setUpdateBulkModal(false);
+        dispatch(fetchProduct());
+      } else if (status === "error") {
+        toast.error(`${info.file.name} ${response?.message}`);
+      }
+    },
+    headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+    withCredentials: true,
+    accept: ".xlsx",
+    // iconRender: (file, _listType) => {
+    //   return <FaFileExcel className='text-green-600' />;
+    // }
   };
 
   return (
@@ -107,6 +138,25 @@ const AllProducts = () => {
         doc.save("products.pdf");
       }}
     >
+      <div className="w-full">
+        <Button
+          className="mb-2 w-70 bg-white"
+          onClick={() => setUpdateBulkModal(true)}
+        >
+          Update Bulk Product
+        </Button>
+        <Modal
+          open={updateBulkModal}
+          onCancel={() => setUpdateBulkModal(false)}
+          footer={false}
+        >
+          <Dragger className="mt-3" {...uploaderProps}>
+            <p className="text-lg font-semibold dark:text-white">
+              Click or drag file to this area to upload
+            </p>
+          </Dragger>
+        </Modal>
+      </div>
       {/*Product Update Modal*/}
       <Modal open={open} onCancel={() => setOpen(false)} footer={false}>
         {product ? (
@@ -228,9 +278,9 @@ const AllProducts = () => {
             return record.size ? record.size : "-";
           }}
         />
-        <Table.Column title="Current Location" dataIndex={"whName"} />
+        {/* <Table.Column title="Current Location" dataIndex={"whName"} /> */}
         <Table.Column
-          title="Planned Showroom"
+          title="Current Location"
           dataIndex={"showroomName"}
           filters={showroom.map((item) => ({
             text: item.showroomName,

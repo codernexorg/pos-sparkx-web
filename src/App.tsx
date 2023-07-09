@@ -32,7 +32,6 @@ import {
   ProductGroup,
   Products,
   Purchase,
-  Return,
   ReturnReport,
   SalesReport,
   Sell,
@@ -62,8 +61,6 @@ import { useSettingContext } from "./app/context/SettingProver";
 import DamagedProducts from "./app/view/Product/DamagedProduct";
 import BestProducts from "./app/view/Product/BestProducts";
 import BestCustomer from "./app/view/Customer/BestCustomer";
-import AllTimeBestProducts from "./app/view/Product/AllTimeBestProducts";
-
 interface DispatchActions {
   (): void;
 }
@@ -75,7 +72,7 @@ function App() {
     return [
       () => dispatch(fetchProduct()),
       () => dispatch(getSupplier()),
-      () => dispatch(getWareHouse()),
+      // () => dispatch(getWareHouse()),
       () => dispatch(getShowroom()),
       () => dispatch(fetchCustomer()),
       () => dispatch(fetchEmployee()),
@@ -91,6 +88,15 @@ function App() {
     dispatchActions.forEach((action) => action());
   }, [dispatchActions]);
   const { mode } = useSettingContext();
+
+  useEffect(() => {
+    const invoiceData: ILocalHoldInvoice = { invoices: [] };
+
+    const invoices = localStorage.getItem("invoice");
+
+    if (!invoices?.length)
+      localStorage.setItem("invoice", JSON.stringify(invoiceData));
+  }, []);
 
   return (
     <div className={mode === "dark" ? "dark" : ""}>
@@ -108,10 +114,6 @@ function App() {
               <Route path="lost" element={<LostProduct />} />
               <Route path="damaged" element={<DamagedProducts />} />
               <Route path="best-products" element={<BestProducts />} />
-              <Route
-                path="best-products/all-time"
-                element={<AllTimeBestProducts />}
-              />
             </Route>
             <Route path="product-group">
               <Route index element={<ProductGroup />} />
@@ -121,11 +123,11 @@ function App() {
               <Route index element={<Barcode />} />
               <Route path="setting" element={<BarcodeSetting />} />
             </Route>
-            <Route path="warehouse" element={<Outlet />}>
+            {/* <Route path="warehouse" element={<Outlet />}>
               <Route index element={<WareHouse />} />
               <Route path=":id" element={<EditWHouse />} />
               <Route path="add" element={<AddWareHouse />} />
-            </Route>
+            </Route> */}
             <Route path="showroom" element={<Outlet />}>
               <Route index element={<ShowRoom />} />
               <Route path="add" element={<AddShowRoom />} />
@@ -142,7 +144,6 @@ function App() {
             <Route path="pos">
               <Route index element={<Sell />} />
               <Route path="invoice" element={<Invoice />} />
-              <Route path="return" element={<Return />} />
               <Route path="return/prev" element={<PrevReturned />} />
             </Route>
             <Route path="setting">

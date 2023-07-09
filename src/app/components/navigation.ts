@@ -57,12 +57,6 @@ const navigation = [
       },
       {
         access: ["SuperAdmin", "ShowroomManager", "SalesOperator"],
-        to: "/dashboard/pos/return",
-        Icon: FaAccusoft,
-        text: "Sells Return",
-      },
-      {
-        access: ["SuperAdmin", "ShowroomManager", "SalesOperator"],
         to: "/dashboard/pos/return/prev",
         Icon: FaAccusoft,
         text: "Previous Return Products",
@@ -122,12 +116,6 @@ const navigation = [
         to: "products/best-products",
         Icon: FaAccusoft,
         text: "Best Products",
-      },
-      {
-        access: ["SuperAdmin", "ShowroomManager", "SalesOperator"],
-        to: "products/best-products/all-time",
-        Icon: FaAccusoft,
-        text: "Best Products All Time",
       },
     ],
   },
@@ -208,25 +196,25 @@ const navigation = [
       },
     ],
   },
-  {
-    title: "Locations",
-    Icon: FaWarehouse,
-    access: ["SuperAdmin"],
-    links: [
-      {
-        access: ["SuperAdmin"],
-        to: "/dashboard/warehouse",
-        Icon: FaAccusoft,
-        text: "Manage Locations",
-      },
-      {
-        access: ["SuperAdmin"],
-        to: "/dashboard/warehouse/add",
-        Icon: FaAccusoft,
-        text: "Add Location",
-      },
-    ],
-  },
+  // {
+  //   title: "Locations",
+  //   Icon: FaWarehouse,
+  //   access: ["SuperAdmin"],
+  //   links: [
+  //     {
+  //       access: ["SuperAdmin"],
+  //       to: "/dashboard/warehouse",
+  //       Icon: FaAccusoft,
+  //       text: "Manage Locations",
+  //     },
+  //     {
+  //       access: ["SuperAdmin"],
+  //       to: "/dashboard/warehouse/add",
+  //       Icon: FaAccusoft,
+  //       text: "Add Location",
+  //     },
+  //   ],
+  // },
 
   {
     title: "Purchase",

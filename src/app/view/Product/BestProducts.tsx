@@ -13,6 +13,7 @@ const BestProducts: React.FC = () => {
     () => products.filter((p) => p.sellingStatus === "Sold"),
     [products]
   );
+  const [reset, setReset] = useState(false);
 
   const filteredProducts = useFilteredSoldProduct(
     soldProducts,

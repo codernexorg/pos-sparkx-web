@@ -271,6 +271,7 @@ const Sales: React.FC<SalesProps> = () => {
                   const salesData = dailySalesData.find(
                     (item) => item.date === month.date
                   );
+
                   return (
                     <tr key={index}>
                       <td className="text-left">{index + 1}</td>
@@ -305,7 +306,7 @@ const Sales: React.FC<SalesProps> = () => {
                           : `-`}
                       </td>
                       <td className="text-right">
-                        {salesData?.total ? formatPrice(salesData.total) : `-`}
+                        {salesData?.total ? formatPrice(salesData.total) : "-"}
                       </td>
                       <td className="text-right">
                         {salesData?.gapAmount

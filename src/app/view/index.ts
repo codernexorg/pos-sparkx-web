@@ -53,7 +53,6 @@ const SystemSetting = React.lazy(() => import("./Setting/System"));
 
 const Purchase = React.lazy(() => import("./Purchase/Purchase"));
 const CustomerDetails = React.lazy(() => import("./Customer/CustomerDetails"));
-const Return = React.lazy(() => import("./POS/ReturnProduct"));
 
 //Reports
 const SalesReport = React.lazy(() => import("./Reports/Sales"));
@@ -98,7 +97,6 @@ export {
   ProductGroup,
   Products,
   Purchase,
-  Return,
   SalesReport,
   Sell,
   ShowRoom,
