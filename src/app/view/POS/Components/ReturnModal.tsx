@@ -142,13 +142,13 @@ const ReturnModal: React.FC<ReturnModalProps> = ({
                   })
                   .catch(err => {
                     rejectedToast(err);
-                    setReturnLoading(false);
                   })
                   .finally(() => {
                     dispatch(getInvoice());
                     dispatch(fetchProduct());
                     resetForm();
                     setShowReturnModal(false);
+                    setReturnLoading(false);
                     toast.success('Product Successfully Returned');
                   });
               }}
