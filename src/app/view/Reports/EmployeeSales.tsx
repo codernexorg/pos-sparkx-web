@@ -586,7 +586,7 @@ const EmployeeSales: React.FC<EmployeeSalesProps> = () => {
                         (a, b) => a + b,
                         0
                       )
-                        ? Math.fround(
+                        ? Math.round(
                             (totalQtyArr(months, employee.empName, arr).reduce(
                               (a, b) => a + b,
                               0

@@ -26,8 +26,8 @@ const AddCustomer: React.FC<AddCustomerProps> = () => {
         }}
         onSubmit={(values, { resetForm }) => {
           dispatch(createCustomer(values))
-            .then(() => {
-              dispatch(fetchCustomer());
+            .then(async () => {
+              await dispatch(fetchCustomer());
             })
             .finally(() => resetForm());
         }}
@@ -49,7 +49,11 @@ const AddCustomer: React.FC<AddCustomerProps> = () => {
             <SelectInput name='showroomCode' label='Select Showroom'>
               {showroom.map(sr => {
                 return (
-                  <option id={sr.showroomCode} value={sr.showroomCode}>
+                  <option
+                    key={sr.showroomCode}
+                    id={sr.showroomCode}
+                    value={sr.showroomCode}
+                  >
                     {sr.showroomName}
                   </option>
                 );
