@@ -124,7 +124,8 @@ const ReturnModal: React.FC<ReturnModalProps> = ({
                 customerPhone: customerPhone,
                 cash: 0,
                 bkash: 0,
-                cbl: 0
+                cbl: 0,
+                returnDate: ''
               }}
               onSubmit={(values, { resetForm }) => {
                 setReturnLoading(true);
@@ -185,6 +186,14 @@ const ReturnModal: React.FC<ReturnModalProps> = ({
 
                   {values.exchange === 'Not Exchanging' ? (
                     <>
+                      <CommonInput
+                        name='returnDate'
+                        placeholder='Date'
+                        label='Date'
+                        type='date'
+                        step={1}
+                      />
+
                       <h1 className='text-xl font-semibold'>
                         You Have To Return Maximumn{' '}
                         {returnProduct.reduce(

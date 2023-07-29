@@ -6,14 +6,16 @@ import { Form, Formik } from 'formik';
 import { Button, CommonInput } from '../../components';
 import {
   deleteCustomer,
+  fetchCustomer,
   updateCustomer
 } from '../../../redux/actions/customer';
 import { Link } from 'react-router-dom';
-import { FaPlus } from 'react-icons/fa';
+import { FaFileExcel, FaPlus, FaPrint } from 'react-icons/fa';
 import { DraggerProps } from 'antd/es/upload';
 import { baseURL } from '../../../api';
 import { toast } from 'react-toastify';
 import { useSettingContext } from '../../context/SettingProver';
+import { handleExcel, handlePrint } from '../../utils';
 
 interface CustomerProps {}
 
@@ -50,7 +52,7 @@ const Customer: React.FC<CustomerProps> = () => {
 
   const [filtered, setFiltered] = useState<ICustomer[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
-  const [showroomCode, setShowroomCode] = useState<string | null>(null);
+  const [showroomCode, setShowroomCode] = useState<string>('');
 
   useEffect(() => {
     let filteredCustomers = showroomCode
@@ -66,6 +68,11 @@ const Customer: React.FC<CustomerProps> = () => {
     }
     setFiltered(filteredCustomers);
   }, [showroomCode, customers, searchTerm]);
+
+  useEffect(() => {
+    dispatch(fetchCustomer());
+    console.log('Fetching Customer');
+  }, [dispatch]);
   return (
     <div className={'mt-10'}>
       <div className={'mb-4 flex space-x-5 bg-white py-3 px-1 rounded-md'}>
@@ -85,7 +92,7 @@ const Customer: React.FC<CustomerProps> = () => {
         />
         {currentUser?.role === 'SuperAdmin' ? (
           <Select
-            value={showroomCode}
+            value={showroomCode ? showroomCode : undefined}
             options={showroom.map(c => ({
               label: c.showroomName,
               value: c.showroomCode
@@ -98,6 +105,48 @@ const Customer: React.FC<CustomerProps> = () => {
           ''
         )}
         <Button onClick={() => setImportModal(true)}>Import Customer</Button>
+
+        <button
+          onClick={() => handleExcel(filtered)}
+          className='bg-green-600 text-white w-40 rounded-md flex items-center justify-center gap-x-2'
+        >
+          <FaFileExcel />
+          Export
+        </button>
+        <button
+          onClick={() => {
+            handlePrint(
+              filtered,
+              [
+                { field: 'customerName', displayName: 'Name' },
+                { field: 'customerPhone', displayName: 'Phone' },
+                // {
+                //   field: `customerEmail`,
+                //   displayName: 'Email'
+                // },
+                // {
+                //   field: 'customerAddress',
+                //   displayName: 'Address'
+                // },
+                { field: 'showroom.showroomName', displayName: 'Showroom' },
+                { field: 'paid', displayName: 'Paid' },
+                {
+                  field: 'purchasedProducts.length',
+                  displayName: 'Purchase QTY'
+                },
+                {
+                  field: 'crm',
+                  displayName: 'CRM'
+                }
+              ],
+              'Employee Data'
+            );
+          }}
+          className='bg-red-500 text-white w-40 rounded-md flex items-center justify-center gap-x-2'
+        >
+          <FaPrint />
+          Print
+        </button>
       </div>
       {editAbleCustomer && openModal ? (
         <Modal
@@ -145,7 +194,7 @@ const Customer: React.FC<CustomerProps> = () => {
       <Table
         dataSource={filtered}
         loading={isLoading}
-        rowKey={(obj, index) => obj.customerPhone}
+        rowKey={(obj: ICustomer, i) => obj.id + 'usx'}
         rowClassName={
           'dark:bg-slate-700 dark:text-white dark:hover:text-primaryColor-900'
         }
@@ -169,7 +218,7 @@ const Customer: React.FC<CustomerProps> = () => {
         <Table.Column
           title={'Showroom'}
           render={(value: ICustomer) => {
-            return value.showroom.showroomName;
+            return value?.showroom.showroomName;
           }}
         />
         <Table.Column title={'Lifetime Paid'} dataIndex={'paid'} />
