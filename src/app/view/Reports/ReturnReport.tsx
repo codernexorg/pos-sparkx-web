@@ -106,50 +106,54 @@ const ReturnReport: React.FC<ReturnReportProps> = ({}) => {
         </thead>
         <tbody>
           {reportData?.map((r, i) => {
-            return (
-              <tr key={i}>
-                <td className="text-left">{i + 1}</td>
-                <td className="text-left">{r?.day}</td>
-                <td className="text-left">{r?.date}</td>
-                <td className="text-left">
-                  {r?.products?.map((p, i) => (
-                    <tr key={i}>
-                      <td>{p.itemCode}</td>
-                    </tr>
-                  ))}
-                </td>
-                <td>
-                  {r?.tagPrice?.map((p, i) => (
-                    <tr className="flex flex-col items-end w-[100%]" key={i}>
-                      <td>{formatPrice(p)}</td>
-                    </tr>
-                  ))}
-                </td>
-                <td>
-                  {r?.finalPrice?.map((p, i) => (
-                    <tr className="flex flex-col items-end w-[100%]" key={i}>
-                      <td>{formatPrice(p)}</td>
-                    </tr>
-                  ))}
-                </td>
-                <td className="text-left">{r?.invoiceNo}</td>
-                <td className="text-left">
-                  {r?.products?.map((p, i) => (
-                    <tr key={i}>
-                      <td>{p.productName}</td>
-                    </tr>
-                  ))}
-                </td>
-                <td className="text-left">
-                  {r?.seller?.map((p, i) => (
-                    <tr key={i}>
-                      <td>{p.empName}</td>
-                    </tr>
-                  ))}
-                </td>
-                <td className="text-left">{r?.check}</td>
-              </tr>
-            );
+            if (r !== null)
+              return (
+                <tr key={i}>
+                  <td className="text-left">{i + 1}</td>
+                  <td className="text-left">{r?.day}</td>
+                  <td className="text-left">{r?.date}</td>
+                  <td className="text-left">
+                    {r?.products?.map((p, i) => (
+                      <tr key={i}>
+                        <td>{p.itemCode}</td>
+                      </tr>
+                    ))}
+                  </td>
+                  <td>
+                    {r?.tagPrice?.map((p, i) => (
+                      <tr className="flex flex-col items-end w-[100%]" key={i}>
+                        <td>{formatPrice(p)}</td>
+                      </tr>
+                    ))}
+                  </td>
+                  <td>
+                    {r?.finalPrice?.map((p, i) => (
+                      <tr className="flex flex-col items-end w-[100%]" key={i}>
+                        <td>{formatPrice(p)}</td>
+                      </tr>
+                    ))}
+                  </td>
+                  <td className="text-left">{r?.invoiceNo}</td>
+                  <td className="text-left">
+                    {r?.products?.map((p, i) => (
+                      <tr key={i}>
+                        <td>{p.productName}</td>
+                      </tr>
+                    ))}
+                  </td>
+                  <td className="text-left">
+                    {r?.seller?.map((p, i) => {
+                      return (
+                        <tr key={i}>
+                          <td>{p?.empName}</td>
+                        </tr>
+                      );
+                    })}
+                  </td>
+                  <td className="text-left">{r?.check}</td>
+                </tr>
+              );
+            else return "";
           })}
         </tbody>
       </table>
