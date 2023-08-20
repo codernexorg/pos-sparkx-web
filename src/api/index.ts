@@ -1,12 +1,12 @@
-import axios from 'axios';
-import { toast } from 'react-toastify';
+import axios from "axios";
+import { toast } from "react-toastify";
 
-export const baseURL = 'https://server.sparkxfashion.com/api/v1';
+export const baseURL = "http://localhost:9000/api/v1";
 
 const api = axios.create({ baseURL, withCredentials: true });
 
 api.interceptors.request.use((data: any) => {
-  data.headers!.Authorization = 'Bearer ' + localStorage.getItem('token');
+  data.headers!.Authorization = "Bearer " + localStorage.getItem("token");
   return data;
 });
 
@@ -14,9 +14,9 @@ let errorTimer: NodeJS.Timeout;
 
 // Add an interceptor for errors
 api.interceptors.response.use(
-  response => response,
-  error => {
-    const errorMessage = error.response?.data?.message || 'An error occurred';
+  (response) => response,
+  (error) => {
+    const errorMessage = error.response?.data?.message || "An error occurred";
     const errorStatus = error.response?.status;
 
     // Clear the previous timer

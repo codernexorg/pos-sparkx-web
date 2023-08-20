@@ -172,7 +172,9 @@ const AllProducts = () => {
                 sellingStatus: product.sellingStatus,
               }}
               onSubmit={async (values) => {
-                product && (await dispatch(updateProduct(product.id, values)));
+                if (product) {
+                  await dispatch(updateProduct(product.id, values));
+                }
                 setOpen(false);
               }}
               enableReinitialize={true}
