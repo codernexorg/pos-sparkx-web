@@ -353,7 +353,20 @@ const EmployeeSales: React.FC<EmployeeSalesProps> = () => {
                             empAmountData?.currentYearData
                           ).reduce((a, b) => a + b, 0)) *
                           100
-                      )}
+                      )
+                        ? Math.round(
+                            (totalAmountArr(
+                              months,
+                              employee.empName,
+                              arr
+                            ).reduce((a, b) => a + b, 0) /
+                              totalAmountByMonth(
+                                months,
+                                empAmountData?.currentYearData
+                              ).reduce((a, b) => a + b, 0)) *
+                              100
+                          )
+                        : 0}
                       %
                     </td>
                   </tr>
