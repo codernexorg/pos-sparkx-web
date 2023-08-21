@@ -1,19 +1,20 @@
-import React, { useState } from 'react';
-import { useAppDispatch, useTypedSelector } from '../../../redux/store';
-import { Modal, Table } from 'antd';
-import PrintAbleLayout from '../../components/PrintAbleLayout';
-import { Form, Formik } from 'formik';
-import { Button, CommonInput, SelectInput } from '../../components';
+import React, { useState } from "react";
+import { useAppDispatch, useTypedSelector } from "../../../redux/store";
+import { Modal, Table } from "antd";
+import PrintAbleLayout from "../../components/PrintAbleLayout";
+import { Form, Formik } from "formik";
+import { Button, CommonInput, SelectInput } from "../../components";
 import {
   createEmployee,
   deleteEmployee,
-  updateEmployee
-} from '../../../redux/actions/employee';
-import { AiOutlineDelete, AiOutlineEdit, AiOutlineEye } from 'react-icons/ai';
-import ConfirmationModal from '../../components/ConfirmationModal';
-import { handleExcel, handlePrint } from '../../utils/helper';
-import moment from 'moment';
-import { useSettingContext } from '../../context/SettingProver';
+  fetchEmployee,
+  updateEmployee,
+} from "../../../redux/actions/employee";
+import { AiOutlineDelete, AiOutlineEdit, AiOutlineEye } from "react-icons/ai";
+import ConfirmationModal from "../../components/ConfirmationModal";
+import { handleExcel, handlePrint } from "../../utils/helper";
+import moment from "moment";
+import { useSettingContext } from "../../context/SettingProver";
 
 interface EmployeeProps {}
 
@@ -22,8 +23,8 @@ const Employee: React.FC<EmployeeProps> = () => {
 
   const {
     employee: { isLoading },
-    showroom
-  } = useTypedSelector(state => state);
+    showroom,
+  } = useTypedSelector((state) => state);
   const [openAdd, setOpenAdd] = React.useState(false);
   const [openEdit, setOpenEdit] = React.useState(false);
   const [editAble, setEditAble] = React.useState<IEmployee | null>(null);
@@ -40,69 +41,70 @@ const Employee: React.FC<EmployeeProps> = () => {
       <Modal footer={false} open={openAdd} onCancel={() => setOpenAdd(false)}>
         <Formik
           initialValues={{
-            empName: '',
-            empPhone: '',
-            designation: '',
-            empAddress: '',
-            empEmail: '',
+            empName: "",
+            empPhone: "",
+            designation: "",
+            empAddress: "",
+            empEmail: "",
             empSalary: 0,
-            showroomCode: ''
+            showroomCode: "",
           }}
-          onSubmit={async values => {
-            console.log(values);
-            await dispatch(createEmployee(values));
+          onSubmit={async (values, { resetForm }) => {
+            dispatch(createEmployee(values));
+            dispatch(fetchEmployee());
             setOpenAdd(false);
+            resetForm();
           }}
         >
           <Form>
             <CommonInput
-              label={'Name *'}
-              name={'empName'}
-              placeholder={'Employee Name '}
+              label={"Name *"}
+              name={"empName"}
+              placeholder={"Employee Name "}
               required={true}
             />
             <CommonInput
-              label={'Email'}
-              name={'empEmail'}
-              placeholder={'Employee Email'}
+              label={"Email"}
+              name={"empEmail"}
+              placeholder={"Employee Email"}
               required={false}
             />
             <CommonInput
-              label={'Emp ID *'}
-              name={'empPhone'}
-              placeholder={'Employee ID'}
+              label={"Emp ID *"}
+              name={"empPhone"}
+              placeholder={"Employee ID"}
               required={true}
             />
             <CommonInput
-              label={'Address'}
-              name={'empAddress'}
-              placeholder={'Employee Address'}
+              label={"Address"}
+              name={"empAddress"}
+              placeholder={"Employee Address"}
               required={false}
             />
             <CommonInput
-              label={'Salary Amount'}
-              type={'number'}
-              name={'empSalary'}
-              placeholder={'Employee Salary'}
+              label={"Salary Amount"}
+              type={"number"}
+              name={"empSalary"}
+              placeholder={"Employee Salary"}
               required={false}
             />
             <SelectInput
               required={true}
-              name={'designation'}
-              label={'Select Designation'}
+              name={"designation"}
+              label={"Select Designation"}
             >
-              <option value={'Manager'}>Manager</option>
-              <option value={'SalesMan'}>SalesMan</option>
-              <option value={'Other'}>Other</option>
+              <option value={"Manager"}>Manager</option>
+              <option value={"SalesMan"}>SalesMan</option>
+              <option value={"Other"}>Other</option>
             </SelectInput>
 
-            {currentUser?.role === 'SuperAdmin' ? (
+            {currentUser?.role === "SuperAdmin" ? (
               <SelectInput
                 required={true}
-                name={'showroomCode'}
-                label={'Select Showroom Code'}
+                name={"showroomCode"}
+                label={"Select Showroom Code"}
               >
-                {showroom.showroom.map(sr => {
+                {showroom.showroom.map((sr) => {
                   return (
                     <option key={sr.id} value={sr.showroomCode}>
                       {sr.showroomName}
@@ -111,9 +113,9 @@ const Employee: React.FC<EmployeeProps> = () => {
                 })}
               </SelectInput>
             ) : (
-              ''
+              ""
             )}
-            <Button type={'submit'}>Add Employee</Button>
+            <Button type={"submit"}>Add Employee</Button>
           </Form>
         </Formik>
       </Modal>
@@ -130,57 +132,58 @@ const Employee: React.FC<EmployeeProps> = () => {
               empAddress: editAble.empAddress,
               showroom: editAble.showroom,
               empEmail: editAble.empEmail,
-              empSalary: editAble.empSalary
+              empSalary: editAble.empSalary,
             }}
             enableReinitialize={true}
-            onSubmit={async values => {
-              await dispatch(updateEmployee(editAble.id, values));
+            onSubmit={async (values) => {
+              dispatch(updateEmployee(editAble.id, values));
+              dispatch(fetchEmployee());
               setOpenAdd(false);
             }}
           >
             <Form>
               <CommonInput
-                label={'Name *'}
-                name={'empName'}
-                placeholder={'Employee Name '}
+                label={"Name *"}
+                name={"empName"}
+                placeholder={"Employee Name "}
                 required={true}
               />
               <CommonInput
-                label={'Email'}
-                name={'empEmail'}
-                placeholder={'Employee Email'}
+                label={"Email"}
+                name={"empEmail"}
+                placeholder={"Employee Email"}
                 required={false}
               />
               <CommonInput
-                label={'Phone *'}
-                name={'empPhone'}
-                placeholder={'Employee Phone'}
+                label={"Phone *"}
+                name={"empPhone"}
+                placeholder={"Employee Phone"}
                 required={true}
               />
               <CommonInput
-                label={'Address'}
-                name={'empAddress'}
-                placeholder={'Employee Address'}
+                label={"Address"}
+                name={"empAddress"}
+                placeholder={"Employee Address"}
                 required={false}
               />
               <CommonInput
-                type={'number'}
-                label={'Salary Amount'}
-                name={'empSalary'}
-                placeholder={'Employee Salary'}
+                type={"number"}
+                label={"Salary Amount"}
+                name={"empSalary"}
+                placeholder={"Employee Salary"}
                 required={false}
               />
               <SelectInput
                 required={true}
-                name={'designation'}
-                label={'Select Designation'}
+                name={"designation"}
+                label={"Select Designation"}
               >
-                <option value={'Manager'}>Manager</option>
-                <option value={'SalesMan'}>SalesMan</option>
-                <option value={'Other'}>Other</option>
+                <option value={"Manager"}>Manager</option>
+                <option value={"SalesMan"}>SalesMan</option>
+                <option value={"Other"}>Other</option>
               </SelectInput>
 
-              <Button type={'submit'}>Update Employee</Button>
+              <Button type={"submit"}>Update Employee</Button>
             </Form>
           </Formik>
         )}
@@ -192,8 +195,8 @@ const Employee: React.FC<EmployeeProps> = () => {
         open={openViewModal}
         onCancel={() => setOpenViewModal(false)}
       >
-        <div className={'text-[16px]  space-y-2'}>
-          <table className={'customer__table'}>
+        <div className={"text-[16px]  space-y-2"}>
+          <table className={"customer__table"}>
             <thead>
               <tr>
                 <th>Name</th>
@@ -215,57 +218,57 @@ const Employee: React.FC<EmployeeProps> = () => {
               </tr>
             </tbody>
           </table>
-          <div className={'mt-6'}>
+          <div className={"mt-6"}>
             <h1
               className={
-                'text-xl font-semibold font-inter text-primaryColor-900'
+                "text-xl font-semibold font-inter text-primaryColor-900"
               }
             >
               Sales Table
             </h1>
-            <Table dataSource={employee?.sales} rowKey={obj => obj.id}>
-              <Table.Column title={'sl'} render={(_, rec, i) => i + 1} />
+            <Table dataSource={employee?.sales} rowKey={(obj) => obj.id}>
+              <Table.Column title={"sl"} render={(_, rec, i) => i + 1} />
               <Table.Column
-                title={'Item Code'}
+                title={"Item Code"}
                 render={(_, rec: Product) => rec.itemCode}
               />
               <Table.Column
-                title={'Sells Price'}
+                title={"Sells Price"}
                 render={(_, rec: Product) => rec.sellPriceAfterDiscount}
               />
               <Table.Column
-                title={'Date'}
+                title={"Date"}
                 filtered={true}
                 render={(_, record: Invoice) =>
-                  moment(record.updatedAt).format('DD-MMM-YYYY hh:mm:a')
+                  moment(record.updatedAt).format("DD-MMM-YYYY hh:mm:a")
                 }
               />
             </Table>
           </div>
 
-          <div className={'mt-6'}>
+          <div className={"mt-6"}>
             <h1
               className={
-                'text-xl font-semibold font-inter text-primaryColor-900'
+                "text-xl font-semibold font-inter text-primaryColor-900"
               }
             >
               Sales Return Table
             </h1>
-            <Table dataSource={employee?.returnSales} rowKey={obj => obj.id}>
-              <Table.Column title={'sl'} render={(_, rec, i) => i + 1} />
+            <Table dataSource={employee?.returnSales} rowKey={(obj) => obj.id}>
+              <Table.Column title={"sl"} render={(_, rec, i) => i + 1} />
               <Table.Column
-                title={'Item Code'}
+                title={"Item Code"}
                 render={(_, rec: Product) => rec.itemCode}
               />
               <Table.Column
-                title={'Sells Price'}
+                title={"Sells Price"}
                 render={(_, rec: Product) => rec.sellPriceAfterDiscount}
               />
               <Table.Column
-                title={'Date'}
+                title={"Date"}
                 filtered={true}
                 render={(_, record: Invoice) =>
-                  moment(record.updatedAt).format('DD-MMM-YYYY hh:mm:a')
+                  moment(record.updatedAt).format("DD-MMM-YYYY hh:mm:a")
                 }
               />
             </Table>
@@ -284,92 +287,92 @@ const Employee: React.FC<EmployeeProps> = () => {
       />
       {/*All Employees Table*/}
       <PrintAbleLayout
-        title={'Employees'}
+        title={"Employees"}
         handlePrint={() => {
           handlePrint(
             employees,
             [
-              { field: 'empName', displayName: 'Name' },
-              { field: 'empPhone', displayName: 'Emp ID' },
-              { field: 'designation', displayName: 'Designation' },
-              { field: 'empAddress', displayName: 'Address' },
-              { field: 'showroom.showroomName', displayName: 'Showroom' },
-              { field: 'empEmail', displayName: 'Email' }
+              { field: "empName", displayName: "Name" },
+              { field: "empPhone", displayName: "Emp ID" },
+              { field: "designation", displayName: "Designation" },
+              { field: "empAddress", displayName: "Address" },
+              { field: "showroom.showroomName", displayName: "Showroom" },
+              { field: "empEmail", displayName: "Email" },
             ],
-            'Employee Data'
+            "Employee Data"
           );
         }}
         handleExcel={() =>
-          employees.length && handleExcel(employees, '_', 'Employee Data')
+          employees.length && handleExcel(employees, "_", "Employee Data")
         }
-        btnText={'Add Employee'}
+        btnText={"Add Employee"}
         handleClick={() => setOpenAdd(true)}
         showPDF={false}
         employeeFilter={true}
         setEmpData={setEmployees}
       >
         <Table
-          rowKey={obj => obj.id}
-          id={'employee'}
+          rowKey={(obj) => obj.id}
+          id={"employee"}
           dataSource={employees}
           loading={isLoading}
           rowClassName={
-            'dark:bg-slate-700 dark:text-white dark:hover:text-primaryColor-900'
+            "dark:bg-slate-700 dark:text-white dark:hover:text-primaryColor-900"
           }
         >
-          <Table.Column title='Name' dataIndex='empName' key='empName' />
+          <Table.Column title="Name" dataIndex="empName" key="empName" />
           <Table.Column
-            title='EMP ID'
-            dataIndex={'empPhone'}
-            key={'empPhone'}
+            title="EMP ID"
+            dataIndex={"empPhone"}
+            key={"empPhone"}
           />
-          <Table.Column title='Email' dataIndex={'empEmail'} key={'empEmail'} />
+          <Table.Column title="Email" dataIndex={"empEmail"} key={"empEmail"} />
           <Table.Column
-            title='Address'
-            dataIndex={'empAddress'}
-            key={'empAddress'}
-          />
-          <Table.Column
-            title='Basic Salary'
-            dataIndex={'empSalary'}
-            key={'empSalary'}
+            title="Address"
+            dataIndex={"empAddress"}
+            key={"empAddress"}
           />
           <Table.Column
-            title='Designation'
-            dataIndex={'designation'}
-            key={'designation'}
+            title="Basic Salary"
+            dataIndex={"empSalary"}
+            key={"empSalary"}
           />
           <Table.Column
-            title='Sales Count'
+            title="Designation"
+            dataIndex={"designation"}
+            key={"designation"}
+          />
+          <Table.Column
+            title="Sales Count"
             render={(_, record: IEmployee) => record.sales?.length}
-            key={'sales'}
+            key={"sales"}
           />
           <Table.Column
-            title='Showroom'
+            title="Showroom"
             render={(_, record: IEmployee) => record.showroom?.showroomName}
-            key={'showroom'}
+            key={"showroom"}
           />
           <Table.Column
-            title={'Actions'}
+            title={"Actions"}
             render={(_, record: IEmployee) => {
               return (
-                <div className={'flex text-xl gap-x-2'}>
+                <div className={"flex text-xl gap-x-2"}>
                   <AiOutlineEye
-                    cursor={'pointer'}
+                    cursor={"pointer"}
                     onClick={() => {
                       setEmployee(record);
                       setOpenViewModal(true);
                     }}
                   />
                   <AiOutlineEdit
-                    cursor={'pointer'}
+                    cursor={"pointer"}
                     onClick={() => {
                       setEditAble(record);
                       setOpenEdit(true);
                     }}
                   />
                   <AiOutlineDelete
-                    cursor={'pointer'}
+                    cursor={"pointer"}
                     onClick={async () => {
                       setItemToDelete(record.id);
                       setConfirmationModal(true);
