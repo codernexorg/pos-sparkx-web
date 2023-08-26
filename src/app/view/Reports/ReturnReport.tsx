@@ -40,7 +40,7 @@ const ReturnReport: React.FC<ReturnReportProps> = ({}) => {
       }
     } else {
       const srCode = find(showroom, {
-        showroomName: currentUser?.assignedShowroom,
+        showroomCode: currentUser?.assignedShowroom,
       });
       if (srCode) {
         if (setSrCode) {

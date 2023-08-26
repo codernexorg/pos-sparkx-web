@@ -2,7 +2,7 @@
   "name": "pox-sparkx",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://choloit.com/",
+  "homepage": "https://sparkxfashion.com/",
   "dependencies": {
     "@ant-design/dark-theme": "^2.0.2",
     "@craco/craco": "^7.0.0",
@@ -10,7 +10,6 @@
     "@nivo/line": "^0.80.0",
     "@react-pdf/renderer": "^3.0.1",
     "@reduxjs/toolkit": "^1.9.1",
-    "@syncfusion/ej2-react-barcode-generator": "^20.4.38",
     "@testing-library/jest-dom": "^5.16.4",
     "@testing-library/react": "^13.0.1",
     "@testing-library/user-event": "^14.1.0",

@@ -28,7 +28,7 @@ const InventoryReport: React.FC = () => {
     {
       key: string;
       total: number;
-      showroomName: number;
+      showroomName: string;
       productGroup: string;
       sold: number;
       unsold: number;

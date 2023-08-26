@@ -315,7 +315,7 @@ const Sell = () => {
           payable: cart.length
             ? cart.map((item) => item.sellPrice)
             : [0, 0, 0, 0],
-          employees: new Array<string>(cart.length),
+          employees: [],
           paymentMethod: PaymentMethod.CASH,
           cash: 0,
           bkash: 0,

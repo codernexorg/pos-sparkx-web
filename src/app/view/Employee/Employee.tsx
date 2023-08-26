@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useAppDispatch, useTypedSelector } from "../../../redux/store";
 import { Modal, Table } from "antd";
 import PrintAbleLayout from "../../components/PrintAbleLayout";
@@ -35,6 +35,7 @@ const Employee: React.FC<EmployeeProps> = () => {
   const { currentUser } = useSettingContext();
 
   const [employees, setEmployees] = useState<IEmployee[]>([]);
+
   return (
     <div>
       {/*Add Employee Modal*/}
@@ -51,7 +52,6 @@ const Employee: React.FC<EmployeeProps> = () => {
           }}
           onSubmit={async (values, { resetForm }) => {
             dispatch(createEmployee(values));
-            dispatch(fetchEmployee());
             setOpenAdd(false);
             resetForm();
           }}
