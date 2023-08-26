@@ -147,7 +147,7 @@ const User: React.FC<UserProps> = () => {
                 >
                   <option value={"All"}>All</option>
                   {showroom.map((showroom) => (
-                    <option key={showroom.id} value={showroom.showroomName}>
+                    <option key={showroom.id} value={showroom.showroomCode}>
                       {showroom.showroomName}
                     </option>
                   ))}
