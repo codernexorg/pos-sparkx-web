@@ -3,198 +3,198 @@ import {
   FaFileImport,
   FaProductHunt,
   FaSupple,
-  FaWarehouse
-} from 'react-icons/fa';
+  FaWarehouse,
+} from "react-icons/fa";
 import {
   AiFillDashboard,
   AiFillFileMarkdown,
   AiFillSetting,
-  AiOutlineAudit
-} from 'react-icons/ai';
-import { SiApostrophe, SiBrandfolder, SiGroupon } from 'react-icons/si';
+  AiOutlineAudit,
+} from "react-icons/ai";
+import { SiApostrophe, SiBrandfolder, SiGroupon } from "react-icons/si";
 import {
   BiBarcodeReader,
   BiCategoryAlt,
-  BiPurchaseTagAlt
-} from 'react-icons/bi';
+  BiPurchaseTagAlt,
+} from "react-icons/bi";
 import {
   HiDocumentReport,
   HiOfficeBuilding,
-  HiUserGroup
-} from 'react-icons/hi';
-import { RiFileUserFill } from 'react-icons/ri';
+  HiUserGroup,
+} from "react-icons/hi";
+import { RiFileUserFill } from "react-icons/ri";
 
 const navigation = [
   {
-    title: 'Dashboard',
+    title: "Dashboard",
     Icon: AiFillDashboard,
-    access: ['SuperAdmin', 'ShowroomManager', 'SalesOperator'],
+    access: ["SuperAdmin", "ShowroomManager", "SalesOperator"],
     links: [
       {
-        access: ['SuperAdmin', 'ShowroomManager', 'SalesOperator'],
-        to: '/dashboard',
+        access: ["SuperAdmin", "ShowroomManager", "SalesOperator"],
+        to: "/dashboard",
         Icon: FaAccusoft,
-        text: 'Dashboard'
-      }
-    ]
+        text: "Dashboard",
+      },
+    ],
   },
   {
-    title: 'POS',
+    title: "POS",
     Icon: SiApostrophe,
-    access: ['SuperAdmin', 'ShowroomManager', 'SalesOperator'],
+    access: ["SuperAdmin", "ShowroomManager", "SalesOperator"],
     links: [
       {
-        access: ['SuperAdmin', 'ShowroomManager', 'SalesOperator'],
-        to: '/dashboard/pos',
+        access: ["SuperAdmin", "SalesOperator"],
+        to: "/dashboard/pos",
         Icon: FaAccusoft,
-        text: 'Sell'
+        text: "Sell",
       },
       {
-        access: ['SuperAdmin', 'ShowroomManager', 'SalesOperator'],
-        to: '/dashboard/pos/invoice',
+        access: ["SuperAdmin", "ShowroomManager", "SalesOperator"],
+        to: "/dashboard/pos/invoice",
         Icon: FaAccusoft,
-        text: 'Invoices'
+        text: "Invoices",
       },
       {
-        access: ['SuperAdmin', 'ShowroomManager', 'SalesOperator'],
-        to: '/dashboard/pos/return/prev',
+        access: ["SuperAdmin", "ShowroomManager", "SalesOperator"],
+        to: "/dashboard/pos/return/prev",
         Icon: FaAccusoft,
-        text: 'Previous Return Products'
-      }
-    ]
+        text: "Previous Return Products",
+      },
+    ],
   },
   {
-    title: 'Product',
+    title: "Product",
     Icon: FaProductHunt,
-    access: ['SuperAdmin', 'ShowroomManager', 'SalesOperator'],
+    access: ["SuperAdmin", "ShowroomManager", "SalesOperator"],
     links: [
       {
-        access: ['SuperAdmin', 'ShowroomManager', 'SalesOperator'],
-        to: '/dashboard/products',
+        access: ["SuperAdmin", "ShowroomManager", "SalesOperator"],
+        to: "/dashboard/products",
         Icon: FaAccusoft,
-        text: 'All Products'
+        text: "All Products",
       },
       {
-        access: ['SuperAdmin'],
-        to: '/dashboard/products/add-single',
+        access: ["SuperAdmin"],
+        to: "/dashboard/products/add-single",
         Icon: FaAccusoft,
-        text: 'Add Single Products'
+        text: "Add Single Products",
       },
       {
-        access: ['SuperAdmin', 'ShowroomManager', 'SalesOperator'],
-        to: '/dashboard/products/lost',
+        access: ["SuperAdmin", "ShowroomManager", "SalesOperator"],
+        to: "/dashboard/products/lost",
         Icon: FaAccusoft,
-        text: 'Losts Products'
+        text: "Losts Products",
       },
       {
-        access: ['SuperAdmin', 'ShowroomManager', 'SalesOperator'],
-        to: '/dashboard/products/damaged',
+        access: ["SuperAdmin", "ShowroomManager", "SalesOperator"],
+        to: "/dashboard/products/damaged",
         Icon: FaAccusoft,
-        text: 'Damaged Products'
+        text: "Damaged Products",
       },
       {
-        access: ['SuperAdmin'],
-        to: '/dashboard/products/add-multiple',
+        access: ["SuperAdmin"],
+        to: "/dashboard/products/add-multiple",
         Icon: FaAccusoft,
-        text: 'Add Multiple Product'
+        text: "Add Multiple Product",
       },
       {
-        access: ['SuperAdmin'],
-        to: 'products/import',
+        access: ["SuperAdmin"],
+        to: "products/import",
         Icon: FaFileImport,
-        text: 'Import Products'
+        text: "Import Products",
       },
       {
-        access: ['SuperAdmin'],
-        to: 'products/transfer',
+        access: ["SuperAdmin"],
+        to: "products/transfer",
         Icon: FaFileImport,
-        text: 'Transfer Products'
+        text: "Transfer Products",
       },
 
       {
-        access: ['SuperAdmin', 'ShowroomManager', 'SalesOperator'],
-        to: 'products/best-products',
+        access: ["SuperAdmin", "ShowroomManager", "SalesOperator"],
+        to: "products/best-products",
         Icon: FaAccusoft,
-        text: 'Best Products'
-      }
-    ]
+        text: "Best Products",
+      },
+    ],
   },
   {
-    title: 'Categories',
+    title: "Categories",
     Icon: BiCategoryAlt,
-    access: ['SuperAdmin'],
+    access: ["SuperAdmin"],
     links: [
       {
-        access: ['SuperAdmin'],
-        to: '/dashboard/categories',
+        access: ["SuperAdmin"],
+        to: "/dashboard/categories",
         Icon: FaAccusoft,
-        text: 'Manage Categories'
+        text: "Manage Categories",
       },
       {
-        access: ['SuperAdmin'],
-        to: '/dashboard/categories/add',
+        access: ["SuperAdmin"],
+        to: "/dashboard/categories/add",
         Icon: FaAccusoft,
-        text: 'Add Categories'
-      }
-    ]
+        text: "Add Categories",
+      },
+    ],
   },
   {
-    title: 'Group',
+    title: "Group",
     Icon: SiGroupon,
-    access: ['SuperAdmin'],
+    access: ["SuperAdmin"],
     links: [
       {
-        access: ['SuperAdmin'],
-        to: '/dashboard/product-group',
+        access: ["SuperAdmin"],
+        to: "/dashboard/product-group",
         Icon: FaAccusoft,
-        text: 'Product Groups'
+        text: "Product Groups",
       },
       {
-        access: ['SuperAdmin'],
-        to: '/dashboard/product-group/add',
+        access: ["SuperAdmin"],
+        to: "/dashboard/product-group/add",
         Icon: FaAccusoft,
-        text: 'Add Product Group'
-      }
-    ]
+        text: "Add Product Group",
+      },
+    ],
   },
 
   {
-    title: 'Supplier',
+    title: "Supplier",
     Icon: FaSupple,
-    access: ['SuperAdmin'],
+    access: ["SuperAdmin"],
     links: [
       {
-        access: ['SuperAdmin'],
-        to: '/dashboard/supplier',
+        access: ["SuperAdmin"],
+        to: "/dashboard/supplier",
         Icon: FaAccusoft,
-        text: 'Manage Suppliers'
+        text: "Manage Suppliers",
       },
       {
-        access: ['SuperAdmin'],
-        to: '/dashboard/supplier/add',
+        access: ["SuperAdmin"],
+        to: "/dashboard/supplier/add",
         Icon: FaAccusoft,
-        text: 'Add Supplier'
-      }
-    ]
+        text: "Add Supplier",
+      },
+    ],
   },
   {
-    title: 'Showroom',
+    title: "Showroom",
     Icon: HiOfficeBuilding,
-    access: ['SuperAdmin'],
+    access: ["SuperAdmin"],
     links: [
       {
-        access: ['SuperAdmin'],
-        to: '/dashboard/showroom',
+        access: ["SuperAdmin"],
+        to: "/dashboard/showroom",
         Icon: FaAccusoft,
-        text: 'Manage Shwrooms'
+        text: "Manage Shwrooms",
       },
       {
-        access: ['SuperAdmin'],
-        to: '/dashboard/showroom/add',
+        access: ["SuperAdmin"],
+        to: "/dashboard/showroom/add",
         Icon: FaAccusoft,
-        text: 'Add Showroom'
-      }
-    ]
+        text: "Add Showroom",
+      },
+    ],
   },
   // {
   //   title: "Locations",
@@ -217,17 +217,17 @@ const navigation = [
   // },
 
   {
-    title: 'Purchase',
+    title: "Purchase",
     Icon: BiPurchaseTagAlt,
-    access: ['SuperAdmin'],
+    access: ["SuperAdmin"],
     links: [
       {
-        access: ['SuperAdmin'],
-        to: '/dashboard/purchase',
+        access: ["SuperAdmin"],
+        to: "/dashboard/purchase",
         Icon: FaAccusoft,
-        text: 'Manage Purchase'
-      }
-    ]
+        text: "Manage Purchase",
+      },
+    ],
   },
 
   // {
@@ -245,50 +245,50 @@ const navigation = [
   // },
 
   {
-    title: 'Customer',
+    title: "Customer",
     Icon: RiFileUserFill,
-    access: ['SuperAdmin', 'ShowroomManager'],
+    access: ["SuperAdmin", "ShowroomManager"],
 
     links: [
       {
-        access: ['SuperAdmin', 'ShowroomManager'],
-        to: '/dashboard/customer',
+        access: ["SuperAdmin", "ShowroomManager"],
+        to: "/dashboard/customer",
         Icon: FaAccusoft,
-        text: 'Manage Customers'
+        text: "Manage Customers",
       },
       {
-        access: ['SuperAdmin', 'ShowroomManager'],
-        to: '/dashboard/customer/add',
+        access: ["SuperAdmin", "ShowroomManager"],
+        to: "/dashboard/customer/add",
         Icon: FaAccusoft,
-        text: 'Add Customer'
+        text: "Add Customer",
       },
       {
-        access: ['SuperAdmin', 'ShowroomManager'],
-        to: '/dashboard/customer/best',
+        access: ["SuperAdmin", "ShowroomManager"],
+        to: "/dashboard/customer/best",
         Icon: FaAccusoft,
-        text: 'Best Customers'
-      }
+        text: "Best Customers",
+      },
       // {
       //   access: ["SuperAdmin", "ShowroomManager"],
       //   to: "/dashboard/customer/membership",
       //   Icon: FaAccusoft,
       //   text: "Membership Card",
       // },
-    ]
+    ],
   },
 
   {
-    title: 'Employee',
+    title: "Employee",
     Icon: HiUserGroup,
-    access: ['SuperAdmin', 'ShowroomManager'],
+    access: ["SuperAdmin", "ShowroomManager"],
     links: [
       {
-        access: ['SuperAdmin', 'ShowroomManager'],
-        to: '/dashboard/employee',
+        access: ["SuperAdmin", "ShowroomManager"],
+        to: "/dashboard/employee",
         Icon: FaAccusoft,
-        text: 'Manage Employees'
-      }
-    ]
+        text: "Manage Employees",
+      },
+    ],
   },
   // {
   //     title: 'Expenses',
@@ -319,97 +319,97 @@ const navigation = [
   //     ]
   // },
   {
-    title: 'Reports',
+    title: "Reports",
     Icon: HiDocumentReport,
-    access: ['SuperAdmin', 'ShowroomManager'],
+    access: ["SuperAdmin", "ShowroomManager"],
     links: [
       {
-        access: ['SuperAdmin', 'ShowroomManager'],
-        to: '/dashboard/reports/sales',
+        access: ["SuperAdmin", "ShowroomManager"],
+        to: "/dashboard/reports/sales",
         Icon: FaAccusoft,
-        text: 'Sales Report'
+        text: "Sales Report",
       },
       {
-        access: ['SuperAdmin', 'ShowroomManager'],
-        to: '/dashboard/reports/inventory',
+        access: ["SuperAdmin"],
+        to: "/dashboard/reports/inventory",
         Icon: FaAccusoft,
-        text: 'Inventory Report'
+        text: "Inventory Report",
       },
       {
-        access: ['SuperAdmin', 'ShowroomManager'],
-        to: '/dashboard/reports/employee',
+        access: ["SuperAdmin", "ShowroomManager"],
+        to: "/dashboard/reports/employee",
         Icon: FaAccusoft,
-        text: 'Employee Sales (MOM | YOY)'
+        text: "Employee Sales (MOM | YOY)",
       },
       {
-        access: ['SuperAdmin', 'ShowroomManager'],
-        to: '/dashboard/reports/customer',
+        access: ["SuperAdmin", "ShowroomManager"],
+        to: "/dashboard/reports/customer",
         Icon: FaAccusoft,
-        text: 'Customer Reports'
+        text: "Customer Reports",
       },
       {
-        access: ['SuperAdmin', 'ShowroomManager'],
-        to: '/dashboard/reports/return',
+        access: ["SuperAdmin", "ShowroomManager"],
+        to: "/dashboard/reports/return",
         Icon: FaAccusoft,
-        text: 'Return Reports'
-      }
+        text: "Return Reports",
+      },
       // {
       //   access: ["SuperAdmin", "ShowroomManager"],
       //   to: "/dashboard/reports/unit",
       //   Icon: FaAccusoft,
       //   text: "Unit Comparison",
       // },
-    ]
+    ],
   },
   {
-    title: 'Barcode',
+    title: "Barcode",
     Icon: BiBarcodeReader,
-    access: ['SuperAdmin', 'ShowroomManager', 'SalesOperator'],
+    access: ["SuperAdmin", "ShowroomManager", "SalesOperator"],
     links: [
       {
-        access: ['SuperAdmin', 'ShowroomManager', 'SalesOperator'],
-        to: '/dashboard/barcode',
+        access: ["SuperAdmin", "ShowroomManager", "SalesOperator"],
+        to: "/dashboard/barcode",
         Icon: FaAccusoft,
-        text: 'Print Barcodes'
+        text: "Print Barcodes",
       },
       {
-        access: ['SuperAdmin'],
-        to: '/dashboard/barcode/setting',
+        access: ["SuperAdmin"],
+        to: "/dashboard/barcode/setting",
         Icon: FaAccusoft,
-        text: 'Setting Barcodes'
-      }
-    ]
+        text: "Setting Barcodes",
+      },
+    ],
   },
   {
-    title: 'Audit Option',
+    title: "Audit Option",
     Icon: AiOutlineAudit,
-    access: ['SuperAdmin'],
+    access: ["SuperAdmin"],
     links: [
       {
-        access: ['SuperAdmin'],
-        to: '/dashboard/audit',
+        access: ["SuperAdmin"],
+        to: "/dashboard/audit",
         Icon: FaAccusoft,
-        text: 'Audit'
-      }
-    ]
+        text: "Audit",
+      },
+    ],
   },
   {
-    title: 'Marketing',
+    title: "Marketing",
     Icon: AiFillFileMarkdown,
-    access: ['SuperAdmin', 'ShowroomManager'],
+    access: ["SuperAdmin", "ShowroomManager"],
     links: [
       {
-        access: ['SuperAdmin', 'ShowroomManager'],
-        to: '/dashboard/marketing',
+        access: ["SuperAdmin", "ShowroomManager"],
+        to: "/dashboard/marketing",
         Icon: FaAccusoft,
-        text: 'Promotional SMS'
-      }
-    ]
+        text: "Promotional SMS",
+      },
+    ],
   },
   {
-    title: 'Setting',
+    title: "Setting",
     Icon: AiFillSetting,
-    access: ['SuperAdmin'],
+    access: ["SuperAdmin"],
     links: [
       // {
       //   access: ["SuperAdmin", "ShowroomManager"],
@@ -418,19 +418,19 @@ const navigation = [
       //   text: "POS Setting",
       // },
       {
-        access: ['SuperAdmin', 'ShowroomManager'],
-        to: '/dashboard/setting/vat',
+        access: ["SuperAdmin", "ShowroomManager"],
+        to: "/dashboard/setting/vat",
         Icon: FaAccusoft,
-        text: 'Vat'
+        text: "Vat",
       },
       {
-        access: ['SuperAdmin', 'ShowroomManager'],
-        to: '/dashboard/setting/user',
+        access: ["SuperAdmin", "ShowroomManager"],
+        to: "/dashboard/setting/user",
         Icon: FaAccusoft,
-        text: 'User Permission'
-      }
-    ]
-  }
+        text: "User Permission",
+      },
+    ],
+  },
   // {
   //   title: "Backup",
   //   Icon: MdBackup,

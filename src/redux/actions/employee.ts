@@ -18,51 +18,66 @@ import { AxiosError } from "axios";
 import { ApiError } from "../types";
 import { rejectedToast, successToast } from "../../app/utils/toaster";
 
-export const createEmployee = (data: any) => async (dispatch: AppDispatch) => {
-    dispatch({type: CREATE_EMPLOYEE_LOADING})
-    api.post('/employee', data).then(res => {
-        successToast('Employee created successfully')
-        dispatch({type: CREATE_EMPLOYEE_SUCCESS, payload: res.data})
-    }).catch((err: AxiosError<ApiError>) => {
-        rejectedToast(err)
-        dispatch({type: CREATE_EMPLOYEE_ERR, payload: err.response?.data})
+export const createEmployee = (data: any) => (dispatch: AppDispatch) => {
+  dispatch({ type: CREATE_EMPLOYEE_LOADING });
+  api
+    .post("/employee", data)
+    .then((res) => {
+      successToast("Employee created successfully");
+      dispatch({ type: CREATE_EMPLOYEE_SUCCESS, payload: res.data });
     })
-}
+    .catch((err: AxiosError<ApiError>) => {
+      rejectedToast(err);
+      dispatch({ type: CREATE_EMPLOYEE_ERR, payload: err.response?.data });
+    });
+};
 
-export const fetchEmployee = () => async (dispatch: AppDispatch) => {
-    dispatch({type: FETCH_EMPLOYEE_LOADING})
-    api.get('/employee').then(res => dispatch({
+export const fetchEmployee = () => (dispatch: AppDispatch) => {
+  dispatch({ type: FETCH_EMPLOYEE_LOADING });
+  api
+    .get("/employee")
+    .then((res) =>
+      dispatch({
         type: FETCH_EMPLOYEE_SUCCESS,
-        payload: res.data
-    })).catch((err: AxiosError<ApiError>) => {
-        dispatch({type: FETCH_EMPLOYEE_ERR, payload: err.response?.data});
-    })
-}
+        payload: res.data,
+      })
+    )
+    .catch((err: AxiosError<ApiError>) => {
+      dispatch({ type: FETCH_EMPLOYEE_ERR, payload: err.response?.data });
+    });
+};
 
-export const updateEmployee = (id: number, data: any) => async (dispatch: AppDispatch) => {
-    dispatch({type: UPDATE_EMPLOYEE_LOADING})
-    api.patch(`/employee/${id}`, data).then(res => {
-        successToast('Employee updated successfully')
+export const updateEmployee =
+  (id: number, data: any) => async (dispatch: AppDispatch) => {
+    dispatch({ type: UPDATE_EMPLOYEE_LOADING });
+    api
+      .patch(`/employee/${id}`, data)
+      .then((res) => {
+        successToast("Employee updated successfully");
         dispatch({
-            type: UPDATE_EMPLOYEE_SUCCESS,
-            payload: res.data
-        })
-    }).catch((err: AxiosError<ApiError>) => {
-        rejectedToast(err)
-        dispatch({type: UPDATE_EMPLOYEE_ERR, payload: err.response?.data});
-    })
-}
+          type: UPDATE_EMPLOYEE_SUCCESS,
+          payload: res.data,
+        });
+      })
+      .catch((err: AxiosError<ApiError>) => {
+        rejectedToast(err);
+        dispatch({ type: UPDATE_EMPLOYEE_ERR, payload: err.response?.data });
+      });
+  };
 
 export const deleteEmployee = (id: number) => async (dispatch: AppDispatch) => {
-    dispatch({type: REMOVE_EMPLOYEE_LOADING})
-    api.delete(`/employee/${id}`).then(res => {
-        successToast('Employee Deleted successfully')
-        dispatch({
-            type: REMOVE_EMPLOYEE_SUCCESS,
-            payload: res.data
-        })
-    }).catch((err: AxiosError<ApiError>) => {
-        rejectedToast(err)
-        dispatch({type: REMOVE_EMPLOYEE_ERR, payload: err.response?.data});
+  dispatch({ type: REMOVE_EMPLOYEE_LOADING });
+  api
+    .delete(`/employee/${id}`)
+    .then((res) => {
+      successToast("Employee Deleted successfully");
+      dispatch({
+        type: REMOVE_EMPLOYEE_SUCCESS,
+        payload: res.data,
+      });
     })
-}
+    .catch((err: AxiosError<ApiError>) => {
+      rejectedToast(err);
+      dispatch({ type: REMOVE_EMPLOYEE_ERR, payload: err.response?.data });
+    });
+};

@@ -1,13 +1,14 @@
-import { Button, Select, Tooltip, Typography } from 'antd';
-import { FaFileExcel, FaFilePdf, FaPrint } from 'react-icons/fa';
-import style from 'styled-components';
-import React, { SetStateAction, useCallback, useEffect, useState } from 'react';
-import { useSettingContext } from '../context/SettingProver';
-import { UserRole } from '../../types';
-import { Field, Form, Formik } from 'formik';
-import { BiReset } from 'react-icons/bi';
-import { AiFillQuestionCircle } from 'react-icons/ai';
-import { useTypedSelector } from '../../redux/store';
+import { Button, Select, Tooltip, Typography } from "antd";
+import { FaFileExcel, FaFilePdf, FaPrint } from "react-icons/fa";
+import style from "styled-components";
+import React, { SetStateAction, useCallback, useEffect, useState } from "react";
+import { useSettingContext } from "../context/SettingProver";
+import { UserRole } from "../../types";
+import { Field, Form, Formik } from "formik";
+import { BiReset } from "react-icons/bi";
+import { AiFillQuestionCircle } from "react-icons/ai";
+import { useAppDispatch, useTypedSelector } from "../../redux/store";
+import { fetchEmployee } from "../../redux/actions/employee";
 
 interface PrinAbleLayotProps {
   children: React.ReactNode;
@@ -50,20 +51,21 @@ const PrintAbleLayout: React.FC<PrinAbleLayotProps> = ({
   handleSearch,
   resetSearch,
   employeeFilter,
-  setEmpData
+  setEmpData,
 }) => {
+  const dispatch = useAppDispatch();
   const { currentUser } = useSettingContext();
-  const { showroom, isLoading } = useTypedSelector(state => state.showroom);
-  const { employees } = useTypedSelector(state => state.employee);
+  const { showroom, isLoading } = useTypedSelector((state) => state.showroom);
+  const { employees } = useTypedSelector((state) => state.employee);
 
-  const [showroomCode, setShowroomCode] = useState('');
+  const [showroomCode, setShowroomCode] = useState("");
 
   useEffect(() => {
     let filteredEmp: IEmployee[];
 
     if (showroomCode) {
       filteredEmp = employees.filter(
-        emp => emp.showroom.showroomCode === showroomCode
+        (emp) => emp?.showroom?.showroomCode === showroomCode
       );
     } else {
       filteredEmp = employees;
@@ -71,54 +73,58 @@ const PrintAbleLayout: React.FC<PrinAbleLayotProps> = ({
 
     setEmpData && setEmpData(filteredEmp);
   }, [showroomCode, setEmpData, employees]);
+
+  useEffect(() => {
+    dispatch(fetchEmployee());
+  }, [dispatch]);
   return (
-    <div className='w-full flex flex-col'>
-      <Header className={'dark:bg-slate-700 '}>
-        <Typography className='text-2xl font-bold dark:text-white'>
+    <div className="w-full flex flex-col">
+      <Header className={"dark:bg-slate-700 "}>
+        <Typography className="text-2xl font-bold dark:text-white">
           {title}
         </Typography>
-        <div className='flex text-sm gap-x-4 items-center'>
+        <div className="flex text-sm gap-x-4 items-center">
           {showPDF ? (
             <button
-              title='PDF'
-              className='bg-red-900 text-white flex items-center py-0.5 px-2 rounded cursor-pointer h-8 hover:bg-red-500 duration-300'
+              title="PDF"
+              className="bg-red-900 text-white flex items-center py-0.5 px-2 rounded cursor-pointer h-8 hover:bg-red-500 duration-300"
               onClick={handlePdf}
             >
-              <FaFilePdf cursor={'pointer'} /> <span>PDF</span>
+              <FaFilePdf cursor={"pointer"} /> <span>PDF</span>
             </button>
           ) : null}
           {showExcel ? (
             <button
-              title='Excel'
-              className='bg-green-600 text-white flex items-center py-0.5 px-2 rounded cursor-pointer h-8 hover:bg-green-500 duration-300'
+              title="Excel"
+              className="bg-green-600 text-white flex items-center py-0.5 px-2 rounded cursor-pointer h-8 hover:bg-green-500 duration-300"
               onClick={handleExcel}
             >
-              <FaFileExcel cursor={'pointer'} />
+              <FaFileExcel cursor={"pointer"} />
               <span>EXCEL</span>
             </button>
           ) : null}
           {showPrint ? (
             <button
-              title='Print'
-              className='bg-green-600 text-white flex items-center py-0.5 px-2 rounded cursor-pointer h-8 hover:bg-green-500 duration-300'
+              title="Print"
+              className="bg-green-600 text-white flex items-center py-0.5 px-2 rounded cursor-pointer h-8 hover:bg-green-500 duration-300"
               onClick={handlePrint}
             >
-              <FaPrint cursor={'pointer'} />
+              <FaPrint cursor={"pointer"} />
               <span>PRINT</span>
             </button>
           ) : null}
           {!currentUser?.role.includes(UserRole[2]) && btnText ? (
             <Button
-              className={'bg-blue-600 text-white hover:text-white'}
+              className={"bg-blue-600 text-white hover:text-white"}
               onClick={handleClick}
             >
-              {<span className={'text-white'}>{btnText}</span>}
+              {<span className={"text-white"}>{btnText}</span>}
             </Button>
           ) : null}
           {handleSearch ? (
             <>
               <Formik
-                initialValues={{ search: '' }}
+                initialValues={{ search: "" }}
                 onSubmit={(values, { resetForm }) => {
                   handleSearch(values.search);
                   resetForm();
@@ -126,18 +132,18 @@ const PrintAbleLayout: React.FC<PrinAbleLayotProps> = ({
               >
                 <Form>
                   <Field
-                    name={'search'}
-                    placeholder={'Search'}
+                    name={"search"}
+                    placeholder={"Search"}
                     className={
-                      'w-[300px] border border-primary-color h-8 focus:border-blue-300 transition-all duration-500 pl-2 outline-none rounded'
+                      "w-[300px] border border-primary-color h-8 focus:border-blue-300 transition-all duration-500 pl-2 outline-none rounded"
                     }
                   />
                 </Form>
               </Formik>
-              <Tooltip title={'Press Enter On Keyboard To Search'}>
+              <Tooltip title={"Press Enter On Keyboard To Search"}>
                 <AiFillQuestionCircle fontSize={18} />
               </Tooltip>
-              <button className={'btn__common'} onClick={resetSearch}>
+              <button className={"btn__common"} onClick={resetSearch}>
                 Reset <BiReset />
               </button>
             </>
@@ -145,22 +151,22 @@ const PrintAbleLayout: React.FC<PrinAbleLayotProps> = ({
 
           {employeeFilter &&
           !isLoading &&
-          currentUser?.role === 'SuperAdmin' ? (
+          currentUser?.role === "SuperAdmin" ? (
             <>
               <Select
                 value={showroomCode ? showroomCode : undefined}
-                options={showroom.map(c => ({
+                options={showroom.map((c) => ({
                   label: c.showroomName,
-                  value: c.showroomCode
+                  value: c.showroomCode,
                 }))}
-                className='w-32'
-                placeholder='Select Showroom Code'
+                className="w-32"
+                placeholder="Select Showroom Code"
                 onChange={(e: string) => setShowroomCode(e)}
               />
-              <Button onClick={() => setShowroomCode('')}>Reset Filter</Button>
+              <Button onClick={() => setShowroomCode("")}>Reset Filter</Button>
             </>
           ) : (
-            ''
+            ""
           )}
         </div>
       </Header>

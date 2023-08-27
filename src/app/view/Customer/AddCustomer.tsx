@@ -1,7 +1,7 @@
 import React from "react";
 import { Form, Formik } from "formik";
 import { useAppDispatch, useTypedSelector } from "../../../redux/store";
-import { createCustomer, fetchCustomer } from "../../../redux/actions/customer";
+import { createCustomer } from "../../../redux/actions/customer";
 import { Button, CommonInput } from "../../components";
 import SelectInput from "../../components/Input/SelectInput";
 import { useSettingContext } from "../../context/SettingProver";
@@ -25,10 +25,7 @@ const AddCustomer: React.FC<AddCustomerProps> = () => {
           showroomCode: "",
         }}
         onSubmit={async (values, { resetForm }) => {
-          await Promise.all([
-            dispatch(createCustomer(values)),
-            dispatch(fetchCustomer()),
-          ]);
+          dispatch(createCustomer(values));
           resetForm();
         }}
       >

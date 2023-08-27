@@ -8,9 +8,11 @@ import { Link } from "react-router-dom";
 import { FaCashRegister, FaUser } from "react-icons/fa";
 import { MdOutlineDarkMode } from "react-icons/md";
 import classNames from "classnames";
+import { UserRole } from "../../types";
 
 const NavBar = () => {
-  const { profile, setProfile, mode, setMode } = useSettingContext();
+  const { profile, setProfile, mode, setMode, currentUser } =
+    useSettingContext();
   const modeSwitch = classNames("rounded-md", {
     "bg-primaryColor-900 text-white": mode === "light",
     "bg-white text-primaryColor-900": mode === "dark",
@@ -102,12 +104,15 @@ const NavBar = () => {
             />
           )}
         </button>
-        <Link
-          to={"pos"}
-          className="text-primaryColor-900 hover:text-primary-color dark:text-white"
-        >
-          <FaCashRegister fontSize={30} />
-        </Link>
+
+        {!currentUser?.role.includes(UserRole[1]) && (
+          <Link
+            to={"pos"}
+            className="text-primaryColor-900 hover:text-primary-color dark:text-white"
+          >
+            <FaCashRegister fontSize={30} />
+          </Link>
+        )}
 
         <div
           className="relative text-primaryColor-900"
