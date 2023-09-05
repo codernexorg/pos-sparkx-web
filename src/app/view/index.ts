@@ -10,13 +10,9 @@ const Products = React.lazy(() => import("./Product/AllProducts"));
 const ProductGroup = React.lazy(() => import("./Product/ProductGroup"));
 const Barcode = React.lazy(() => import("./Barcode/Barcode"));
 const BarcodeSetting = React.lazy(() => import("./Barcode/BarcodeSetting"));
-const WareHouse = React.lazy(() => import("./WareHouse/WareHouse"));
-const AddWareHouse = React.lazy(() => import("./WareHouse/AddWH"));
 
 const ShowRoom = React.lazy(() => import("./ShowRoom/ShowRoom"));
 const AddShowRoom = React.lazy(() => import("./ShowRoom/AddSR"));
-
-const EditWHouse = React.lazy(() => import("./WareHouse/EditWareHouse"));
 
 const Categories = React.lazy(() => import("./Categories/Categories"));
 const AddCat = React.lazy(() => import("./Categories/AddCat"));
@@ -60,8 +56,6 @@ const EmpMOM_YOY = React.lazy(() => import("./Reports/EmployeeSales"));
 const CustomerQTY = React.lazy(() => import("./Reports/CustomerQTY"));
 const InventoryReport = React.lazy(() => import("./Reports/InventoryReport"));
 
-const PrevReturned = React.lazy(() => import("./POS/PrevReturned"));
-
 const LostProduct = React.lazy(() => import("./Product/LostProduct"));
 
 const DamagedProduct = React.lazy(() => import("./Product/DamagedProduct"));
@@ -74,7 +68,6 @@ export {
   AddProductGroup,
   AddShowRoom,
   AddSupplier,
-  AddWareHouse,
   Audit,
   Barcode,
   BarcodeSetting,
@@ -85,7 +78,6 @@ export {
   CustomerQTY,
   DBLayout,
   Dashboard,
-  EditWHouse,
   EmpMOM_YOY,
   Employee,
   ImportProducts,
@@ -106,9 +98,7 @@ export {
   Tax,
   TransferProduct,
   User,
-  WareHouse,
   InventoryReport,
-  PrevReturned,
   LostProduct,
   DamagedProduct,
   ReturnReport,

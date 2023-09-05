@@ -30,6 +30,7 @@ interface ReportLayoutProps {
   excelTableId?: string;
   excelTitle: string;
   showPdf?: boolean;
+  handleExcel?: () => void;
 }
 
 const ReportLayout: React.FC<ReportLayoutProps> = ({
@@ -57,6 +58,7 @@ const ReportLayout: React.FC<ReportLayoutProps> = ({
   excelTableId,
   excelTitle,
   showPdf = true,
+  handleExcel,
 }) => {
   const { currentUser } = useSettingContext();
   const { showroom } = useTypedSelector((state) => state.showroom);
@@ -184,7 +186,11 @@ const ReportLayout: React.FC<ReportLayoutProps> = ({
           <button
             className={"report__btn bg-green-600 text-white"}
             onClick={() =>
-              excelTableId && handleExcelHtml(excelTableId, excelTitle)
+              excelTableId
+                ? handleExcelHtml(excelTableId, excelTitle)
+                : handleExcel
+                ? handleExcel()
+                : null
             }
           >
             <FaFileExcel />

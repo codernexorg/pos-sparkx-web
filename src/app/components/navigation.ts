@@ -3,7 +3,6 @@ import {
   FaFileImport,
   FaProductHunt,
   FaSupple,
-  FaWarehouse,
 } from "react-icons/fa";
 import {
   AiFillDashboard,
@@ -55,12 +54,12 @@ const navigation = [
         Icon: FaAccusoft,
         text: "Invoices",
       },
-      {
-        access: ["SuperAdmin", "ShowroomManager", "SalesOperator"],
-        to: "/dashboard/pos/return/prev",
-        Icon: FaAccusoft,
-        text: "Previous Return Products",
-      },
+      // {
+      //   access: ["SuperAdmin", "ShowroomManager", "SalesOperator"],
+      //   to: "/dashboard/pos/return/prev",
+      //   Icon: FaAccusoft,
+      //   text: "Previous Return Products",
+      // },
     ],
   },
   {
@@ -321,7 +320,7 @@ const navigation = [
   {
     title: "Reports",
     Icon: HiDocumentReport,
-    access: ["SuperAdmin", "ShowroomManager"],
+    access: ["SuperAdmin", "ShowroomManager", "SalesOperator"],
     links: [
       {
         access: ["SuperAdmin", "ShowroomManager"],
@@ -348,7 +347,7 @@ const navigation = [
         text: "Customer Reports",
       },
       {
-        access: ["SuperAdmin", "ShowroomManager"],
+        access: ["SuperAdmin", "ShowroomManager", "SalesOperator"],
         to: "/dashboard/reports/return",
         Icon: FaAccusoft,
         text: "Return Reports",

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import ReportLayout from "../../components/ReportLayout";
 import api from "../../../api";
 import { rejectedToast } from "../../utils/toaster";
-import { formatPrice } from "../../utils";
+import { formatPrice, handleExcel } from "../../utils";
 import printJS from "print-js";
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
@@ -64,6 +64,24 @@ const ReturnReport: React.FC<ReturnReportProps> = ({}) => {
       srCode={srCode}
       setSrCode={setSrCode}
       excelTitle="Return Report"
+      handleExcel={() =>
+        reportData.length &&
+        handleExcel(
+          reportData.map((item) => ({
+            ...item,
+            products: item.products
+              .map((p) => p.itemCode + " " + p.productName)
+              .join(", \n"),
+            seller: item.seller
+              .map((e) => e.empPhone + " " + e.empName)
+              .join(", \n"),
+            finalPrice: item.finalPrice.map((pr) => pr).join(", \n"),
+            tagPrice: item.tagPrice.map((pr) => pr).join(", \n"),
+          })),
+          "Return Report",
+          "return_report"
+        )
+      }
       handlePdf={() => {
         const doc = new jsPDF("landscape");
         doc.text(
@@ -86,7 +104,6 @@ const ReturnReport: React.FC<ReturnReportProps> = ({}) => {
           targetStyles: ["*"],
         });
       }}
-      excelTableId="returnReport"
     >
       <h1 className="text-xl font-semibold">Return Reports</h1>
       <table id="returnReport" className="return__table">
