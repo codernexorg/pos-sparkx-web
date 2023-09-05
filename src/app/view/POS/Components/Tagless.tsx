@@ -14,63 +14,61 @@ interface TaglessProps {
   setCart: React.Dispatch<SetStateAction<Product[]>>;
 }
 
-const Tagless: React.FC<TaglessProps> = ({
-  showTaglessModal,
-  setShowTaglessModal,
-  setCart,
-}) => {
-  const dispatch = useAppDispatch();
-  const { productGroup } = useTypedSelector((state) => state.productGroup);
-  return (
-    <Modal
-      open={showTaglessModal}
-      onCancel={() => {
-        setShowTaglessModal(false);
-      }}
-      footer={false}
-    >
-      <Formik
-        initialValues={{
-          size: "",
-          sellPrice: 0,
-          productGroup: "",
-        }}
-        onSubmit={async (values) => {
-          api
-            .post("/product/tagless", values)
-            .then((res) => {
-              setCart((prev) => [...prev, res.data]);
-              dispatch(fetchProduct());
-            })
-            .catch((err) => {
-              rejectedToast(err);
-            });
+const Tagless: React.FC<TaglessProps> = React.memo(
+  ({ showTaglessModal, setShowTaglessModal, setCart }) => {
+    const dispatch = useAppDispatch();
+    const { productGroup } = useTypedSelector((state) => state.productGroup);
+    return (
+      <Modal
+        open={showTaglessModal}
+        onCancel={() => {
           setShowTaglessModal(false);
         }}
+        footer={false}
       >
-        {
-          <Form className="flex flex-col gap-y-2">
-            <CommonInput name="sellPrice" label="Sell Price" type="number" />
-            <SelectInput label="Product Group" name="productGroup">
-              {productGroup.map((pg) => (
-                <option key={pg.productName} value={pg.productName}>
-                  {pg.productName}
-                </option>
-              ))}
-            </SelectInput>
-            <CommonInput
-              name="size"
-              label="Size"
-              placeholder={"Eg: M,L,42,46"}
-              type="text"
-            />
-            <Button type="submit" className="btn__common">
-              Add Tagless Product
-            </Button>
-          </Form>
-        }
-      </Formik>
-    </Modal>
-  );
-};
+        <Formik
+          initialValues={{
+            size: "",
+            sellPrice: 0,
+            productGroup: "",
+          }}
+          onSubmit={async (values) => {
+            api
+              .post("/product/tagless", values)
+              .then((res) => {
+                setCart((prev) => [...prev, res.data]);
+                dispatch(fetchProduct());
+              })
+              .catch((err) => {
+                rejectedToast(err);
+              });
+            setShowTaglessModal(false);
+          }}
+        >
+          {
+            <Form className="flex flex-col gap-y-2">
+              <CommonInput name="sellPrice" label="Sell Price" type="number" />
+              <SelectInput label="Product Group" name="productGroup">
+                {productGroup.map((pg) => (
+                  <option key={pg.productName} value={pg.productName}>
+                    {pg.productName}
+                  </option>
+                ))}
+              </SelectInput>
+              <CommonInput
+                name="size"
+                label="Size"
+                placeholder={"Eg: M,L,42,46"}
+                type="text"
+              />
+              <Button type="submit" className="btn__common">
+                Add Tagless Product
+              </Button>
+            </Form>
+          }
+        </Formik>
+      </Modal>
+    );
+  }
+);
 export default Tagless;

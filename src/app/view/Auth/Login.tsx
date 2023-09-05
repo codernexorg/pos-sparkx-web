@@ -55,7 +55,7 @@ const Login = () => {
                   signIn({
                     token: res.data!.token,
                     authState: res.data!.user,
-                    expiresIn: 1000 * 60 * 60 * 24 * 365,
+                    expiresIn: 1000 * 60 * 60 * 12,
                     tokenType: "Bearer",
                   });
                   localStorage.setItem("token", res.data!.token);
